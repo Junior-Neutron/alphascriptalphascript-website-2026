@@ -318,6 +318,9 @@ footer strong { color: var(--green); }
 </footer>
 
 <script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 const screens = {
   login: document.getElementById('loginScreen'),
   signup: document.getElementById('signupScreen'),
@@ -360,6 +363,10 @@ document.getElementById('themeButton').addEventListener('click', () => {
   document.getElementById('themeButton').textContent =
     isLight ? '☾ Dark mode' : '☀ Light mode';
 });
+const supabaseClient = window.supabase.createClient(
+  'https://qaivqscssdtsnthdiqtu.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhaXZxc2Nzc2R0c250aGRpcXR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE3Mjg3MjgsImV4cCI6MjEwNzMwNDcyOH0.i3cpwFKOCnfvGtAKsRpP3LxwIQl2l3-ZJq_9WTrRBP8'
+);
 
 function showNotice(id, message) {
   const notice = document.getElementById(id);
@@ -367,35 +374,73 @@ function showNotice(id, message) {
   notice.classList.add('show');
 }
 
-document.getElementById('loginForm').addEventListener('submit', event => {
+document.getElementById('loginForm').addEventListener('submit', async event => {
   event.preventDefault();
-  showNotice('loginNotice',
-    'The login interface works, but real account authentication is not connected yet.');
+
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+
+  const { error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    showNotice('loginNotice', error.message);
+    return;
+  }
+
+  showNotice('loginNotice', 'Login successful!');
 });
 
-document.getElementById('signupForm').addEventListener('submit', event => {
+document.getElementById('signupForm').addEventListener('submit', async event => {
   event.preventDefault();
 
+  const username = document.getElementById('username').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
   const password = document.getElementById('signupPassword').value;
   const confirm = document.getElementById('confirmPassword').value;
 
   if (password !== confirm) {
-    showNotice('signupNotice', 'Your passwords do not match. Please try again.');
+    showNotice('signupNotice', 'Your passwords do not match.');
     return;
   }
 
-  showNotice('signupNotice',
-    'The form is valid! Account creation and email verification need to be connected to a secure authentication service.');
+  const { data, error } = await supabaseClient.auth.signUp({
+    email,
+    password,
+    options: { data: { username } }
+  });
+
+  if (error) {
+    showNotice('signupNotice', error.message);
+    return;
+  }
+
+  showNotice(
+    'signupNotice',
+    data.session
+      ? 'Account created successfully!'
+      : 'Signup received! Check your email to confirm your account.'
+  );
 });
 
-document.getElementById('forgotForm').addEventListener('submit', event => {
+document.getElementById('forgotForm').addEventListener('submit', async event => {
   event.preventDefault();
-  showNotice('forgotNotice',
-    'Password recovery is not connected yet. We will enable it after setting up authentication.');
-});
-</script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  const email = document.getElementById('resetEmail').value.trim();
+
+  const { error } = await supabaseClient.auth.resetPasswordForEmail(email);
+
+  showNotice(
+    'forgotNotice',
+    error
+      ? error.message
+      : 'If an account exists for that email, a password-reset email will be sent.'
+  );
+});
+
+</script>
 
 </body>
 </html>
