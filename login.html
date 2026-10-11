@@ -136,20 +136,6 @@ a, .text-button {
   margin-top: 5px;
   font-size: 16px;
 }
-.divider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: var(--muted);
-  font-size: 13px;
-  margin: 25px 0;
-}
-.divider::before, .divider::after {
-  content: "";
-  height: 1px;
-  background: var(--border);
-  flex: 1;
-}
 .switch {
   text-align: center;
   margin: 25px 0 0;
@@ -253,14 +239,19 @@ footer strong { color: var(--green); }
     <form id="signupForm">
       <div class="field">
         <label for="username">Username</label>
-        <input id="username" type="text" placeholder="Choose a username"
-          minlength="3" maxlength="24" autocomplete="username" required>
+        <input id="username" type="text"
+          placeholder="Choose a username"
+          minlength="3" maxlength="24"
+          autocomplete="username" required>
       </div>
+
       <div class="field">
         <label for="signupEmail">Email address</label>
-        <input id="signupEmail" type="email" placeholder="you@example.com"
+        <input id="signupEmail" type="email"
+          placeholder="you@example.com"
           autocomplete="email" required>
       </div>
+
       <div class="field">
         <label for="signupPassword">Password</label>
         <div class="password-wrap">
@@ -270,16 +261,19 @@ footer strong { color: var(--green); }
           <button type="button" data-toggle="signupPassword">Show</button>
         </div>
       </div>
+
       <div class="field">
         <label for="confirmPassword">Confirm password</label>
         <input id="confirmPassword" type="password"
           placeholder="Enter the password again"
           minlength="8" autocomplete="new-password" required>
       </div>
+
       <button class="primary submit" type="submit">Create account →</button>
     </form>
 
     <div class="notice" id="signupNotice" role="status"></div>
+
     <p class="switch">Already registered?
       <button class="text-button" type="button" data-screen="login">
         Log in
@@ -291,17 +285,22 @@ footer strong { color: var(--green); }
     <div class="logo">A<span class="accent">.</span></div>
     <h1>Reset your password</h1>
     <p class="subtitle">Enter your email to begin account recovery.</p>
+
     <form id="forgotForm">
       <div class="field">
         <label for="resetEmail">Email address</label>
         <input id="resetEmail" type="email"
-          placeholder="you@example.com" autocomplete="email" required>
+          placeholder="you@example.com"
+          autocomplete="email" required>
       </div>
+
       <button class="primary submit" type="submit">
         Request reset link
       </button>
     </form>
+
     <div class="notice" id="forgotNotice" role="status"></div>
+
     <p class="switch">
       <button class="text-button" type="button" data-screen="login">
         ← Back to login
@@ -317,9 +316,17 @@ footer strong { color: var(--green); }
   <br>AlphaScript — Where Ideas Become Real Code.
 </footer>
 
-<script>
-
+<!-- Load the Supabase library BEFORE our JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = 'https://qaivqscssdtsnthdiqtu.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhaXZxc2Nzc2R0c250aGRpcXR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE3Mjg3MjgsImV4cCI6MjEwNzMwNDcyOH0.i3cpwFKOCnfvGtAKsRpP3LxwIQl2l3-ZJq_9WTrRBP8';
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
 
 const screens = {
   login: document.getElementById('loginScreen'),
@@ -331,11 +338,19 @@ function showScreen(name) {
   Object.keys(screens).forEach(key => {
     screens[key].hidden = key !== name;
   });
+
   document.querySelectorAll('.notice').forEach(el => {
     el.classList.remove('show');
     el.textContent = '';
   });
+
   window.scrollTo(0, 0);
+}
+
+function showNotice(id, message) {
+  const notice = document.getElementById(id);
+  notice.textContent = message;
+  notice.classList.add('show');
 }
 
 document.querySelectorAll('[data-screen]').forEach(button => {
@@ -352,6 +367,7 @@ document.querySelectorAll('[data-toggle]').forEach(button => {
   button.addEventListener('click', () => {
     const field = document.getElementById(button.dataset.toggle);
     const reveal = field.type === 'password';
+
     field.type = reveal ? 'text' : 'password';
     button.textContent = reveal ? 'Hide' : 'Show';
   });
@@ -359,40 +375,43 @@ document.querySelectorAll('[data-toggle]').forEach(button => {
 
 document.getElementById('themeButton').addEventListener('click', () => {
   document.body.classList.toggle('light');
+
   const isLight = document.body.classList.contains('light');
+
   document.getElementById('themeButton').textContent =
     isLight ? '☾ Dark mode' : '☀ Light mode';
 });
-const supabaseClient = window.supabase.createClient(
-  'https://qaivqscssdtsnthdiqtu.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhaXZxc2Nzc2R0c250aGRpcXR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE3Mjg3MjgsImV4cCI6MjEwNzMwNDcyOH0.i3cpwFKOCnfvGtAKsRpP3LxwIQl2l3-ZJq_9WTrRBP8'
-);
 
-function showNotice(id, message) {
-  const notice = document.getElementById(id);
-  notice.textContent = message;
-  notice.classList.add('show');
-}
-
+// Login with an existing Supabase account
 document.getElementById('loginForm').addEventListener('submit', async event => {
   event.preventDefault();
 
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
+  const submitButton = event.currentTarget.querySelector('[type="submit"]');
 
-  const { error } = await supabaseClient.auth.signInWithPassword({
-    email,
-    password
-  });
+  submitButton.disabled = true;
 
-  if (error) {
-    showNotice('loginNotice', error.message);
-    return;
+  try {
+    const { error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) {
+      showNotice('loginNotice', error.message);
+      return;
+    }
+
+    showNotice('loginNotice', 'Login successful! You are authenticated.');
+  } catch (error) {
+    showNotice('loginNotice', 'Connection failed. Check your internet and try again.');
+  } finally {
+    submitButton.disabled = false;
   }
-
-  showNotice('loginNotice', 'Login successful!');
 });
 
+// Create a new Supabase account
 document.getElementById('signupForm').addEventListener('submit', async event => {
   event.preventDefault();
 
@@ -400,46 +419,80 @@ document.getElementById('signupForm').addEventListener('submit', async event => 
   const email = document.getElementById('signupEmail').value.trim();
   const password = document.getElementById('signupPassword').value;
   const confirm = document.getElementById('confirmPassword').value;
+  const submitButton = event.currentTarget.querySelector('[type="submit"]');
+
+  if (username.length < 3) {
+    showNotice('signupNotice', 'Your username must be at least 3 characters.');
+    return;
+  }
 
   if (password !== confirm) {
-    showNotice('signupNotice', 'Your passwords do not match.');
+    showNotice('signupNotice', 'Your passwords do not match. Please try again.');
     return;
   }
 
-  const { data, error } = await supabaseClient.auth.signUp({
-    email,
-    password,
-    options: { data: { username } }
-  });
+  submitButton.disabled = true;
 
-  if (error) {
-    showNotice('signupNotice', error.message);
-    return;
+  try {
+    const { data, error } = await supabaseClient.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { username }
+      }
+    });
+
+    if (error) {
+      showNotice('signupNotice', error.message);
+      return;
+    }
+
+    if (data.session) {
+      showNotice('signupNotice', 'Account created and logged in successfully!');
+    } else {
+      showNotice(
+        'signupNotice',
+        'Signup received. Check your email for a confirmation link before logging in.'
+      );
+    }
+  } catch (error) {
+    showNotice('signupNotice', 'Connection failed. Check your internet and try again.');
+  } finally {
+    submitButton.disabled = false;
   }
-
-  showNotice(
-    'signupNotice',
-    data.session
-      ? 'Account created successfully!'
-      : 'Signup received! Check your email to confirm your account.'
-  );
 });
 
+// Request a password-reset email
 document.getElementById('forgotForm').addEventListener('submit', async event => {
   event.preventDefault();
 
   const email = document.getElementById('resetEmail').value.trim();
+  const submitButton = event.currentTarget.querySelector('[type="submit"]');
 
-  const { error } = await supabaseClient.auth.resetPasswordForEmail(email);
+  submitButton.disabled = true;
 
-  showNotice(
-    'forgotNotice',
-    error
-      ? error.message
-      : 'If an account exists for that email, a password-reset email will be sent.'
-  );
+  try {
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email);
+
+    showNotice(
+      'forgotNotice',
+      error
+        ? error.message
+        : 'If an account exists for that email, a password-reset email will be sent.'
+    );
+  } catch (error) {
+    showNotice('forgotNotice', 'Connection failed. Please try again.');
+  } finally {
+    submitButton.disabled = false;
+  }
 });
 
+// Allow links such as login.html?screen=signup
+const requestedScreen = new URLSearchParams(window.location.search).get('screen');
+
+if (requestedScreen && screens[requestedScreen]) {
+  showScreen(requestedScreen);
+}
 </script>
 
 </body>
