@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050a08">
+  <title>AlphaScript | Build. Share. Evolve.</title>
+
+  <style>
+    :root {
+      --bg: #050a08;
+      --panel: #0b1510;
+      --green: #00f5a0;
+      --text: #f2f7f4;
+      --muted: #a4b5ab;
+      --border: #124a34;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+    }
+
+    button, textarea {
+      font: inherit;
+    }
+
+    button, a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .container {
+      width: min(1120px, 90%);
+      margin: auto;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      white-space: nowrap;
+    }
+
+    .logo span,
+    .accent {
+      color: var(--green);
+    }
+
+    .primary-button {
+      display: inline-block;
+      background: var(--green);
+      color: #04120b;
+      border: 1px solid var(--green);
+      border-radius: 8px;
+      padding: 12px 19px;
+      font-weight: 800;
+      transition: 0.2s;
+    }
+
+    .primary-button:hover {
+      box-shadow: 0 0 22px #00f5a044;
+      transform: translateY(-2px);
+    }
+
+    .outline-button {
+      border: 1px solid var(--green);
+      background: transparent;
+      color: var(--green);
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-weight: 700;
+    }
+
+    .outline-button:hover {
+      background: var(--green);
+      color: #04120b;
+    }
+
+    /* LANDING PAGE */
+
+    .site-header {
+      background: #050b08;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .top-nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 22px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--green);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+      gap: 35px;
+      padding-top: 85px;
+      padding-bottom: 85px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      color: var(--green);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 5px 12px;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+      line-height: 1.08;
+      letter-spacing: -2px;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 span {
+      color: var(--green);
+    }
+
+    .hero-description {
+      color: var(--muted);
+      max-width: 470px;
+      margin-bottom: 27px;
+    }
+
+    .code-visual {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      min-height: 290px;
+      display: flex;
+      align-items: center;
+      background: radial-gradient(
+        ellipse at center, #103c27, #08150e 55%, #050a08 85%
+      );
+    }
+
+    .code-window {
+      width: 100%;
+      border: 1px solid #1a6545;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #050b08;
+    }
+
+    .window-bar {
+      display: flex;
+      gap: 7px;
+      padding: 13px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .code-content {
+      padding: 23px 17px;
+      color: var(--green);
+      font: 0.9rem/2 monospace;
+      overflow-wrap: anywhere;
+    }
+
+    .code-comment {
+      color: #789184;
+    }
+
+    .ecosystem {
+      border-top: 1px solid var(--border);
+      padding: 55px 0 75px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 32px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .feature-card {
+      text-align: left;
+      width: 100%;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 23px 20px;
+      background: linear-gradient(145deg, #0a1710, #060d09);
+      transition: 0.2s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--green);
+    }
+
+    .feature-icon {
+      display: block;
+      color: var(--green);
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+
+    .feature-card h3 {
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .site-footer {
+      padding: 24px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .site-footer p {
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    /* DASHBOARD */
+
+    .app-dashboard {
+      min-height: 100vh;
+      background: var(--bg);
+    }
+
+    .dashboard-layout {
+      display: grid;
+      grid-template-columns: 235px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      padding: 24px 16px;
+      border-right: 1px solid var(--border);
+      background: #080f0b;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sidebar-label {
+      color: #789184;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      margin-top: 20px;
+      margin-bottom: 4px;
+    }
+
+    .side-link {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 12px;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      color: var(--muted);
+      background: transparent;
+    }
+
+    .side-link:hover,
+    .side-link.active {
+      color: var(--green);
+      background: #10261a;
+      border-color: var(--border);
+    }
+
+    .sidebar-bottom {
+      margin-top: auto;
+    }
+
+    .dashboard-main {
+      min-width: 0;
+      padding: 30px;
+    }
+
+    .dashboard-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+      padding-bottom: 22px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .dashboard-header h1 {
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+    }
+
+    .demo-badge {
+      color: var(--green);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 5px 10px;
+      font-size: 0.7rem;
+    }
+
+    .welcome-panel {
+      margin: 27px 0;
+      padding: 27px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: radial-gradient(ellipse at top right, #103b26, #0a130d 70%);
+    }
+
+    .welcome-panel h2 {
+      margin: 10px 0;
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+    }
+
+    .feed-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin: 30px 0 18px;
+    }
+
+    .post-form {
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--panel);
+    }
+
+    .post-form label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .post-form textarea {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: #050a08;
+      color: var(--text);
+      resize: vertical;
+    }
+
+    .post-form textarea:focus {
+      outline: 2px solid var(--green);
+    }
+
+    .feed-post {
+      padding: 22px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--panel);
+      overflow-wrap: anywhere;
+    }
+
+    .feed-post h3 {
+      margin: 10px 0;
+    }
+
+    .feed-post p {
+      color: var(--muted);
+    }
+
+    .post-note {
+      display: block;
+      color: #789184;
+      margin-top: 14px;
+      font-size: 0.75rem;
+    }
+
+    .empty-state {
+      padding: 30px 15px;
+      color: var(--muted);
+      text-align: center;
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+    }
+
+    /* INFORMATION DIALOG */
+
+    .app-dialog {
+      margin: auto;
+      width: min(420px, 90%);
+      padding: 25px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--panel);
+      color: var(--text);
+    }
+
+    .app-dialog::backdrop {
+      background: #000c;
+      backdrop-filter: blur(4px);
+    }
+
+    .dialog-close {
+      float: right;
+      background: transparent;
+      border: none;
+      color: var(--green);
+      font-size: 1.7rem;
+    }
+
+    .dialog-message {
+      color: var(--muted);
+      margin: 14px 0 22px;
+    }
+
+    @media (max-width: 850px) {
+      .nav-links {
+        gap: 12px;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 55px 0;
+      }
+
+      .feature-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 650px) {
+      .top-nav {
+        padding: 15px 0;
+        flex-wrap: wrap;
+      }
+
+      .nav-links {
+        order: 3;
+        width: 100%;
+        overflow-x: auto;
+        padding: 5px 0;
+      }
+
+      .nav-links a {
+        white-space: nowrap;
+      }
+
+      .hero h1 {
+        font-size: 2.7rem;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 15px;
+      }
+
+      .sidebar-label {
+        margin-top: 8px;
+      }
+
+      .sidebar-bottom {
+        margin-top: 0;
+      }
+
+      .dashboard-main {
+        padding: 20px 15px;
+      }
+
+      .welcome-panel {
+        padding: 20px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *, *::before, *::after {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- PUBLIC LANDING PAGE -->
+
+  <div id="landing-page">
+    <header class="site-header">
+      <nav class="top-nav container">
+        <a href="#" class="logo">Alpha<span>Script</span></a>
+
+        <div class="nav-links">
+          <a href="#home">Home</a>
+          <a href="#community">Community</a>
+          <a href="#projects">Projects</a>
+          <a href="#chat">AlphaChat</a>
+          <a href="#ai">AI Lab</a>
+        </div>
+
+        <button class="outline-button" id="joinButton" type="button">
+          Join Now
+        </button>
+      </nav>
+    </header>
+
+    <main id="home">
+      <section class="hero container">
+        <div>
+          <p class="eyebrow">THE DEVELOPER COMMUNITY</p>
+
+          <h1>
+            Your code.<br>
+            <span>Your community.</span><br>
+            Your evolution.
+          </h1>
+
+          <p class="hero-description">
+            Share your projects, discover new ideas,
+            and grow alongside developers.
+          </p>
+
+          <button class="primary-button" id="exploreButton" type="button">
+            Explore AlphaScript →
+          </button>
+        </div>
+
+        <div class="code-visual">
+          <div class="code-window">
+            <div class="window-bar">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+
+            <div class="code-content">
+              <div>const developer = {</div>
+              <div>&nbsp;&nbsp;learn: true,</div>
+              <div>&nbsp;&nbsp;build: true,</div>
+              <div>&nbsp;&nbsp;share: true,</div>
+              <div>&nbsp;&nbsp;grow: true</div>
+              <div>};</div>
+              <br>
+              <div class="code-comment">// Welcome to AlphaScript</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="ecosystem" id="community">
+        <div class="container">
+          <h2 class="section-title">
+            <span class="accent">//</span> Explore the ecosystem
+          </h2>
+
+          <div class="feature-grid">
+            <button class="feature-card" data-open-page="feed" type="button">
+              <span class="feature-icon">&lt;/&gt;</span>
+              <h3>Community</h3>
+              <p>Discover projects, exchange ideas, and connect with developers.</p>
+            </button>
+
+            <button class="feature-card" id="projects" data-open-page="projects" type="button">
+              <span class="feature-icon">{ }</span>
+              <h3>Projects</h3>
+              <p>Showcase your work and share the things you build.</p>
+            </button>
+
+            <button class="feature-card" id="chat" data-open-page="messages" type="button">
+              <span class="feature-icon">✉</span>
+              <h3>AlphaChat</h3>
+              <p>Connect with other developers through private messaging.</p>
+            </button>
+
+            <button class="feature-card" id="ai" data-open-page="ai" type="button">
+              <span class="feature-icon">AI</span>
+              <h3>AI Lab</h3>
+              <p>Explore tools that help you understand and improve your code.</p>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <a href="#" class="logo">Alpha<span>Script</span></a>
+        <p>Build. Share. Evolve.</p>
+        <p>© 2026 AlphaScript</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- APP DASHBOARD -->
+
+  <section id="app-dashboard" class="app-dashboard" hidden>
+    <div class="dashboard-layout">
+
+      <aside class="sidebar">
+        <a href="#" class="logo" id="dashboardLogo">Alpha<span>Script</span></a>
+
+        <p class="sidebar-label">WORKSPACE</p>
+
+        <button class="side-link active" data-page="feed" type="button">
+          ◈ Community Feed
+        </button>
+
+        <button class="side-link" data-page="projects" type="button">
+          &lt;/&gt; Projects
+        </button>
+
+        <button class="side-link" data-page="messages" type="button">
+          ◉ AlphaChat
+        </button>
+
+        <button class="side-link" data-page="ai" type="button">
+          ✳ AI Lab
+        </button>
+
+        <div class="sidebar-bottom">
+          <p class="sidebar-label">YOUR ACCOUNT</p>
+
+          <button class="side-link" data-page="profile" type="button">
+            ◉ My Profile
+          </button>
+
+          <button class="side-link" id="homeButton" type="button">
+            ↪ Return to Home
+          </button>
+        </div>
+      </aside>
+
+      <div class="dashboard-main">
+        <header class="dashboard-header">
+          <div>
+            <p class="accent">DEVELOPER WORKSPACE</p>
+            <h1 id="dashboardTitle">Community Feed</h1>
+          </div>
+
+          <span class="demo-badge">FRONTEND DEMO</span>
+        </header>
+
+        <div id="dashboardContent">
+          <section class="welcome-panel">
+            <p class="accent">WELCOME TO YOUR WORKSPACE</p>
+            <h2>Build something meaningful.</h2>
+            <p class="hero-description">
+              Discover ideas, share what you're building,
+              and learn alongside other developers.
+            </p>
+          </section>
+
+          <div class="feed-heading">
+            <h2>Community Feed</h2>
+            <button class="primary-button" id="createPostButton" type="button">
+              + Create Post
+            </button>
+          </div>
+
+          <form id="postForm" class="post-form" hidden>
+            <label for="postText">What are you building?</label>
+
+            <textarea
+              id="postText"
+              rows="4"
+              maxlength="1000"
+              placeholder="Share your project or coding progress..."
+              required
+            ></textarea>
+
+            <button class="primary-button" type="submit">
+              Publish Demo Post
+            </button>
+          </form>
+
+          <div id="postList">
+            <article class="feed-post">
+              <p class="accent">ALPHASCRIPT COMMUNITY</p>
+              <h3>Your developer journey starts here.</h3>
+              <p>
+                This is a preview of where community posts
+                will appear once the database is connected.
+              </p>
+              <span class="post-note">
+                Sample content · Not a real user post
+              </span>
+            </article>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- REUSABLE DIALOG -->
+
+  <dialog id="appDialog" class="app-dialog">
+    <button class="dialog-close" id="closeDialog" type="button" aria-label="Close">
+      ×
+    </button>
+    <p class="eyebrow">ALPHASCRIPT</p>
+    <h2 id="dialogTitle">Coming soon</h2>
+    <p class="dialog-message" id="dialogMessage"></p>
+    <button class="primary-button" id="dialogOkay" type="button">
+      Understood
+    </button>
+  </dialog>
+
+  <script>
+    // ELEMENTS
+
+    const landingPage = document.getElementById('landing-page');
+    const dashboard = document.getElementById('app-dashboard');
+    const dashboardTitle = document.getElementById('dashboardTitle');
+    const dashboardContent = document.getElementById('dashboardContent');
+    const appDialog = document.getElementById('appDialog');
+
+    // OPEN AND CLOSE THE INFORMATION DIALOG
+
+    function showDialog(title, message) {
+      document.getElementById('dialogTitle').textContent = title;
+      document.getElementById('dialogMessage').textContent = message;
+
+      if (!appDialog.open) {
+        appDialog.showModal();
+      }
+    }
+
+    function closeDialog() {
+      if (appDialog.open) {
+        appDialog.close();
+      }
+    }
+
+    document.getElementById('closeDialog').addEventListener('click', closeDialog);
+    document.getElementById('dialogOkay').addEventListener('click', closeDialog);
+
+    appDialog.addEventListener('click', event => {
+      if (event.target === appDialog) {
+        closeDialog();
+      }
+    });
+
+    // SHOW THE DASHBOARD — NO OLD JOIN DIALOG
+
+    function openDashboard(page = 'feed') {
+      landingPage.hidden = true;
+      dashboard.hidden = false;
+
+      window.scrollTo(0, 0);
+      setDashboardPage(page);
+    }
+
+    function returnHome() {
+      dashboard.hidden = true;
+      landingPage.hidden = false;
+
+      closeDialog();
+      window.scrollTo(0, 0);
+    }
+
+    document.getElementById('joinButton').addEventListener('click', () => {
+      openDashboard('feed');
+    });
+
+    document.getElementById('exploreButton').addEventListener('click', () => {
+      document.getElementById('community').scrollIntoView({
+        behavior: 'smooth'
+      });
+    });
+
+    document.getElementById('homeButton').addEventListener('click', returnHome);
+
+    document.getElementById('dashboardLogo').addEventListener('click', event => {
+      event.preventDefault();
+      setDashboardPage('feed');
+    });
+
+    // LANDING PAGE FEATURE CARDS
+
+    document.querySelectorAll('[data-open-page]').forEach(button => {
+      button.addEventListener('click', () => {
+        openDashboard(button.dataset.openPage);
+      });
+    });
+
+    // DASHBOARD NAVIGATION
+
+    function setDashboardPage(page) {
+      const titles = {
+        feed: 'Community Feed',
+        projects: 'Projects',
+        messages: 'AlphaChat',
+        ai: 'AI Lab',
+        profile: 'My Profile'
+      };
+
+      dashboardTitle.textContent = titles[page] || 'Workspace';
+
+      document.querySelectorAll('.side-link[data-page]').forEach(button => {
+        button.classList.toggle(
+          'active',
+          button.dataset.page === page
+        );
+      });
+
+      if (page === 'feed') {
+        dashboardContent.hidden = false;
+        return;
+      }
+
+      dashboardContent.hidden = true;
+
+      showDialog(
+        titles[page] || 'Workspace',
+        'This section is planned but not connected yet. We will build its features next.'
+      );
+    }
+
+    // SIDEBAR NAVIGATION
+
+    document.querySelectorAll('.side-link[data-page]').forEach(button => {
+      button.addEventListener('click', () => {
+        setDashboardPage(button.dataset.page);
+      });
+    });
+
+    // CREATE A TEMPORARY DEMO POST
+
+    document.getElementById('createPostButton').addEventListener('click', () => {
+      const form = document.getElementById('postForm');
+
+      form.hidden = !form.hidden;
+
+      if (!form.hidden) {
+        document.getElementById('postText').focus();
+      }
+    });
+
+    // PUBLISH THE DEMO POST
+
+    document.getElementById('postForm').addEventListener('submit', event => {
+      event.preventDefault();
+
+      const textarea = document.getElementById('postText');
+      const message = textarea.value.trim();
+
+      if (!message) {
+        return;
+      }
+
+      const post = document.createElement('article');
+      post.className = 'feed-post';
+
+      const label = document.createElement('p');
+      label.className = 'accent';
+      label.textContent = 'YOUR DEMO POST';
+
+      const content = document.createElement('p');
+      content.textContent = message;
+
+      const note = document.createElement('span');
+      note.className = 'post-note';
+      note.textContent = 'Temporary demo post — not saved online';
+
+      post.append(label, content, note);
+
+      document.getElementById('postList').prepend(post);
+
+      textarea.value = '';
+      document.getElementById('postForm').hidden = true;
+    });
+
+  </script>
+
+</body>
+</html>
