@@ -835,22 +835,32 @@
       window.scrollTo(0, 0);
     }
 
-    document.getElementById('joinButton').addEventListener('click', () => {
-      openDashboard('feed');
-    });
 
-    document.getElementById('exploreButton').addEventListener('click', () => {
-      document.getElementById('community').scrollIntoView({
-        behavior: 'smooth'
-      });
-    });
+document.getElementById('joinButton').addEventListener('click', () => {
+  window.location.href = 'login.html?screen=signup';
+});
 
-    document.getElementById('homeButton').addEventListener('click', returnHome);
+const loginButton = document.getElementById('loginButton');
 
-    document.getElementById('dashboardLogo').addEventListener('click', event => {
-      event.preventDefault();
-      setDashboardPage('feed');
-    });
+if (loginButton) {
+  loginButton.addEventListener('click', () => {
+    window.location.href = 'login.html';
+  });
+}
+
+document.getElementById('exploreButton').addEventListener('click', () => {
+  document.getElementById('community').scrollIntoView({
+    behavior: 'smooth'
+  });
+});
+
+document.getElementById('homeButton').addEventListener('click', returnHome);
+
+document.getElementById('dashboardLogo').addEventListener('click', event => {
+  event.preventDefault();
+  setDashboardPage('feed');
+});
+
 
     // LANDING PAGE FEATURE CARDS
 
