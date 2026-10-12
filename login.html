@@ -745,35 +745,27 @@
 
         submitButton.disabled = true;
 
-        try {
-          const client = getClient();
+try {
+  const client = getClient();
 
-          const { error } = await 
-client.auth.resetPasswordForEmail(email, 
-{
-  redirectTo: `$
-{window.location.origin}/
-reset-password.html`
-})
+  const { error } = await client.auth.resetPasswordForEmail(email, {
+    redirectTo: `${window.location.origin}/reset-password.html`
+  });
 
-          if (error) {
-            showNotice('forgotNotice', error.message);
-            return;
-          }
-
-          showNotice(
-            'forgotNotice',
-            'If an account exists for that email, a password-reset email will be sent.'
-          );
-        } catch (error) {
-          showNotice(
-            'forgotNotice',
-            error.message ||
-              'Connection failed. Check your internet and try again.'
-          );
-        } finally {
-          submitButton.disabled = false;
-        }
+  if (error) {
+    showNotice('forgotNotice', error.message, 'error');
+  } else {
+    showNotice(
+      'forgotNotice',
+      'Password reset email sent. Check your inbox.',
+      'success'
+    );
+  }
+} catch (err) {
+  showNotice('forgotNotice', err.message, 'error');
+} finally {
+  submitButton.disabled = false;
+}
       }
     );
 
