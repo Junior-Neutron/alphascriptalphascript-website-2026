@@ -633,9 +633,12 @@
           }
 
           showNotice(
-            'loginNotice',
-            'Login successful! You are authenticated.'
-          );
+  'loginNotice',
+  'Login successful! Opening your 
+profile...'
+);
+
+window.location.href = 'profile.html';
         } catch (error) {
           showNotice(
             'loginNotice',
