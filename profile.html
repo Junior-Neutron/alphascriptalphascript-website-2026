@@ -1,0 +1,339 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Developer Profile | AlphaScript</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px 14px;
+      background: #090d14;
+      color: #e8eef8;
+      font-family: Arial, sans-serif;
+    }
+    main { max-width: 760px; margin: auto; }
+    h1 { color: #66aaff; }
+    .muted { color: #9aa9bd; line-height: 1.6; }
+    form, .panel {
+      background: #111925;
+      border: 1px solid #263448;
+      border-radius: 14px;
+      padding: 20px;
+      margin: 18px 0;
+    }
+    label {
+      display: block;
+      margin: 17px 0 8px;
+      font-weight: 600;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      color: #edf4ff;
+      background: #0a111d;
+      border: 1px solid #34465f;
+      border-radius: 8px;
+      font: inherit;
+    }
+    textarea { min-height: 90px; resize: vertical; }
+    .choices {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 9px;
+      margin-top: 10px;
+    }
+    .choice {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px;
+      background: #0a111d;
+      border: 1px solid #263448;
+      border-radius: 8px;
+      font-weight: normal;
+      margin: 0;
+    }
+    .choice input { width: auto; }
+    button {
+      width: 100%;
+      padding: 13px;
+      margin-top: 20px;
+      border: 0;
+      border-radius: 8px;
+      background: #3988ff;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:disabled { opacity: .6; }
+    #notice { line-height: 1.5; overflow-wrap: anywhere; }
+    a { color: #78b4ff; }
+  </style>
+</head>
+<body>
+<main>
+  <p><a href="index.html">← AlphaScript home</a></p>
+  <h1>Developer Profile</h1>
+  <p class="muted">
+    Tell the community who you are, what you build, and what you want to learn.
+  </p>
+
+  <form id="profileForm">
+    <h2>01 / Identity</h2>
+
+    <label for="username">Username *</label>
+    <input id="username" required minlength="3" maxlength="24"
+      pattern="[A-Za-z0-9_]+"
+      placeholder="e.g. Junior_Neutron">
+
+    <label for="displayName">Display name</label>
+    <input id="displayName" maxlength="60" placeholder="Your public name">
+
+    <label for="bio">Short bio</label>
+    <textarea id="bio" maxlength="300"
+      placeholder="What are you interested in building?"></textarea>
+
+    <label for="country">Country or region (optional)</label>
+    <input id="country" maxlength="80" placeholder="e.g. Ghana">
+
+    <h2>02 / Developer roles</h2>
+    <p class="muted">Select all roles that describe you.</p>
+    <div id="roles" class="choices"></div>
+
+    <h2>03 / Languages and technologies</h2>
+    <p class="muted">Select the technologies you use or want to learn.</p>
+    <div id="languages" class="choices"></div>
+
+    <h2>04 / Work and experience</h2>
+
+    <label for="occupation">What best describes you?</label>
+    <select id="occupation">
+      <option value="">Choose one</option>
+      <option>Student</option>
+      <option>Employed developer</option>
+      <option>Self-employed / Freelancer</option>
+      <option>Business owner / Founder</option>
+      <option>Teacher / Instructor</option>
+      <option>Researcher</option>
+      <option>Seeking opportunities</option>
+      <option>Hobbyist</option>
+      <option>Other</option>
+    </select>
+
+    <label for="experience">Your current experience level</label>
+    <select id="experience">
+      <option value="">Choose one</option>
+      <option>Complete beginner</option>
+      <option>Basic knowledge</option>
+      <option>Intermediate</option>
+      <option>Advanced</option>
+      <option>Professional experience</option>
+    </select>
+
+    <label for="skills">What can you currently do?</label>
+    <textarea id="skills" maxlength="1500"
+      placeholder="Mention concepts you know, projects you've built, or skills you are practising."></textarea>
+
+    <label for="goals">What do you want to achieve?</label>
+    <textarea id="goals" maxlength="1000"
+      placeholder="e.g. Build websites, create games, learn AI, find collaborators."></textarea>
+
+    <button id="saveButton" type="submit">Save My Profile</button>
+    <p id="notice" role="status" aria-live="polite"></p>
+  </form>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = "https://qaivqscssdtsnthdiqtu.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY = "PASTE_YOUR_EXISTING_PUBLIC_KEY_HERE";
+
+  const client = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+  const roleOptions = [
+    "Python Developer", "Frontend Developer", "Backend Developer",
+    "Full-Stack Developer", "Web Developer", "Mobile Developer",
+    "Game Developer", "AI / Machine Learning Developer",
+    "Data Scientist", "Cybersecurity", "Systems Programmer",
+    "Software Engineer", "Embedded Developer", "DevOps Engineer",
+    "Database Developer", "Other / Exploring"
+  ];
+
+  const languageOptions = [
+    "Python", "JavaScript", "TypeScript", "HTML", "CSS",
+    "Java", "C", "C++", "C#", "PHP", "Go", "Rust",
+    "Kotlin", "Swift", "SQL", "Lua", "Dart", "R",
+    "Ruby", "Bash", "Assembly", "Other"
+  ];
+
+  function addChoices(containerId, groupName, options) {
+    const container = document.getElementById(containerId);
+
+    options.forEach((option, index) => {
+      const label = document.createElement("label");
+      label.className = "choice";
+
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.name = groupName;
+      input.value = option;
+      input.id = groupName + index;
+
+      const text = document.createElement("span");
+      text.textContent = option;
+
+      label.append(input, text);
+      container.appendChild(label);
+    });
+  }
+
+  addChoices("roles", "role", roleOptions);
+  addChoices("languages", "language", languageOptions);
+
+  const form = document.getElementById("profileForm");
+  const saveButton = document.getElementById("saveButton");
+  const notice = document.getElementById("notice");
+
+  function showNotice(message, isError = false) {
+    notice.textContent = message;
+    notice.style.color = isError ? "#ff8888" : "#78e5ae";
+  }
+
+  function selectedValues(groupName) {
+    return Array.from(
+      document.querySelectorAll(
+        'input[name="' + groupName + '"]:checked'
+      )
+    ).map(input => input.value);
+  }
+
+  async function loadProfile() {
+    const { data: { user }, error: authError } =
+      await client.auth.getUser();
+
+    if (authError || !user) {
+      showNotice("Please log in first, then open your profile.", true);
+      return;
+    }
+
+    const { data, error } = await client
+      .from("profiles")
+      .select("*")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    if (error) {
+      showNotice("Could not load profile: " + error.message, true);
+      return;
+    }
+
+    if (!data) {
+      showNotice(
+        "Your account has no profile record yet. Please contact support.",
+        true
+      );
+      return;
+    }
+
+    document.getElementById("username").value = data.username || "";
+    document.getElementById("displayName").value = data.display_name || "";
+    document.getElementById("bio").value = data.bio || "";
+    document.getElementById("country").value = data.country || "";
+    document.getElementById("occupation").value = data.occupation || "";
+    document.getElementById("experience").value =
+      data.experience_level || "";
+    document.getElementById("skills").value =
+      Array.isArray(data.skills) ? data.skills.join(", ") : "";
+    document.getElementById("goals").value =
+      Array.isArray(data.learning_goals)
+        ? data.learning_goals.join(", ")
+        : "";
+
+    document.querySelectorAll('input[name="role"]').forEach(input => {
+      input.checked = (data.developer_roles || []).includes(input.value);
+    });
+
+    document.querySelectorAll('input[name="language"]').forEach(input => {
+      input.checked = (data.programming_languages || [])
+        .includes(input.value);
+    });
+
+    showNotice("Profile loaded. Make your changes and save.");
+  }
+
+  form.addEventListener("submit", async event => {
+    event.preventDefault();
+    saveButton.disabled = true;
+    showNotice("Saving your profile...");
+
+    try {
+      const { data: { user }, error: authError } =
+        await client.auth.getUser();
+
+      if (authError || !user) {
+        showNotice("Your session has expired. Please log in again.", true);
+        return;
+      }
+
+      const username = document.getElementById("username")
+        .value.trim();
+
+      if (!/^[A-Za-z0-9_]{3,24}$/.test(username)) {
+        showNotice(
+          "Username must be 3–24 characters: letters, numbers or underscores.",
+          true
+        );
+        return;
+      }
+
+      const profile = {
+        id: user.id,
+        username,
+        display_name:
+          document.getElementById("displayName").value.trim() || null,
+        bio: document.getElementById("bio").value.trim(),
+        country: document.getElementById("country").value.trim() || null,
+        developer_roles: selectedValues("role"),
+        programming_languages: selectedValues("language"),
+        occupation: document.getElementById("occupation").value || null,
+        experience_level:
+          document.getElementById("experience").value || null,
+        skills: document.getElementById("skills").value
+          .split(",").map(s => s.trim()).filter(Boolean),
+        learning_goals: document.getElementById("goals").value
+          .split(",").map(s => s.trim()).filter(Boolean),
+        updated_at: new Date().toISOString()
+      };
+
+      const { error } = await client
+        .from("profiles")
+        .upsert(profile, { onConflict: "id" });
+
+      if (error) {
+        if (error.code === "23505") {
+          showNotice("That username is already taken. Choose another.", true);
+        } else {
+          showNotice("Could not save profile: " + error.message, true);
+        }
+        return;
+      }
+
+      showNotice("Profile saved successfully!");
+    } catch (error) {
+      showNotice("Something went wrong. Please try again.", true);
+    } finally {
+      saveButton.disabled = false;
+    }
+  });
+
+  loadProfile();
+</script>
+</body>
+</html>
