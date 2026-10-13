@@ -1,14 +1,16 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#071019">
   <meta name="description" content="Sign in or create your AlphaScript developer account.">
   <title>AlphaScript | Developer Hub</title>
 
   <style>
     :root {
+      color-scheme: dark;
       --bg: #071019;
       --panel: #0c1824;
       --text: #edf7ff;
@@ -19,8 +21,9 @@
     }
 
     body.light {
+      color-scheme: light;
       --bg: #edf4f7;
-      --panel: #ffffff;
+      --panel: #fff;
       --text: #122333;
       --muted: #607487;
       --border: #cfdae2;
@@ -28,9 +31,7 @@
       --field: #f5f8fa;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -41,9 +42,7 @@
       transition: background .2s, color .2s;
     }
 
-    button, input {
-      font: inherit;
-    }
+    button, input { font: inherit; }
 
     button {
       cursor: pointer;
@@ -54,18 +53,10 @@
       color: var(--text);
     }
 
-    button:hover {
-      border-color: var(--green);
-    }
+    button:hover { border-color: var(--green); }
+    button:disabled { opacity: .6; cursor: wait; }
 
-    button:disabled {
-      opacity: .6;
-      cursor: wait;
-    }
-
-    button:focus-visible,
-    input:focus-visible,
-    a:focus-visible {
+    button:focus-visible, input:focus-visible, a:focus-visible {
       outline: 2px solid var(--green);
       outline-offset: 3px;
     }
@@ -85,15 +76,9 @@
       letter-spacing: -.8px;
     }
 
-    .brand span,
-    .accent {
-      color: var(--green);
-    }
+    .brand span, .accent { color: var(--green); }
 
-    .header-actions {
-      display: flex;
-      gap: 8px;
-    }
+    .header-actions { display: flex; gap: 8px; }
 
     .primary {
       background: var(--green);
@@ -136,9 +121,7 @@
       margin: 0 0 27px;
     }
 
-    .field {
-      margin: 17px 0;
-    }
+    .field { margin: 17px 0; }
 
     label {
       display: block;
@@ -158,22 +141,11 @@
       outline: none;
     }
 
-    input:focus {
-      border-color: var(--green);
-    }
+    input:focus { border-color: var(--green); }
 
-    .password-wrap {
-      display: flex;
-      gap: 7px;
-    }
-
-    .password-wrap input {
-      flex: 1;
-    }
-
-    .password-wrap button {
-      padding: 0 11px;
-    }
+    .password-wrap { display: flex; gap: 7px; }
+    .password-wrap input { flex: 1; }
+    .password-wrap button { padding: 0 11px; }
 
     .options {
       display: flex;
@@ -185,8 +157,7 @@
       font-size: 13px;
     }
 
-    a,
-    .text-button {
+    a, .text-button {
       color: var(--green);
       text-decoration: none;
       background: none;
@@ -231,9 +202,10 @@
       overflow-wrap: anywhere;
     }
 
-    .notice.show {
-      display: block;
-    }
+    .notice.show { display: block; }
+
+    .notice.error { border-color: #ff7272; }
+    .notice.success { border-color: var(--green); }
 
     footer {
       text-align: center;
@@ -243,46 +215,20 @@
       line-height: 2;
     }
 
-    footer strong {
-      color: var(--green);
-    }
-
-    [hidden] {
-      display: none !important;
-    }
+    footer strong { color: var(--green); }
+    [hidden] { display: none !important; }
 
     @media (max-width: 380px) {
-      header {
-        padding: 13px 4%;
-      }
-
-      .brand {
-        font-size: 19px;
-      }
-
-      .header-actions button {
-        padding: 8px;
-        font-size: 12px;
-      }
-
-      main {
-        margin-top: 24px;
-      }
+      header { padding: 13px 4%; }
+      .brand { font-size: 19px; }
+      .header-actions button { padding: 8px; font-size: 12px; }
+      main { margin-top: 24px; }
     }
 
     @media (orientation: landscape) and (max-height: 550px) {
-      main {
-        margin-top: 16px;
-      }
-
-      .card {
-        padding: 20px;
-      }
-
-      header {
-        padding-top: 10px;
-        padding-bottom: 10px;
-      }
+      main { margin-top: 16px; }
+      .card { padding: 20px; }
+      header { padding-top: 10px; padding-bottom: 10px; }
     }
   </style>
 </head>
@@ -290,7 +236,6 @@
 <body>
   <header>
     <div class="brand">A<span>lphaScript</span></div>
-
     <div class="header-actions">
       <button id="themeButton" type="button">☀ Light mode</button>
       <button id="headerLogin" type="button">Log in</button>
@@ -298,7 +243,7 @@
   </header>
 
   <main>
-    <!-- LOGIN SCREEN -->
+    <!-- LOGIN -->
     <section class="card" id="loginScreen">
       <div class="logo">A<span class="accent">.</span></div>
       <h1>Welcome back, developer!</h1>
@@ -307,32 +252,17 @@
       <form id="loginForm">
         <div class="field">
           <label for="loginEmail">Email address</label>
-          <input
-            id="loginEmail"
-            type="email"
-            placeholder="you@example.com"
-            autocomplete="email"
-            required
-          >
+          <input id="loginEmail" type="email" placeholder="you@example.com"
+            autocomplete="email" required>
         </div>
 
         <div class="field">
           <label for="loginPassword">Password</label>
-
           <div class="password-wrap">
-            <input
-              id="loginPassword"
-              type="password"
+            <input id="loginPassword" type="password"
               placeholder="Enter your password"
-              autocomplete="current-password"
-              required
-            >
-
-            <button
-              type="button"
-              data-toggle="loginPassword"
-              aria-label="Show or hide password"
-            >Show</button>
+              autocomplete="current-password" required>
+            <button type="button" data-toggle="loginPassword">Show</button>
           </div>
         </div>
 
@@ -341,32 +271,25 @@
             <input type="checkbox" id="rememberMe">
             Remember me
           </label>
-
-          <button
-            class="text-button"
-            type="button"
-            data-screen="forgot"
-          >Forgot password?</button>
+          <button class="text-button" type="button" data-screen="forgot">
+            Forgot password?
+          </button>
         </div>
 
-        <button class="primary submit" type="submit">
-          Log in →
-        </button>
+        <button class="primary submit" type="submit">Log in →</button>
       </form>
 
       <div class="notice" id="loginNotice" role="status" aria-live="polite"></div>
 
       <p class="switch">
         New to AlphaScript?
-        <button
-          class="text-button"
-          type="button"
-          data-screen="signup"
-        >Create an account</button>
+        <button class="text-button" type="button" data-screen="signup">
+          Create an account
+        </button>
       </p>
     </section>
 
-    <!-- SIGNUP SCREEN -->
+    <!-- SIGNUP -->
     <section class="card" id="signupScreen" hidden>
       <div class="logo">A<span class="accent">.</span></div>
       <h1>Join AlphaScript</h1>
@@ -375,79 +298,47 @@
       <form id="signupForm">
         <div class="field">
           <label for="username">Username</label>
-          <input
-            id="username"
-            type="text"
-            placeholder="Choose a username"
-            minlength="3"
-            maxlength="24"
-            autocomplete="username"
-            required
-          >
+          <input id="username" type="text" placeholder="Choose a username"
+            minlength="3" maxlength="24" autocomplete="username" required>
         </div>
 
         <div class="field">
           <label for="signupEmail">Email address</label>
-          <input
-            id="signupEmail"
-            type="email"
-            placeholder="you@example.com"
-            autocomplete="email"
-            required
-          >
+          <input id="signupEmail" type="email" placeholder="you@example.com"
+            autocomplete="email" required>
         </div>
 
         <div class="field">
           <label for="signupPassword">Password</label>
-
           <div class="password-wrap">
-            <input
-              id="signupPassword"
-              type="password"
-              placeholder="At least 8 characters"
-              minlength="8"
-              autocomplete="new-password"
-              required
-            >
-
-            <button
-              type="button"
-              data-toggle="signupPassword"
-              aria-label="Show or hide password"
-            >Show</button>
+            <input id="signupPassword" type="password"
+              placeholder="At least 8 characters" minlength="8"
+              autocomplete="new-password" required>
+            <button type="button" data-toggle="signupPassword">Show</button>
           </div>
         </div>
 
         <div class="field">
           <label for="confirmPassword">Confirm password</label>
-          <input
-            id="confirmPassword"
-            type="password"
-            placeholder="Enter the password again"
-            minlength="8"
-            autocomplete="new-password"
-            required
-          >
+          <input id="confirmPassword" type="password"
+            placeholder="Enter the password again" minlength="8"
+            autocomplete="new-password" required>
         </div>
 
-        <button class="primary submit" type="submit">
-          Create account →
-        </button>
+        <button class="primary submit" type="submit">Create account →</button>
       </form>
 
       <div class="notice" id="signupNotice" role="status" aria-live="polite"></div>
 
       <p class="switch">
         Already registered?
-        <button
-          class="text-button"
-          type="button"
-          data-screen="login"
-        >Log in</button>
+        <button class="text-button" type="button" data-screen="login">
+          Log in
+        </button>
       </p>
     </section>
 
-    <!-- PASSWORD RESET SCREEN -->
+    <!-- PASSWORD RESET REQUEST -->
     <section class="card" id="forgotScreen" hidden>
       <div class="logo">A<span class="accent">.</span></div>
       <h1>Reset your password</h1>
@@ -456,13 +347,8 @@
       <form id="forgotForm">
         <div class="field">
           <label for="resetEmail">Email address</label>
-          <input
-            id="resetEmail"
-            type="email"
-            placeholder="you@example.com"
-            autocomplete="email"
-            required
-          >
+          <input id="resetEmail" type="email" placeholder="you@example.com"
+            autocomplete="email" required>
         </div>
 
         <button class="primary submit" type="submit">
@@ -473,11 +359,9 @@
       <div class="notice" id="forgotNotice" role="status" aria-live="polite"></div>
 
       <p class="switch">
-        <button
-          class="text-button"
-          type="button"
-          data-screen="login"
-        >← Back to login</button>
+        <button class="text-button" type="button" data-screen="login">
+          ← Back to login
+        </button>
       </p>
     </section>
   </main>
@@ -490,23 +374,25 @@
     AlphaScript — Where Ideas Become Real Code.
   </footer>
 
-  <!-- Supabase JavaScript library -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
     'use strict';
 
     // SUPABASE CONFIGURATION
-    // Replace the publishable-key placeholder with your real key.
-    // Never use a service_role key or secret key in public HTML.
-
     const SUPABASE_URL =
       'https://qaivqscssdtsnthdiqtu.supabase.co';
 
-    const SUPABASE_PUBLISHABLE_KEY =
-      'sb_publishable_TjT6PMScm58zNVJiugk-zQ_6oIaJNU9';
+    // Replace this with your real sb_publishable_... key.
+    // Never put a service_role or secret key in public HTML.
+    const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_TjT6PMScm58zNVJiugk-zQ_6oIaJNU9';
 
     let supabaseClient = null;
+
+    // These URLs automatically include the GitHub Pages repository path.
+    // Do not change them to Netlify URLs.
+    const PROFILE_URL = new URL('profile.html', window.location.href).href;
+    const RESET_URL = new URL('reset-password.html', window.location.href).href;
 
     const screens = {
       login: document.getElementById('loginScreen'),
@@ -515,45 +401,42 @@
     };
 
     function showScreen(name) {
-      if (!Object.prototype.hasOwnProperty.call(screens, name)) {
-        return;
-      }
+      if (!Object.prototype.hasOwnProperty.call(screens, name)) return;
 
       Object.keys(screens).forEach(key => {
         screens[key].hidden = key !== name;
       });
 
       document.querySelectorAll('.notice').forEach(notice => {
-        notice.classList.remove('show');
+        notice.className = 'notice';
         notice.textContent = '';
       });
 
       window.scrollTo(0, 0);
     }
 
-    function showNotice(id, message) {
+    function showNotice(id, message, type = '') {
       const notice = document.getElementById(id);
-
       if (!notice) return;
 
       notice.textContent = message;
-      notice.classList.add('show');
+      notice.className = 'notice show' + (type ? ' ' + type : '');
     }
 
     function getClient() {
       if (!window.supabase || !window.supabase.createClient) {
         throw new Error(
-          'The authentication library could not load. Check your internet connection and reload the page.'
+          'Supabase could not load. Check your internet connection and reload.'
         );
       }
 
       if (
         !SUPABASE_PUBLISHABLE_KEY ||
         SUPABASE_PUBLISHABLE_KEY ===
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhaXZxc2Nzc2R0c250aGRpcXR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE3Mjg3MjgsImV4cCI6MjEwNzMwNDcyOH0.i3cpwFKOCnfvGtAKsRpP3LxwIQl2l3-ZJq_9WTrRBP8'
+          'sb_publishable_TjT6PMScm58zNVJiugk-zQ_6oIaJNU9sb_publishable_TjT6PMScm58zNVJiugk-zQ_6oIaJNU9sb_publishable_TjT6PMScm58zNVJiugk-zQ_6oIaJNU9sb_publishable_TjT6PMScm58zNVJiugk-zQ_6oIaJNU9sb_publishable_TjT6PMScm58zNVJiugk-zQ_6oIaJNU9sb_publishable_TjT6PMScm58zNVJiugk-zQ_6oIaJNU9'
       ) {
         throw new Error(
-          'Supabase is not configured yet. Add your project publishable key first.'
+          'Supabase is not configured. Add your real publishable key in login.html.'
         );
       }
 
@@ -567,215 +450,192 @@
       return supabaseClient;
     }
 
+    function setBusy(button, busy, busyText) {
+      if (busy) {
+        button.dataset.originalText = button.textContent;
+        button.textContent = busyText;
+        button.disabled = true;
+      } else {
+        button.textContent = button.dataset.originalText || button.textContent;
+        button.disabled = false;
+      }
+    }
+
     // SCREEN NAVIGATION
     document.querySelectorAll('[data-screen]').forEach(button => {
-      button.addEventListener('click', () => {
-        showScreen(button.dataset.screen);
-      });
+      button.addEventListener('click', () => showScreen(button.dataset.screen));
     });
 
     document.getElementById('headerLogin').addEventListener('click', () => {
       showScreen('login');
     });
 
-    // SHOW OR HIDE PASSWORD
+    // SHOW / HIDE PASSWORD
     document.querySelectorAll('[data-toggle]').forEach(button => {
       button.addEventListener('click', () => {
         const field = document.getElementById(button.dataset.toggle);
-
         if (!field) return;
 
         const reveal = field.type === 'password';
-
         field.type = reveal ? 'text' : 'password';
         button.textContent = reveal ? 'Hide' : 'Show';
-        button.setAttribute(
-          'aria-label',
-          reveal ? 'Hide password' : 'Show password'
-        );
       });
     });
 
-    // DARK AND LIGHT MODE
+    // LIGHT / DARK MODE
     document.getElementById('themeButton').addEventListener('click', () => {
       document.body.classList.toggle('light');
 
       const isLight = document.body.classList.contains('light');
-
       document.getElementById('themeButton').textContent =
         isLight ? '☾ Dark mode' : '☀ Light mode';
     });
 
-    // LOGIN
-    document.getElementById('loginForm').addEventListener(
-      'submit',
-      async event => {
-        event.preventDefault();
+    // LOGIN: successful authentication opens the profile wizard.
+    document.getElementById('loginForm').addEventListener('submit', async event => {
+      event.preventDefault();
 
-        const form = event.currentTarget;
-        const email = document.getElementById('loginEmail').value.trim();
-        const password = document.getElementById('loginPassword').value;
-        const submitButton = form.querySelector('[type="submit"]');
+      const form = event.currentTarget;
+      const button = form.querySelector('[type="submit"]');
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
 
-        submitButton.disabled = true;
+      setBusy(button, true, 'Logging in...');
 
-        try {
-          const client = getClient();
+      try {
+        const client = getClient();
+        const { error } = await client.auth.signInWithPassword({ email, password });
 
-          const { error } = await client.auth.signInWithPassword({
-            email,
-            password
-          });
-
-          if (error) {
-            showNotice('loginNotice', error.message);
-            return;
-          }
-
-          showNotice(
-  'loginNotice',
-  'Login successful! Opening your profile...'
-);
-
-window.location.href = '/profile.html';
-
-        } catch (error) {
-          showNotice(
-            'loginNotice',
-            error.message ||
-              'Connection failed. Check your internet and try again.'
-          );
-        } finally {
-          submitButton.disabled = false;
-        }
-      }
-    );
-
-    // CREATE ACCOUNT
-    document.getElementById('signupForm').addEventListener(
-      'submit',
-      async event => {
-        event.preventDefault();
-
-        const form = event.currentTarget;
-        const username =
-          document.getElementById('username').value.trim();
-        const email =
-          document.getElementById('signupEmail').value.trim();
-        const password =
-          document.getElementById('signupPassword').value;
-        const confirm =
-          document.getElementById('confirmPassword').value;
-        const submitButton = form.querySelector('[type="submit"]');
-
-        if (username.length < 3) {
-          showNotice(
-            'signupNotice',
-            'Your username must be at least 3 characters.'
-          );
+        if (error) {
+          showNotice('loginNotice', error.message, 'error');
           return;
         }
 
-        if (password.length < 8) {
-          showNotice(
-            'signupNotice',
-            'Your password must be at least 8 characters.'
-          );
+        showNotice('loginNotice', 'Login successful. Opening your profile...', 'success');
+
+        // Relative URL keeps the GitHub Pages repository path correct.
+        window.location.assign(PROFILE_URL);
+      } catch (error) {
+        showNotice(
+          'loginNotice',
+          error.message || 'Connection failed. Please try again.',
+          'error'
+        );
+      } finally {
+        setBusy(button, false);
+      }
+    });
+
+    // SIGNUP: email confirmation returns to profile.html on this same website.
+    document.getElementById('signupForm').addEventListener('submit', async event => {
+      event.preventDefault();
+
+      const form = event.currentTarget;
+      const button = form.querySelector('[type="submit"]');
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
+      const password = document.getElementById('signupPassword').value;
+      const confirm = document.getElementById('confirmPassword').value;
+
+      if (!/^[a-zA-Z0-9_]{3,24}$/.test(username)) {
+        showNotice(
+          'signupNotice',
+          'Use 3–24 letters, numbers, or underscores for your username.',
+          'error'
+        );
+        return;
+      }
+
+      if (password.length < 8) {
+        showNotice('signupNotice', 'Your password must be at least 8 characters.', 'error');
+        return;
+      }
+
+      if (password !== confirm) {
+        showNotice('signupNotice', 'Your passwords do not match.', 'error');
+        return;
+      }
+
+      setBusy(button, true, 'Creating account...');
+
+      try {
+        const client = getClient();
+
+        const { data, error } = await client.auth.signUp({
+          email,
+          password,
+          options: {
+            data: { username },
+            emailRedirectTo: PROFILE_URL
+          }
+        });
+
+        if (error) {
+          showNotice('signupNotice', error.message, 'error');
           return;
         }
 
-        if (password !== confirm) {
+        if (data.session) {
+          showNotice('signupNotice', 'Account created. Opening your profile...', 'success');
+          window.location.assign(PROFILE_URL);
+        } else {
           showNotice(
             'signupNotice',
-            'Your passwords do not match. Please try again.'
+            'Account created. Check your email and confirm your address. The confirmation link is set to return to AlphaScript.',
+            'success'
           );
+        }
+      } catch (error) {
+        showNotice(
+          'signupNotice',
+          error.message || 'Connection failed. Please try again.',
+          'error'
+        );
+      } finally {
+        setBusy(button, false);
+      }
+    });
+
+    // PASSWORD RESET: send the user to reset-password.html on this website.
+    document.getElementById('forgotForm').addEventListener('submit', async event => {
+      event.preventDefault();
+
+      const form = event.currentTarget;
+      const button = form.querySelector('[type="submit"]');
+      const email = document.getElementById('resetEmail').value.trim();
+
+      setBusy(button, true, 'Sending link...');
+
+      try {
+        const client = getClient();
+
+        const { error } = await client.auth.resetPasswordForEmail(email, {
+          redirectTo: RESET_URL
+        });
+
+        if (error) {
+          showNotice('forgotNotice', error.message, 'error');
           return;
         }
 
-        submitButton.disabled = true;
-
-        try {
-          const client = getClient();
-
-          const { data, error } = await client.auth.signUp({
-            email,
-            password,
-            options: {
-              data: {
-                username: username
-              }
-            }
-          });
-
-          if (error) {
-            showNotice('signupNotice', error.message);
-            return;
-          }
-
-          if (data.session) {
-            showNotice(
-              'signupNotice',
-              'Account created and logged in successfully!'
-            );
-          } else {
-            showNotice(
-              'signupNotice',
-              'Signup received. If email confirmation is enabled, check your inbox for the confirmation link before logging in.'
-            );
-          }
-        } catch (error) {
-          showNotice(
-            'signupNotice',
-            error.message ||
-              'Connection failed. Check your internet and try again.'
-          );
-        } finally {
-          submitButton.disabled = false;
-        }
+        showNotice(
+          'forgotNotice',
+          'If an account exists for that address, a password reset email has been requested. Check your inbox.',
+          'success'
+        );
+      } catch (error) {
+        showNotice(
+          'forgotNotice',
+          error.message || 'Could not request a reset link. Please try again.',
+          'error'
+        );
+      } finally {
+        setBusy(button, false);
       }
-    );
+    });
 
-    // PASSWORD RESET EMAIL
-    document.getElementById('forgotForm').addEventListener(
-      'submit',
-      async event => {
-        event.preventDefault();
-
-        const form = event.currentTarget;
-        const email =
-          document.getElementById('resetEmail').value.trim();
-        const submitButton = form.querySelector('[type="submit"]');
-
-        submitButton.disabled = true;
-
-try {
-  const client = getClient();
-
-  const { error } = await client.auth.resetPasswordForEmail(email, {
-    redirectTo: `${window.location.origin}/reset-password.html`
-  });
-
-  if (error) {
-    showNotice('forgotNotice', error.message, 'error');
-  } else {
-    showNotice(
-      'forgotNotice',
-      'Password reset email sent. Check your inbox.',
-      'success'
-    );
-  }
-} catch (err) {
-  showNotice('forgotNotice', err.message, 'error');
-} finally {
-  submitButton.disabled = false;
-}
-      }
-    );
-
-    // OPEN A SCREEN USING ?screen=login, ?screen=signup,
-    // OR ?screen=forgot
-    const requestedScreen =
-      new URLSearchParams(window.location.search).get('screen');
+    // Allow links such as login.html?screen=signup or ?screen=forgot.
+    const requestedScreen = new URLSearchParams(window.location.search).get('screen');
 
     if (requestedScreen && screens[requestedScreen]) {
       showScreen(requestedScreen);
