@@ -36,7 +36,7 @@ a {color:var(--cyan);text-decoration:none}
 .shell {width:min(760px,100%);margin:auto;padding:22px 16px 40px}
 .topbar {
   display:flex;align-items:center;justify-content:space-between;
-  gap:12px;margin-bottom:34px
+  gap:12px;margin-bottom:30px
 }
 .brand {font-size:17px;font-weight:900;letter-spacing:2px}
 .brand span {color:var(--cyan)}
@@ -56,23 +56,62 @@ h1 span {
   -webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent
 }
+h2 {margin:0;font-size:clamp(23px,5vw,32px);line-height:1.25}
+h3 {margin:0 0 8px;font-size:19px}
 .muted,.question-help {color:var(--muted);font-size:14px;line-height:1.7}
 .intro {margin-bottom:26px}
 .panel {
   position:relative;overflow:hidden;padding:clamp(20px,5vw,34px);
   border:1px solid var(--border);border-radius:22px;
   background:linear-gradient(145deg,#101a2aee,#0b111eee);
-  box-shadow:0 20px 70px #0005
+  box-shadow:0 20px 70px #0005;margin-bottom:20px
 }
 .panel:before {
   content:"";position:absolute;top:0;left:12%;width:76%;height:1px;
   background:linear-gradient(90deg,transparent,var(--cyan),var(--violet),transparent)
 }
-.progress-row {display:flex;justify-content:space-between;gap:12px;margin-bottom:12px;color:var(--muted);font-size:12px}
-.progress-track {height:5px;overflow:hidden;margin-bottom:30px;border-radius:99px;background:#202c40}
-.progress-fill {width:0;height:100%;background:linear-gradient(90deg,var(--cyan),var(--blue),var(--violet));transition:width .3s}
+.profile-picture-area {
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;gap:12px;margin:4px 0 18px
+}
+.avatar {
+  width:132px;height:132px;border-radius:50%;
+  object-fit:cover;border:3px solid var(--cyan);
+  background:#101b2c;box-shadow:0 0 28px #53e7ff20
+}
+.avatar-placeholder {
+  width:132px;height:132px;border-radius:50%;
+  display:grid;place-items:center;
+  border:2px dashed #42617e;background:#101b2c;
+  color:var(--cyan);font-size:42px;font-weight:800
+}
+.file-input {display:none}
+.btn {
+  min-height:46px;padding:12px 17px;border:1px solid var(--border);
+  border-radius:11px;background:#121e30;color:var(--text);
+  font-weight:750;cursor:pointer
+}
+.btn:disabled {opacity:.5;cursor:not-allowed}
+.btn-primary {
+  border-color:transparent;
+  background:linear-gradient(100deg,#168fce,#5268f4 65%,#8554dc)
+}
+.btn-row {display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.small {font-size:12px}
+.progress-row {
+  display:flex;justify-content:space-between;gap:12px;
+  margin-bottom:12px;color:var(--muted);font-size:12px
+}
+.progress-track {
+  height:5px;overflow:hidden;margin-bottom:30px;
+  border-radius:99px;background:#202c40
+}
+.progress-fill {
+  width:0;height:100%;
+  background:linear-gradient(90deg,var(--cyan),var(--blue),var(--violet));
+  transition:width .3s
+}
 .step-tag {margin-bottom:12px;color:var(--cyan);font-size:11px;font-weight:800;letter-spacing:2px}
-h2 {margin:0;font-size:clamp(23px,5vw,32px);line-height:1.25}
 .question-help {margin:12px 0 24px}
 .field {
   display:block;width:100%;padding:15px;border:1px solid #30435e;
@@ -90,18 +129,27 @@ textarea.field {min-height:125px;resize:vertical}
 .choice input {accent-color:var(--cyan);flex-shrink:0}
 .choice:has(input:checked) {border-color:var(--cyan);background:#123047;color:white}
 .review {display:grid;gap:10px}
-.review-item {padding:14px;border:1px solid var(--border);border-radius:12px;background:#09111e;overflow-wrap:anywhere}
-.review-label {margin-bottom:6px;color:var(--cyan);font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}
+.review-item {
+  padding:14px;border:1px solid var(--border);
+  border-radius:12px;background:#09111e;overflow-wrap:anywhere
+}
+.review-label {
+  margin-bottom:6px;color:var(--cyan);font-size:10px;
+  font-weight:800;letter-spacing:1.5px;text-transform:uppercase
+}
 .review-value {font-size:13px;line-height:1.7;white-space:pre-wrap}
 .nav {display:flex;gap:12px;margin-top:28px}
-.btn {min-height:48px;padding:13px 18px;border:1px solid var(--border);border-radius:11px;background:#121e30;color:var(--text);font-weight:750;cursor:pointer}
-.btn:disabled {opacity:.45;cursor:not-allowed}
-.btn-primary {flex:1;border-color:transparent;background:linear-gradient(100deg,#168fce,#5268f4 65%,#8554dc)}
-#notice {margin:18px 0 0;overflow-wrap:anywhere;font-size:13px;line-height:1.7}
+.nav .btn-primary {flex:1}
+#notice,#avatarNotice {
+  margin:18px 0 0;overflow-wrap:anywhere;font-size:13px;line-height:1.7
+}
 .footer {padding-top:24px;color:#687991;font-size:11px;text-align:center;letter-spacing:1px}
 .hidden {display:none!important}
 .step-content {animation:enter .24s ease both}
-@keyframes enter {from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes enter {
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
 @media(max-width:430px) {
   .choices {grid-template-columns:1fr}
   .status {font-size:9px}
@@ -115,13 +163,45 @@ textarea.field {min-height:125px;resize:vertical}
 <main class="shell">
   <header class="topbar">
     <a class="brand" href="index.html">ALPHA<span>SCRIPT</span></a>
-    <div class="status">DEVELOPER SETUP</div>
+    <div class="status">DEVELOPER PROFILE</div>
   </header>
 
   <section class="intro">
     <div class="eyebrow">Your journey starts here</div>
     <h1>Define your <span>developer identity.</span></h1>
-    <p class="muted">Tell us about yourself, your technical interests and what you want to build. One step at a time.</p>
+    <p class="muted">
+      Personalize your profile, show your interests, and tell the community
+      what you're building.
+    </p>
+  </section>
+
+  <section class="panel">
+    <h3>Your profile picture</h3>
+    <p class="muted">
+      Choose a photo from your device or take a new one if your device offers
+      that option. Images must be 5 MB or smaller.
+    </p>
+
+    <div class="profile-picture-area">
+      <img id="avatarPreview" class="avatar hidden"
+           alt="Your profile picture">
+      <div id="avatarPlaceholder" class="avatar-placeholder"
+           aria-label="Default profile picture">A</div>
+
+      <input class="file-input" id="avatarFile"
+             type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+
+      <div class="btn-row">
+        <button type="button" class="btn btn-primary" id="chooseAvatar">
+          Choose photo
+        </button>
+        <button type="button" class="btn" id="removeAvatar">
+          Remove photo
+        </button>
+      </div>
+      <p class="muted small">JPG, PNG, WEBP or GIF · Maximum 5 MB</p>
+    </div>
+    <p id="avatarNotice" role="status" aria-live="polite"></p>
   </section>
 
   <section class="panel">
@@ -129,7 +209,9 @@ textarea.field {min-height:125px;resize:vertical}
       <span id="stepCounter">CONNECTING</span>
       <span id="progressPercent">0% COMPLETE</span>
     </div>
-    <div class="progress-track" id="progressTrack" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+    <div class="progress-track" id="progressTrack"
+         role="progressbar" aria-valuemin="0" aria-valuemax="100"
+         aria-valuenow="0">
       <div class="progress-fill" id="progressFill"></div>
     </div>
 
@@ -154,14 +236,13 @@ textarea.field {min-height:125px;resize:vertical}
 "use strict";
 
 const SUPABASE_URL = "https://qaivqscssdtsnthdiqtu.supabase.co";
-
-/*
-  IMPORTANT:
-  Replace the value below with your real Supabase sb_publishable_ key.
-  Use the same public key as login.html.
-  Never use a service_role or secret key here.
-*/
-const SUPABASE_PUBLISHABLE_KEY = "                sb_publishable_TjT6PMScm58zNVJiugk-zQ_6oIaJNU9";
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_TjT6PMScm58zNVJiugk-zQ_6oIaJNU9";
+const AVATAR_BUCKET = "avatars";
+const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
+const ALLOWED_TYPES = [
+  "image/jpeg", "image/png", "image/webp", "image/gif"
+];
 
 const roleOptions = [
   "Python Developer","Frontend Developer","Backend Developer",
@@ -190,17 +271,42 @@ const experienceOptions = [
 ];
 
 const steps = [
-  {key:"username",title:"What should we call you?",help:"Choose a unique username using 3–24 letters, numbers or underscores.",type:"text",placeholder:"e.g. Junior_Neutron",max:24},
-  {key:"display_name",title:"What's your display name?",help:"The name other developers can see. Optional.",type:"text",placeholder:"Your preferred display name",max:60},
-  {key:"bio",title:"What's your story?",help:"Introduce yourself and your interests. Optional.",type:"textarea",placeholder:"I'm interested in programming, AI and building useful projects...",max:300},
-  {key:"country",title:"Where are you based?",help:"Your country or region. Optional.",type:"text",placeholder:"e.g. Ghana",max:80},
-  {key:"developer_roles",title:"What kind of developer are you?",help:"Choose all the roles that interest you.",type:"checks",options:roleOptions},
-  {key:"programming_languages",title:"Which technologies interest you?",help:"Select languages and technologies you use or want to learn.",type:"checks",options:languageOptions},
-  {key:"occupation",title:"What best describes you?",help:"Choose your current situation.",type:"radio",options:occupationOptions},
-  {key:"experience_level",title:"Where are you on your journey?",help:"Choose the option that best describes your experience.",type:"radio",options:experienceOptions},
-  {key:"skills",title:"What can you do today?",help:"Describe your current skills, concepts or projects. Separate items with commas. Optional.",type:"textarea",placeholder:"Variables, loops, HTML pages, small Python projects...",max:1500},
-  {key:"learning_goals",title:"What do you want to achieve?",help:"List the things you want to learn or build, separated by commas.",type:"textarea",placeholder:"Build websites, develop games, learn AI, collaborate...",max:1000},
-  {key:"review",title:"Ready to define your profile?",help:"Review your answers before saving them.",type:"review"}
+  {key:"username",title:"What should we call you?",
+   help:"Choose a unique username using 3–24 letters, numbers or underscores.",
+   type:"text",placeholder:"e.g. Junior_Neutron",max:24},
+  {key:"display_name",title:"What's your display name?",
+   help:"The name other developers can see. Optional.",
+   type:"text",placeholder:"Your preferred display name",max:60},
+  {key:"bio",title:"What's your story?",
+   help:"Introduce yourself and your interests. Optional.",
+   type:"textarea",
+   placeholder:"I'm interested in programming, AI and building useful projects...",
+   max:300},
+  {key:"country",title:"Where are you based?",
+   help:"Your country or region. Optional.",
+   type:"text",placeholder:"e.g. Ghana",max:80},
+  {key:"developer_roles",title:"What kind of developer are you?",
+   help:"Choose all the roles that interest you.",
+   type:"checks",options:roleOptions},
+  {key:"programming_languages",title:"Which technologies interest you?",
+   help:"Select languages and technologies you use or want to learn.",
+   type:"checks",options:languageOptions},
+  {key:"occupation",title:"What best describes you?",
+   help:"Choose your current situation.",
+   type:"radio",options:occupationOptions},
+  {key:"experience_level",title:"Where are you on your journey?",
+   help:"Choose the option that best describes your experience.",
+   type:"radio",options:experienceOptions},
+  {key:"skills",title:"What can you do today?",
+   help:"Describe your current skills, concepts or projects. Separate items with commas. Optional.",
+   type:"textarea",placeholder:"Variables, loops, HTML pages, small Python projects...",
+   max:1500},
+  {key:"learning_goals",title:"What do you want to achieve?",
+   help:"List the things you want to learn or build, separated by commas.",
+   type:"textarea",placeholder:"Build websites, develop games, learn AI, collaborate...",
+   max:1000},
+  {key:"review",title:"Ready to define your profile?",
+   help:"Review your answers before saving them.",type:"review"}
 ];
 
 const defaults = {
@@ -222,19 +328,31 @@ let client = null;
 let currentUser = null;
 let isSaving = false;
 let profileSaved = false;
+let currentAvatarUrl = "";
+let pendingAvatarFile = null;
+let avatarBusy = false;
 
 const $ = id => document.getElementById(id);
 const wizard = $("wizard");
 const notice = $("notice");
+const avatarNotice = $("avatarNotice");
 const answerArea = $("answerArea");
 const backButton = $("backButton");
 const nextButton = $("nextButton");
 
 function showNotice(message,type="info") {
   notice.replaceChildren();
-  notice.style.color = type === "error" ? "var(--danger)" :
+  notice.style.color =
+    type === "error" ? "var(--danger)" :
     type === "success" ? "var(--success)" : "var(--muted)";
   notice.appendChild(document.createTextNode(message));
+}
+
+function showAvatarNotice(message,type="info") {
+  avatarNotice.textContent = message;
+  avatarNotice.style.color =
+    type === "error" ? "var(--danger)" :
+    type === "success" ? "var(--success)" : "var(--muted)";
 }
 
 function showLoginLink() {
@@ -243,12 +361,31 @@ function showLoginLink() {
   link.textContent = "Go to login →";
   link.style.display = "inline-block";
   link.style.marginTop = "12px";
-  notice.appendChild(document.createElement("br"));
-  notice.appendChild(link);
+  notice.append(document.createElement("br"),link);
+}
+
+function setAvatar(url) {
+  const image = $("avatarPreview");
+  const placeholder = $("avatarPlaceholder");
+
+  if (url) {
+    image.src = url;
+    image.classList.remove("hidden");
+    placeholder.classList.add("hidden");
+  } else {
+    image.removeAttribute("src");
+    image.classList.add("hidden");
+    placeholder.classList.remove("hidden");
+    placeholder.textContent =
+      (answers.display_name || answers.username || "A")
+        .trim().charAt(0).toUpperCase() || "A";
+  }
 }
 
 function createField(step) {
-  const field = document.createElement(step.type === "textarea" ? "textarea" : "input");
+  const field = document.createElement(
+    step.type === "textarea" ? "textarea" : "input"
+  );
   field.className = "field";
   field.id = "currentAnswer";
   field.name = step.key;
@@ -258,11 +395,15 @@ function createField(step) {
 
   if (step.type === "text") {
     field.type = "text";
-    field.autocomplete = step.key === "username" ? "nickname" : "off";
+    field.autocomplete =
+      step.key === "username" ? "nickname" : "off";
   }
 
   field.addEventListener("input", () => {
     answers[step.key] = field.value;
+    if (step.key === "username" || step.key === "display_name") {
+      if (!currentAvatarUrl && !pendingAvatarFile) setAvatar("");
+    }
   });
 
   return field;
@@ -334,7 +475,6 @@ function renderReview() {
 
     const value = document.createElement("div");
     value.className = "review-value";
-
     const raw = answers[key];
     value.textContent = Array.isArray(raw)
       ? raw.join(", ") || "Not specified"
@@ -357,8 +497,8 @@ function renderStep() {
   $("progressPercent").textContent = percent + "% COMPLETE";
   $("progressFill").style.width = percent + "%";
   $("progressTrack").setAttribute("aria-valuenow",String(percent));
-  $("stepTag").textContent = "ALPHASCRIPT // " +
-    String(currentStep + 1).padStart(2,"0");
+  $("stepTag").textContent =
+    "ALPHASCRIPT // " + String(currentStep + 1).padStart(2,"0");
   $("question").textContent = step.title;
   $("questionHelp").textContent = step.help;
 
@@ -386,7 +526,10 @@ function validateCurrentStep() {
   if (step.key === "username") {
     const username = String(answers.username || "").trim();
     if (!/^[A-Za-z0-9_]{3,24}$/.test(username)) {
-      showNotice("Enter a username with 3–24 letters, numbers or underscores.","error");
+      showNotice(
+        "Enter a username with 3–24 letters, numbers or underscores.",
+        "error"
+      );
       return false;
     }
     answers.username = username;
@@ -435,6 +578,7 @@ async function saveProfile() {
       experience_level:answers.experience_level || null,
       skills:answers.skills.split(",").map(s => s.trim()).filter(Boolean),
       learning_goals:answers.learning_goals.split(",").map(s => s.trim()).filter(Boolean),
+      avatar_url:currentAvatarUrl || null,
       updated_at:new Date().toISOString()
     };
 
@@ -462,22 +606,213 @@ async function saveProfile() {
   } finally {
     isSaving = false;
     backButton.disabled = currentStep === 0;
+    
     if (!profileSaved) {
       nextButton.disabled = false;
       nextButton.textContent =
-        currentStep === steps.length - 1 ? "Save profile ✓" : "Next →";
+        currentStep === steps.length - 1
+          ? "Save profile ✓"
+          : "Next →";
     }
   }
 }
 
-backButton.addEventListener("click",() => {
+async function uploadAvatar() {
+  if (avatarBusy) return;
+
+  if (!client || !currentUser) {
+    showAvatarNotice("Please log in before uploading a picture.", "error");
+    return;
+  }
+
+  if (!pendingAvatarFile) {
+    showAvatarNotice("Choose a photo first.", "error");
+    return;
+  }
+
+  const file = pendingAvatarFile;
+
+  if (!ALLOWED_TYPES.includes(file.type)) {
+    showAvatarNotice("Choose a JPG, PNG, WEBP or GIF image.", "error");
+    return;
+  }
+
+  if (file.size > MAX_AVATAR_SIZE) {
+    showAvatarNotice("Your image is too large. Maximum size is 5 MB.", "error");
+    return;
+  }
+
+  avatarBusy = true;
+  $("chooseAvatar").disabled = true;
+  $("removeAvatar").disabled = true;
+  showAvatarNotice("Uploading your profile picture...");
+
+  let uploadedPath = "";
+
+  try {
+    const extensionByType = {
+      "image/jpeg": "jpg",
+      "image/png": "png",
+      "image/webp": "webp",
+      "image/gif": "gif"
+    };
+
+    const extension = extensionByType[file.type];
+    uploadedPath = currentUser.id + "/" + Date.now() + "." + extension;
+
+    const { error: uploadError } = await client.storage
+      .from(AVATAR_BUCKET)
+      .upload(uploadedPath, file, {
+        contentType: file.type,
+        upsert: false,
+        cacheControl: "3600"
+      });
+
+    if (uploadError) throw uploadError;
+
+    const { data: urlData } = client.storage
+      .from(AVATAR_BUCKET)
+      .getPublicUrl(uploadedPath);
+
+    const publicUrl = urlData.publicUrl;
+
+    const { error: updateError } = await client
+      .from("profiles")
+      .update({
+        avatar_url: publicUrl,
+        updated_at: new Date().toISOString()
+      })
+      .eq("id", currentUser.id);
+
+    if (updateError) {
+      await client.storage.from(AVATAR_BUCKET).remove([uploadedPath]);
+      throw updateError;
+    }
+
+    currentAvatarUrl = publicUrl;
+    pendingAvatarFile = null;
+    $("avatarFile").value = "";
+    setAvatar(publicUrl);
+
+    showAvatarNotice(
+      "Profile picture uploaded and saved successfully!",
+      "success"
+    );
+  } catch (error) {
+    showAvatarNotice(
+      "Upload failed: " + (error.message || "Please try again."),
+      "error"
+    );
+  } finally {
+    avatarBusy = false;
+    $("chooseAvatar").disabled = false;
+    $("removeAvatar").disabled = false;
+  }
+}
+
+async function removeAvatar() {
+  if (avatarBusy) return;
+
+  if (!client || !currentUser) {
+    showAvatarNotice("Please log in first.", "error");
+    return;
+  }
+
+  if (!currentAvatarUrl && !pendingAvatarFile) {
+    showAvatarNotice("You don't have a profile picture to remove.");
+    return;
+  }
+
+  if (pendingAvatarFile && !currentAvatarUrl) {
+    pendingAvatarFile = null;
+    $("avatarFile").value = "";
+    setAvatar("");
+    showAvatarNotice("Selected photo cleared.");
+    return;
+  }
+
+  if (!confirm("Remove your current profile picture?")) return;
+
+  avatarBusy = true;
+  $("chooseAvatar").disabled = true;
+  $("removeAvatar").disabled = true;
+  showAvatarNotice("Removing your profile picture...");
+
+  try {
+    const { error } = await client
+      .from("profiles")
+      .update({
+        avatar_url: null,
+        updated_at: new Date().toISOString()
+      })
+      .eq("id", currentUser.id);
+
+    if (error) throw error;
+
+    currentAvatarUrl = "";
+    pendingAvatarFile = null;
+    $("avatarFile").value = "";
+    setAvatar("");
+    showAvatarNotice("Profile picture removed.", "success");
+  } catch (error) {
+    showAvatarNotice(
+      "Could not remove picture: " +
+        (error.message || "Please try again."),
+      "error"
+    );
+  } finally {
+    avatarBusy = false;
+    $("chooseAvatar").disabled = false;
+    $("removeAvatar").disabled = false;
+  }
+}
+
+$("chooseAvatar").addEventListener("click", () => {
+  if (!currentUser) {
+    showAvatarNotice("Log in before choosing a profile picture.", "error");
+    return;
+  }
+
+  $("avatarFile").click();
+});
+
+$("avatarFile").addEventListener("change", () => {
+  const file = $("avatarFile").files[0];
+  if (!file) return;
+
+  if (!ALLOWED_TYPES.includes(file.type)) {
+    pendingAvatarFile = null;
+    $("avatarFile").value = "";
+    showAvatarNotice("Choose a JPG, PNG, WEBP or GIF image.", "error");
+    return;
+  }
+
+  if (file.size > MAX_AVATAR_SIZE) {
+    pendingAvatarFile = null;
+    $("avatarFile").value = "";
+    showAvatarNotice("Your image is too large. Maximum size is 5 MB.", "error");
+    return;
+  }
+
+  pendingAvatarFile = file;
+
+  const previewUrl = URL.createObjectURL(file);
+  $("avatarPreview").onload = () => URL.revokeObjectURL(previewUrl);
+  setAvatar(previewUrl);
+
+  uploadAvatar();
+});
+
+$("removeAvatar").addEventListener("click", removeAvatar);
+
+backButton.addEventListener("click", () => {
   if (currentStep > 0 && !isSaving && !profileSaved) {
     currentStep--;
     renderStep();
   }
 });
 
-nextButton.addEventListener("click",async () => {
+nextButton.addEventListener("click", async () => {
   if (isSaving || profileSaved || !validateCurrentStep()) return;
 
   if (currentStep < steps.length - 1) {
@@ -491,14 +826,24 @@ nextButton.addEventListener("click",async () => {
 async function start() {
   if (!window.supabase) {
     wizard.classList.add("hidden");
-    showNotice("Supabase library failed to load. Check your internet connection and reload.","error");
+    showNotice(
+      "Supabase library failed to load. Check your internet connection and reload.",
+      "error"
+    );
     return;
   }
 
-  if (!SUPABASE_PUBLISHABLE_KEY ||
-      SUPABASE_PUBLISHABLE_KEY === "          eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhaXZxc2Nzc2R0c250aGRpcXR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE3Mjg3MjgsImV4cCI6MjEwNzMwNDcyOH0.i3cpwFKOCnfvGtAKsRpP3LxwIQl2l3-ZJq_9WTrRBP8") {
+  if (
+    !SUPABASE_PUBLISHABLE_KEY ||
+    SUPABASE_PUBLISHABLE_KEY ===
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhaXZxc2Nzc2R0c250aGRpcXR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE3Mjg3MjgsImV4cCI6MjEwNzMwNDcyOH0.i3cpwFKOCnfvGtAKsRpP3LxwIQl2l3-ZJq_9WTrRBP8"
+  ) {
     wizard.classList.add("hidden");
-    showNotice("Setup required: add your existing Supabase publishable key in profile.html.","error");
+    showNotice(
+      "Setup required: add your existing Supabase publishable key in profile.html.",
+      "error"
+    );
+    showAvatarNotice("Add your Supabase publishable key before uploading.");
     return;
   }
 
@@ -510,39 +855,53 @@ async function start() {
 
     showNotice("Checking your AlphaScript login...");
 
-    const {data,error} = await client.auth.getUser();
+    const { data, error } = await client.auth.getUser();
 
     if (error || !data.user) {
       wizard.classList.add("hidden");
-      showNotice("You're not logged in. Please log in, then return to your profile.","error");
+      showNotice(
+        "You're not logged in. Please log in, then return to your profile.",
+        "error"
+      );
       showLoginLink();
+      showAvatarNotice("Log in to upload a profile picture.");
       return;
     }
 
     currentUser = data.user;
     showNotice("Loading your profile...");
 
-    const {data:profile,error:profileError} = await client
+    const { data: profile, error: profileError } = await client
       .from("profiles")
       .select("*")
-      .eq("id",currentUser.id)
+      .eq("id", currentUser.id)
       .maybeSingle();
 
     if (profileError) {
-      showNotice("Could not load saved profile: " + profileError.message,"error");
+      showNotice(
+        "Could not load saved profile: " + profileError.message,
+        "error"
+      );
     } else if (profile) {
       answers = {
-        username:profile.username || "",
-        display_name:profile.display_name || "",
-        bio:profile.bio || "",
-        country:profile.country || "",
-        developer_roles:profile.developer_roles || [],
-        programming_languages:profile.programming_languages || [],
-        occupation:profile.occupation || "",
-        experience_level:profile.experience_level || "",
-        skills:Array.isArray(profile.skills) ? profile.skills.join(", ") : "",
-        learning_goals:Array.isArray(profile.learning_goals) ? profile.learning_goals.join(", ") : ""
+        username: profile.username || "",
+        display_name: profile.display_name || "",
+        bio: profile.bio || "",
+        country: profile.country || "",
+        developer_roles: profile.developer_roles || [],
+        programming_languages: profile.programming_languages || [],
+        occupation: profile.occupation || "",
+        experience_level: profile.experience_level || "",
+        skills: Array.isArray(profile.skills) ? profile.skills.join(", ") : "",
+        learning_goals: Array.isArray(profile.learning_goals)
+          ? profile.learning_goals.join(", ")
+          : ""
       };
+
+      currentAvatarUrl = profile.avatar_url || "";
+      setAvatar(currentAvatarUrl);
+    } else {
+      setAvatar("");
     }
 
     wizard.classList.remove("hidden");
@@ -550,13 +909,22 @@ async function start() {
 
     if (profile) {
       showNotice("Welcome back. Your saved answers have been loaded.");
+      showAvatarNotice(
+        currentAvatarUrl
+          ? "Your saved profile picture is loaded."
+          : "Choose a photo to personalize your profile."
+      );
     } else {
       showNotice("Connected! Let's set up your developer profile.");
+      showAvatarNotice("Choose a photo to personalize your profile.");
     }
-
   } catch (error) {
     wizard.classList.add("hidden");
-    showNotice(error.message || "Could not connect. Check your internet and Supabase configuration.","error");
+    showNotice(
+      error.message ||
+        "Could not connect. Check your internet and Supabase configuration.",
+      "error"
+    );
   }
 }
 
