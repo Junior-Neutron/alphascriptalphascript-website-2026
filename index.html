@@ -978,4 +978,699 @@ function showScreen(screen) {
     document.createTextNode(info.title + " ")
   );
 
-  const span = document.createElement("  sp
+    const span = document.createElement("  span.textContent =
+    screen === "login" ? "AlphaScript." :
+    screen === "signup" ? "journey." :
+    screen === "forgot" ? "account." :
+    "account.";
+
+  $("pageTitle").appendChild(span);
+  $("pageSubtitle").textContent = info.subtitle;
+
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+$("showSignup").addEventListener("click", event => {
+  event.preventDefault();
+  showScreen("signup");
+});
+
+$("showLogin").addEventListener("click", event => {
+  event.preventDefault();
+  showScreen("login");
+});
+
+$("forgotLink").addEventListener("click", event => {
+  event.preventDefault();
+
+  $("forgotEmail").value =
+    $("loginEmail").value.trim();
+
+  showScreen("forgot");
+});
+
+$("backToLogin").addEventListener("click", event => {
+  event.preventDefault();
+  showScreen("login");
+});
+
+/* =========================================================
+   PASSWORD VISIBILITY
+   ========================================================= */
+
+document.querySelectorAll("[data-password]").forEach(button => {
+  button.addEventListener("click", () => {
+    const field = $(button.dataset.password);
+
+    if (!field) return;
+
+    const showPassword = field.type === "password";
+
+    field.type = showPassword ? "text" : "password";
+    button.textContent = showPassword ? "HIDE" : "SHOW";
+  });
+});
+
+/* =========================================================
+   THEME
+   ========================================================= */
+
+function applyTheme(theme) {
+  document.body.classList.toggle("light", theme === "light");
+
+  $("themeToggle").textContent =
+    theme === "light" ? "☾" : "☀";
+
+  $("themeToggle").setAttribute(
+    "aria-label",
+    theme === "light"
+      ? "Switch to dark theme"
+      : "Switch to light theme"
+  );
+
+  document.querySelector('meta[name="theme-color"]')
+    .setAttribute(
+      "content",
+      theme === "light" ? "#f2f6fc" : "#070b14"
+    );
+}
+
+let savedTheme = "dark";
+
+try {
+  savedTheme = localStorage.getItem("alphascript-theme") || "dark";
+} catch (_) {}
+
+applyTheme(savedTheme);
+
+$("themeToggle").addEventListener("click", () => {
+  const nextTheme =
+    document.body.classList.contains("light") ? "dark" : "light";
+
+  applyTheme(nextTheme);
+
+  try {
+    localStorage.setItem("alphascript-theme", nextTheme);
+  } catch (_) {}
+});
+
+/* =========================================================
+   LOADING STATE
+   ========================================================= */
+
+function setBusy(button, busyText) {
+  isBusy = true;
+
+  button.dataset.originalText = button.textContent;
+  button.disabled = true;
+  button.textContent = busyText;
+
+  document.querySelectorAll(
+    "#loginScreen button, #signupScreen button, " +
+    "#forgotScreen button, #resetScreen button"
+  ).forEach(item => {
+    item.disabled = true;
+  });
+}
+
+function clearBusy() {
+  isBusy = false;
+
+  document.querySelectorAll(
+    "#loginScreen button, #signupScreen button, " +
+    "#forgotScreen button, #resetScreen button"
+  ).forEach(item => {
+    item.disabled = false;
+  });
+
+  loginButton.textContent =
+    loginButton.dataset.originalText || "Sign in →";
+
+  signupButton.textContent =
+    signupButton.dataset.originalText || "Create account →";
+
+  forgotButton.textContent =
+    forgotButton.dataset.originalText || "Send reset link →";
+
+  resetButton.textContent =
+    resetButton.dataset.originalText || "Update password →";
+}
+
+/* =========================================================
+   AUTH HELPERS
+   ========================================================= */
+
+function friendlyAuthError(error, action) {
+  const message = String(error?.message || "").toLowerCase();
+
+  if (
+    message.includes("invalid login credentials") ||
+    message.includes("invalid credentials")
+  ) {
+    return "Incorrect email or password. Please check your details and try again.";
+  }
+
+  if (message.includes("email not confirmed")) {
+    return "Your email hasn't been confirmed yet. Check your inbox for the confirmation link.";
+  }
+
+  if (message.includes("user already registered")) {
+    return "An account with this email already exists. Please sign in instead.";
+  }
+
+  if (message.includes("password should be at least")) {
+    return "Your password is too short. Use at least 8 characters.";
+  }
+
+  if (
+    message.includes("rate limit") ||
+    message.includes("too many requests")
+  ) {
+    return "Too many attempts. Please wait a little and try again.";
+  }
+
+  if (
+    message.includes("network") ||
+    message.includes("fetch")
+  ) {
+    return "A network error occurred. Check your internet connection and try again.";
+  }
+
+  if (action === "reset" && message.includes("expired")) {
+    return "This password-reset link has expired. Request a new one.";
+  }
+
+  return error?.message ||
+    "Something went wrong. Please try again.";
+}
+
+function cleanAuthUrl() {
+  try {
+    const cleanUrl =
+      window.location.pathname +
+      window.location.hash;
+
+    window.history.replaceState(
+      {},
+      document.title,
+      cleanUrl
+    );
+  } catch (_) {}
+}
+
+function goToProfile() {
+  /*
+    Redirect to the profile page after successful authentication.
+  */
+  window.location.replace(PROFILE_URL);
+}
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+loginScreen.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  if (isBusy) return;
+
+  clearNotice();
+
+  if (!supabaseClient) {
+    showNotice(
+      "Authentication is unavailable. Check your Supabase configuration and internet connection.",
+      "error"
+    );
+    return;
+  }
+
+  const email = $("loginEmail").value.trim();
+  const password = $("loginPassword").value;
+
+  if (!email || !password) {
+    showNotice(
+      "Enter your email address and password.",
+      "error"
+    );
+    return;
+  }
+
+  setBusy(loginButton, "Signing in...");
+
+  showNotice("Verifying your account...", "info");
+
+  try {
+    const { data, error } =
+      await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+      });
+
+    if (error) throw error;
+
+    if (!data.user) {
+      throw new Error(
+        "Login succeeded, but no user account was returned."
+      );
+    }
+
+    showNotice(
+      "Login successful! Opening your developer profile...",
+      "success"
+    );
+
+    setTimeout(() => {
+      goToProfile();
+    }, 450);
+
+  } catch (error) {
+    clearBusy();
+
+    showNotice(
+      friendlyAuthError(error, "login"),
+      "error"
+    );
+  }
+});
+
+/* =========================================================
+   SIGNUP
+   ========================================================= */
+
+signupScreen.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  if (isBusy) return;
+
+  clearNotice();
+
+  if (!supabaseClient) {
+    showNotice(
+      "Authentication is unavailable. Check your Supabase configuration.",
+      "error"
+    );
+    return;
+  }
+
+  const username = $("signupUsername").value.trim();
+  const email = $("signupEmail").value.trim();
+  const password = $("signupPassword").value;
+  const confirmPassword = $("confirmPassword").value;
+
+  if (!/^[A-Za-z0-9_]{3,24}$/.test(username)) {
+    showNotice(
+      "Your username must contain 3–24 letters, numbers or underscores.",
+      "error"
+    );
+    $("signupUsername").focus();
+    return;
+  }
+
+  if (password.length < 8) {
+    showNotice(
+      "Your password must contain at least 8 characters.",
+      "error"
+    );
+    $("signupPassword").focus();
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    showNotice(
+      "Your passwords do not match.",
+      "error"
+    );
+    $("confirmPassword").focus();
+    return;
+  }
+
+  setBusy(signupButton, "Creating account...");
+
+  showNotice("Creating your AlphaScript account...", "info");
+
+  try {
+    const { data, error } =
+      await supabaseClient.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: LOGIN_PATH,
+          data: {
+            username: username
+          }
+        }
+      });
+
+    if (error) throw error;
+
+    if (data.session && data.user) {
+      showNotice(
+        "Your account is ready! Opening your developer profile...",
+        "success"
+      );
+
+      setTimeout(() => {
+        goToProfile();
+      }, 450);
+
+      return;
+    }
+
+    clearBusy();
+
+    showNotice(
+      "Account created! Check your email for the confirmation link. After confirming your email, you'll be able to continue to your profile.",
+      "success"
+    );
+
+    signupButton.textContent = "Account created ✓";
+
+  } catch (error) {
+    clearBusy();
+
+    showNotice(
+      friendlyAuthError(error, "signup"),
+      "error"
+    );
+  }
+});
+
+/* =========================================================
+   FORGOT PASSWORD
+   ========================================================= */
+
+forgotScreen.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  if (isBusy) return;
+
+  clearNotice();
+
+  if (!supabaseClient) {
+    showNotice(
+      "Authentication is unavailable. Check your Supabase configuration.",
+      "error"
+    );
+    return;
+  }
+
+  const email = $("forgotEmail").value.trim();
+
+  if (!email) {
+    showNotice(
+      "Enter the email address associated with your account.",
+      "error"
+    );
+    return;
+  }
+
+  setBusy(forgotButton, "Sending reset link...");
+
+  showNotice("Sending your password-reset email...", "info");
+
+  try {
+    const { error } =
+      await supabaseClient.auth.resetPasswordForEmail(
+        email,
+        {
+          redirectTo: RESET_CALLBACK_URL
+        }
+      );
+
+    if (error) throw error;
+
+    clearBusy();
+
+    showNotice(
+      "If an account exists for that email, a password-reset link will be sent. Check your inbox and spam folder.",
+      "success"
+    );
+
+    forgotButton.textContent = "Reset link requested ✓";
+
+  } catch (error) {
+    clearBusy();
+
+    showNotice(
+      friendlyAuthError(error, "forgot"),
+      "error"
+    );
+  }
+});
+
+/* =========================================================
+   PASSWORD RESET
+   ========================================================= */
+
+resetScreen.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  if (isBusy) return;
+
+  clearNotice();
+
+  if (!supabaseClient) {
+    showNotice(
+      "Authentication is unavailable. Check your Supabase configuration.",
+      "error"
+    );
+    return;
+  }
+
+  const password = $("newPassword").value;
+  const confirmPassword = $("confirmNewPassword").value;
+
+  if (password.length < 8) {
+    showNotice(
+      "Your new password must contain at least 8 characters.",
+      "error"
+    );
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    showNotice(
+      "Your new passwords do not match.",
+      "error"
+    );
+    return;
+  }
+
+  setBusy(resetButton, "Updating password...");
+
+  showNotice("Updating your password...", "info");
+
+  try {
+    const { error } =
+      await supabaseClient.auth.updateUser({
+        password
+      });
+
+    if (error) throw error;
+
+    recoveryMode = false;
+
+    cleanAuthUrl();
+
+    showNotice(
+      "Your password has been updated successfully. Opening your developer profile...",
+      "success"
+    );
+
+    setTimeout(() => {
+      goToProfile();
+    }, 900);
+
+  } catch (error) {
+    clearBusy();
+
+    showNotice(
+      friendlyAuthError(error, "reset"),
+      "error"
+    );
+  }
+});
+
+/* =========================================================
+   AUTH CALLBACKS AND SESSION HANDLING
+   ========================================================= */
+
+async function handleAuthCallback() {
+  const url = new URL(window.location.href);
+
+  const mode = url.searchParams.get("mode");
+
+  const authError =
+    url.searchParams.get("error_description") ||
+    url.searchParams.get("error");
+
+  recoveryMode = mode === "reset";
+
+  if (authError) {
+    const message = decodeURIComponent(
+      authError.replace(/\+/g, " ")
+    );
+
+    cleanAuthUrl();
+
+    showScreen(
+      recoveryMode ? "reset" : "login"
+    );
+
+    showNotice(
+      "Authentication link error: " + message,
+      "error"
+    );
+
+    return;
+  }
+
+  const code = url.searchParams.get("code");
+
+  if (code) {
+    const { error } =
+      await supabaseClient.auth.exchangeCodeForSession(code);
+
+    if (error) {
+      cleanAuthUrl();
+
+      showScreen(
+        recoveryMode ? "reset" : "login"
+      );
+
+      showNotice(
+        friendlyAuthError(error, "callback"),
+        "error"
+      );
+
+      return;
+    }
+
+    cleanAuthUrl();
+  }
+
+  const hash = new URLSearchParams(
+    window.location.hash.replace(/^#/, "")
+  );
+
+  const hashType = hash.get("type");
+
+  if (hashType === "recovery") {
+    recoveryMode = true;
+  }
+
+  if (recoveryMode) {
+    showScreen("reset");
+
+    const { data } =
+      await supabaseClient.auth.getSession();
+
+    if (!data.session) {
+      showNotice(
+        "Your password-reset session could not be verified. Please request a new reset link.",
+        "error"
+      );
+    }
+
+    return;
+  }
+
+  const { data, error } =
+    await supabaseClient.auth.getSession();
+
+  if (error) {
+    showScreen("login");
+
+    showNotice(
+      friendlyAuthError(error, "callback"),
+      "error"
+    );
+
+    return;
+  }
+
+  if (data.session) {
+    showNotice(
+      "You're signed in. Opening your developer profile...",
+      "success"
+    );
+
+    setTimeout(() => {
+      goToProfile();
+    }, 350);
+
+    return;
+  }
+
+  const screenParam = url.searchParams.get("screen");
+
+  if (screenParam === "signup") {
+    showScreen("signup");
+  } else {
+    showScreen("login");
+  }
+}
+
+/* =========================================================
+   INITIALIZATION
+   ========================================================= */
+
+async function start() {
+  const overlay = $("introOverlay");
+
+  setTimeout(() => {
+    overlay.classList.add("finished");
+  }, 1500);
+
+  if (!window.supabase) {
+    showNotice(
+      "Supabase failed to load. Check your internet connection and reload the page.",
+      "error"
+    );
+    return;
+  }
+
+  try {
+    supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY,
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true
+        }
+      }
+    );
+
+    supabaseClient.auth.onAuthStateChange(
+      (event, session) => {
+        if (
+          event === "SIGNED_IN" &&
+          session &&
+          currentScreen === "login" &&
+          !recoveryMode
+        ) {
+          /*
+            The login form handles the successful-login redirect.
+            Confirmation callbacks are handled during initialization.
+          */
+        }
+      }
+    );
+
+    await handleAuthCallback();
+
+  } catch (error) {
+    showNotice(
+      error.message ||
+        "Could not connect to Supabase. Check your project configuration.",
+      "error"
+    );
+  }
+}
+
+start();
+</script>
+</body>
+</html>
