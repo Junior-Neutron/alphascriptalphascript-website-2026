@@ -6,6 +6,8 @@
 
 <title>AlphaScript | Code Beyond Limits</title>
 
+<meta name="theme-color" content="#030605">
+
 <style>
 :root {
     --bg: #030605;
@@ -20,6 +22,12 @@
     box-sizing: border-box;
 }
 
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
+
 body {
     min-height: 100vh;
     background: var(--bg);
@@ -28,7 +36,7 @@ body {
     overflow: hidden;
 }
 
-/* ANIMATED  GRID */
+/* ANIMATED GRID */
 
 .grid {
     position: fixed;
@@ -60,7 +68,12 @@ body {
     padding: 20px;
     text-align: center;
     background: var(--bg);
-    animation: fadeOut 0.8s ease 5s forwards;
+    transition: opacity 0.5s ease;
+}
+
+.intro.leaving {
+    opacity: 0;
+    pointer-events: none;
 }
 
 /* LOGO */
@@ -106,7 +119,7 @@ body {
     }
 }
 
-/* VISIBLE ALPHA LOGO */
+/* ALPHA LOGO */
 
 .logo {
     position: relative;
@@ -116,8 +129,6 @@ body {
     font-weight: 900;
     font-family: Arial, sans-serif;
     color: var(--green);
-    opacity: 1;
-    visibility: visible;
     text-shadow:
         0 0 12px #00FF77,
         0 0 30px #00FF7780;
@@ -129,6 +140,7 @@ body {
         transform: scale(0.5);
         opacity: 0.3;
     }
+
     to {
         transform: scale(1);
         opacity: 1;
@@ -200,17 +212,10 @@ body {
         opacity: 0;
         transform: translateY(15px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
-    }
-}
-
-@keyframes fadeOut {
-    to {
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
     }
 }
 
@@ -232,7 +237,7 @@ body {
     }
 }
 
-/* ACCESSIBILITY */
+/* REDUCED MOTION */
 
 @media (prefers-reduced-motion: reduce) {
     .grid,
@@ -240,8 +245,7 @@ body {
     .logo,
     .brand,
     .tagline,
-    .loading-bar,
-    .intro {
+    .loading-bar {
         animation-duration: 0.01ms;
         animation-iteration-count: 1;
     }
@@ -251,17 +255,17 @@ body {
 
 <body>
 
-<div class="grid"></div>
+<div class="grid" aria-hidden="true"></div>
 
-<!-- ALPHASCRIPT INTRO -->
-
-<main class="intro">
+<main class="intro" id="intro">
 
     <div class="logo-container">
         <div class="ring"></div>
         <div class="ring two"></div>
 
-        <div class="logo" aria-label="AlphaScript logo">A</div>
+        <div class="logo" aria-label="AlphaScript logo">
+            A
+        </div>
     </div>
 
     <h1 class="brand">
@@ -284,8 +288,6 @@ body {
 
 </main>
 
-<!-- REDIRECT TO YOUR EXISTING  LOGIN/SIGNUP PAGE -->
-
 <script>
 (function () {
     "use strict";
@@ -293,9 +295,36 @@ body {
     const LOGIN_URL =
         "https://junior-neutron.github.io/alphascriptalphascript-website-2026/login.html?screen=signup";
 
+    let redirected = false;
+
+    function goToLogin() {
+        if (redirected) {
+            return;
+        }
+
+        redirected = true;
+
+        const intro = document.getElementById("intro");
+
+        if (intro) {
+            intro.classList.add("leaving");
+        }
+
+        // Primary redirect
+        window.location.href = LOGIN_URL;
+    }
+
+    // Automatically redirect after five seconds.
+    window.setTimeout(goToLogin, 5000);
+
+    // Backup: if the browser remains on the intro,
+    // attempt the redirect again after eight seconds.
     window.setTimeout(function () {
-        window.location.replace(LOGIN_URL);
-    }, 5000);
+        if (window.location.href.indexOf("login.html") === -1) {
+            window.location.replace(LOGIN_URL);
+        }
+    }, 8000);
+
 })();
 </script>
 
