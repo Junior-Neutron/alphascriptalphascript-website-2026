@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>AlphaScript | Login & Signup</title>
+<title>AlphaScript | Code Beyond Limits</title>
 <meta name="theme-color" content="#030605">
 
 <style>
@@ -26,10 +25,6 @@
 
 body {
     min-height: 100vh;
-    padding: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background: var(--bg);
     color: var(--text);
     font-family: Arial, sans-serif;
@@ -38,16 +33,162 @@ body {
 .grid {
     position: fixed;
     inset: 0;
+    z-index: 0;
+    pointer-events: none;
     background-image:
-        linear-gradient(#00FF7708 1px, transparent 1px),
-        linear-gradient(90deg, #00FF7708 1px, transparent 1px);
+        linear-gradient(#00FF7710 1px, transparent 1px),
+        linear-gradient(90deg, #00FF7710 1px, transparent 1px);
     background-size: 40px 40px;
+    animation: gridMove 12s linear infinite;
+}
+
+@keyframes gridMove {
+    to { background-position: 40px 40px; }
+}
+
+/* MOTION INTRO */
+
+.intro {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+    background: var(--bg);
+    transition: opacity .6s ease, visibility .6s ease;
+}
+
+.intro.leaving {
+    opacity: 0;
+    visibility: hidden;
     pointer-events: none;
 }
 
-.card {
+.logo-container {
+    position: relative;
+    width: 170px;
+    height: 170px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+}
+
+.ring {
+    position: absolute;
+    inset: 0;
+    border: 2px solid transparent;
+    border-top-color: var(--green);
+    border-bottom-color: var(--green);
+    border-radius: 50%;
+    filter: drop-shadow(0 0 8px var(--green));
+    animation: rotate 4s linear infinite;
+}
+
+.ring.two {
+    inset: 13px;
+    border-top-color: transparent;
+    border-left-color: var(--green);
+    border-right-color: var(--green);
+    animation: rotateBack 3s linear infinite;
+}
+
+@keyframes rotate {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes rotateBack {
+    to { transform: rotate(-360deg); }
+}
+
+.intro-logo {
+    position: relative;
+    z-index: 2;
+    font-size: 100px;
+    font-weight: 900;
+    color: var(--green);
+    text-shadow: 0 0 12px #00FF77, 0 0 30px #00FF7780;
+    animation: logoAppear 1.2s ease both;
+}
+
+@keyframes logoAppear {
+    from { transform: scale(.5); opacity: .3; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.brand {
+    font-size: clamp(27px, 7vw, 43px);
+    font-weight: 900;
+    letter-spacing: 5px;
+}
+
+.brand span { color: var(--green); }
+
+.tagline {
+    margin-top: 14px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 2px;
+    line-height: 1.8;
+}
+
+.loading-area {
+    width: 220px;
+    margin-top: 40px;
+}
+
+.loading-text {
+    margin-bottom: 12px;
+    color: var(--green);
+    font-size: 10px;
+    letter-spacing: 3px;
+}
+
+.loading-track {
+    width: 100%;
+    height: 3px;
+    background: #123321;
+}
+
+.loading-bar {
+    width: 0;
+    height: 3px;
+    background: var(--green);
+    box-shadow: 0 0 12px var(--green);
+    animation: load 5s linear forwards;
+}
+
+@keyframes load {
+    to { width: 100%; }
+}
+
+/* AUTHENTICATION */
+
+.auth-screen {
     position: relative;
     z-index: 1;
+    min-height: 100vh;
+    padding: 24px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-screen.visible {
+    display: flex;
+    animation: authAppear .6s ease both;
+}
+
+@keyframes authAppear {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
     width: 100%;
     max-width: 410px;
     padding: 30px 24px;
@@ -57,16 +198,15 @@ body {
     box-shadow: 0 0 35px #00FF770A;
 }
 
-.logo {
-    margin-bottom: 12px;
+.auth-logo {
     text-align: center;
     color: var(--green);
     font-size: 42px;
     font-weight: 900;
-    text-shadow: 0 0 15px #00FF7740;
+    margin-bottom: 12px;
 }
 
-h1 {
+.card h1 {
     text-align: center;
     font-size: 26px;
     margin-bottom: 10px;
@@ -127,6 +267,21 @@ input:focus {
     box-shadow: 0 0 0 2px #00FF7715;
 }
 
+.password-rules {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.password-rules p.valid {
+    color: var(--green);
+}
+
+.password-rules p.invalid {
+    color: var(--error);
+}
+
 .submit {
     width: 100%;
     margin-top: 24px;
@@ -141,7 +296,7 @@ input:focus {
 }
 
 .submit:disabled {
-    opacity: 0.6;
+    opacity: .6;
     cursor: wait;
 }
 
@@ -153,30 +308,34 @@ input:focus {
     overflow-wrap: anywhere;
 }
 
-.message.error {
-    color: var(--error);
-}
-
-.message.success {
-    color: var(--green);
-}
+.message.error { color: var(--error); }
+.message.success { color: var(--green); }
 
 .back {
     display: block;
     margin-top: 22px;
     color: var(--muted);
-    text-decoration: none;
+    background: none;
+    border: none;
+    width: 100%;
     font-size: 12px;
     text-align: center;
+    cursor: pointer;
 }
 
-.back:hover {
-    color: var(--green);
-}
+.back:hover { color: var(--green); }
 
 @media (max-width: 400px) {
-    .card {
-        padding: 25px 18px;
+    .logo-container { width: 145px; height: 145px; }
+    .intro-logo { font-size: 85px; }
+    .tagline { font-size: 9px; letter-spacing: 1.5px; }
+    .card { padding: 25px 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .grid, .ring, .intro-logo, .loading-bar, .auth-screen {
+        animation-duration: .01ms;
+        animation-iteration-count: 1;
     }
 }
 </style>
@@ -186,257 +345,11 @@ input:focus {
 
 <div class="grid" aria-hidden="true"></div>
 
-<main class="card">
+<!-- MOTION INTRO -->
 
-    <div class="logo">A</div>
-
-    <h1 id="heading">Create your account</h1>
-
-    <p class="subtitle">
-        Your code. Your community. Your evolution.
-    </p>
-
-    <div class="tabs">
-        <button
-            type="button"
-            class="tab"
-            id="loginTab">
-            Log In
-        </button>
-
-        <button
-            type="button"
-            class="tab active"
-            id="signupTab">
-            Sign Up
-        </button>
+<main class="intro" id="intro">
+    <div class="logo-container">
+        <div class="ring"></div>
+        <div class="ring two"></div>
+        <div class="intro-logo" aria-label="AlphaScript logo">A</div>
     </div>
-
-    <form id="authForm">
-
-        <label for="email">Email address</label>
-
-        <input
-            id="email"
-            type="email"
-            autocomplete="email"
-            placeholder="you@example.com"
-            required>
-
-        <label for="password">Password</label>
-
-        <input
-            id="password"
-            type="password"
-            autocomplete="new-password"
-            minlength="6"
-            placeholder="At least 6 characters"
-            required>
-
-        <button
-            class="submit"
-            id="submitButton"
-            type="submit">
-            Create Account
-        </button>
-
-    </form>
-
-    <p
-        class="message"
-        id="message"
-        role="status"
-        aria-live="polite">
-    </p>
-
-    <a class="back" href="motion.html">
-        Back to AlphaScript intro
-    </a>
-
-</main>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-(function () {
-    "use strict";
-
-    /*
-      IMPORTANT:
-      Replace both placeholders below with the values
-      from your own Supabase project.
-
-      Never use a service_role or secret key here.
-    */
-
-    const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
-    const SUPABASE_PUBLIC_KEY = "sb_publishable_TjT6PMScm58zNVJiugk-zQ_6oIaJNU9";
-
-    const heading = document.getElementById("heading");
-    const loginTab = document.getElementById("loginTab");
-    const signupTab = document.getElementById("signupTab");
-    const form = document.getElementById("authForm");
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
-    const submitButton = document.getElementById("submitButton");
-    const message = document.getElementById("message");
-
-    let mode = "signup";
-
-    const params = new URLSearchParams(window.location.search);
-
-    function showMessage(text, type) {
-        message.textContent = text;
-        message.className = "message " + (type || "");
-    }
-
-    function setMode(nextMode) {
-        mode = nextMode;
-
-        const isSignup = mode === "signup";
-
-        heading.textContent = isSignup
-            ? "Create your account"
-            : "Welcome back";
-
-        submitButton.textContent = isSignup
-            ? "Create Account"
-            : "Log In";
-
-        passwordInput.autocomplete = isSignup
-            ? "new-password"
-            : "current-password";
-
-        loginTab.classList.toggle("active", !isSignup);
-        signupTab.classList.toggle("active", isSignup);
-
-        showMessage("", "");
-
-        const url = new URL(window.location.href);
-        url.searchParams.set("screen", mode);
-
-        window.history.replaceState({}, "", url);
-    }
-
-    loginTab.addEventListener("click", function () {
-        setMode("login");
-    });
-
-    signupTab.addEventListener("click", function () {
-        setMode("signup");
-    });
-
-    setMode(params.get("screen") === "login" ? "login" : "signup");
-
-    form.addEventListener("submit", async function (event) {
-        event.preventDefault();
-
-        const email = emailInput.value.trim();
-        const password = passwordInput.value;
-
-        if (
-            SUPABASE_URL === "YOUR_SUPABASE_PROJECT_URL" ||
-            SUPABASE_PUBLIC_KEY ===
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhaXZxc2Nzc2R0c250aGRpcXR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE3Mjg3MjgsImV4cCI6MjEwNzMwNDcyOH0.i3cpwFKOCnfvGtAKsRpP3LxwIQl2l3-ZJq_9WTrRBP8"
-        ) {
-            showMessage(
-                "Supabase is not configured yet. Add your project URL and public key to connect authentication.",
-                "error"
-            );
-            return;
-        }
-
-        if (!window.supabase) {
-            showMessage(
-                "The authentication library could not load. Check your internet connection and try again.",
-                "error"
-            );
-            return;
-        }
-
-        submitButton.disabled = true;
-        submitButton.textContent = "Please wait...";
-        showMessage("", "");
-
-        try {
-            const client = window.supabase.createClient(
-                SUPABASE_URL,
-                SUPABASE_PUBLIC_KEY
-            );
-
-            let result;
-
-            if (mode === "signup") {
-                result = await client.auth.signUp({
-                    email: email,
-                    password: password,
-                    options: {
-                        emailRedirectTo:
-                            new URL("profile.html", window.location.href).href
-                    }
-                });
-
-                if (result.error) {
-                    throw result.error;
-                }
-
-                if (result.data.session) {
-                    showMessage(
-                        "Account created successfully. Opening your profile...",
-                        "success"
-                    );
-
-                    window.location.assign(
-                        new URL("profile.html", window.location.href).href
-                    );
-
-                    return;
-                }
-
-                showMessage(
-                    "Signup request completed. If email confirmation is enabled, check your inbox to confirm your account.",
-                    "success"
-                );
-
-            } else {
-                result = await client.auth.signInWithPassword({
-                    email: email,
-                    password: password
-                });
-
-                if (result.error) {
-                    throw result.error;
-                }
-
-                showMessage(
-                    "Login successful. Opening your profile...",
-                    "success"
-                );
-
-                window.location.assign(
-                    new URL("profile.html", window.location.href).href
-                );
-
-                return;
-            }
-
-        } catch (error) {
-            showMessage(
-                error.message || "Authentication failed. Please try again.",
-                "error"
-            );
-
-        } finally {
-            submitButton.disabled = false;
-
-            submitButton.textContent = mode === "signup"
-                ? "Create Account"
-                : "Log In";
-        }
-    });
-
-})();
-</script>
-
-</body>
-</html>
