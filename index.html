@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>AlphaScript | Code Beyond Limits</title>
-
 <meta name="theme-color" content="#030605">
 
 <style>
@@ -22,12 +21,6 @@
     box-sizing: border-box;
 }
 
-html,
-body {
-    width: 100%;
-    min-height: 100%;
-}
-
 body {
     min-height: 100vh;
     background: var(--bg);
@@ -35,9 +28,6 @@ body {
     font-family: Arial, sans-serif;
     overflow: hidden;
 }
-
-
-/* ANIMATED GRID */
 
 .grid {
     position: fixed;
@@ -56,8 +46,6 @@ body {
     }
 }
 
-/* INTRO SCREEN */
-
 .intro {
     position: fixed;
     inset: 0;
@@ -69,15 +57,12 @@ body {
     padding: 20px;
     text-align: center;
     background: var(--bg);
-    transition: opacity 0.5s ease;
+    transition: opacity 0.4s ease;
 }
 
 .intro.leaving {
     opacity: 0;
-    pointer-events: none;
 }
-
-/* LOGO */
 
 .logo-container {
     position: relative;
@@ -120,49 +105,39 @@ body {
     }
 }
 
-/* ALPHA LOGO */
-
 .logo {
     position: relative;
     z-index: 3;
-    font-size: 100px;
-    line-height: 1;
-    font-weight: 900;
-    font-family: Arial, sans-serif;
     color: var(--green);
-    text-shadow:
-        0 0 12px #00FF77,
-        0 0 30px #00FF7780;
-    animation: logoAppear 1.2s ease both;
+    font-size: 100px;
+    font-weight: 900;
+    line-height: 1;
+    text-shadow: 0 0 12px var(--green),
+                 0 0 30px #00FF7780;
+    animation: appear 1.2s ease both;
 }
 
-@keyframes logoAppear {
+@keyframes appear {
     from {
         transform: scale(0.5);
         opacity: 0.3;
     }
-
     to {
         transform: scale(1);
         opacity: 1;
     }
 }
 
-/* BRAND NAME */
-
 .brand {
     font-size: clamp(27px, 7vw, 43px);
     font-weight: 900;
     letter-spacing: 5px;
-    color: var(--text);
-    animation: fadeUp 1s ease 0.4s both;
+    animation: rise 1s ease 0.3s both;
 }
 
 .brand span {
     color: var(--green);
 }
-
-/* TAGLINE */
 
 .tagline {
     margin-top: 14px;
@@ -170,10 +145,8 @@ body {
     font-size: 11px;
     letter-spacing: 2px;
     line-height: 1.8;
-    animation: fadeUp 1s ease 0.8s both;
+    animation: rise 1s ease 0.6s both;
 }
-
-/* LOADING BAR */
 
 .loading-area {
     width: 220px;
@@ -184,7 +157,7 @@ body {
     margin-bottom: 12px;
     color: var(--green);
     font-size: 10px;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
 }
 
 .loading-track {
@@ -208,19 +181,16 @@ body {
     }
 }
 
-@keyframes fadeUp {
+@keyframes rise {
     from {
         opacity: 0;
         transform: translateY(15px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
-
-/* MOBILE */
 
 @media (max-width: 400px) {
     .logo-container {
@@ -237,20 +207,6 @@ body {
         letter-spacing: 1.5px;
     }
 }
-
-/* REDUCED MOTION */
-
-@media (prefers-reduced-motion: reduce) {
-    .grid,
-    .ring,
-    .logo,
-    .brand,
-    .tagline,
-    .loading-bar {
-        animation-duration: 0.01ms;
-        animation-iteration-count: 1;
-    }
-}
 </style>
 </head>
 
@@ -263,10 +219,7 @@ body {
     <div class="logo-container">
         <div class="ring"></div>
         <div class="ring two"></div>
-
-        <div class="logo" aria-label="AlphaScript logo">
-            A
-        </div>
+        <div class="logo" aria-label="AlphaScript logo">A</div>
     </div>
 
     <h1 class="brand">
@@ -293,38 +246,26 @@ body {
 (function () {
     "use strict";
 
-    const LOGIN_URL =
-        "https://junior-neutron.github.io/alphascriptalphascript-website-2026/login.html?screen=signup";
+    let redirectStarted = false;
 
-    let redirected = false;
+    function openSignup() {
+        if (redirectStarted) return;
 
-    function goToLogin() {
-        if (redirected) {
-            return;
-        }
+        redirectStarted = true;
 
-        redirected = true;
+        document.getElementById("intro")
+            .classList.add("leaving");
 
-        const intro = document.getElementById("intro");
+        // Resolve login.html relative to this page.
+        const loginURL = new URL("login.html", window.location.href);
+        loginURL.searchParams.set("screen", "signup");
 
-        if (intro) {
-            intro.classList.add("leaving");
-        }
-
-        // Primary redirect
-        window.location.href = LOGIN_URL;
+        // Navigate to the separate login/signup file.
+        window.location.replace(loginURL.href);
     }
 
-    // Automatically redirect after five seconds.
-    window.setTimeout(goToLogin, 5000);
-
-    // Backup: if the browser remains on the intro,
-    // attempt the redirect again after eight seconds.
-    window.setTimeout(function () {
-        if (window.location.href.indexOf("login.html") === -1) {
-            window.location.replace(LOGIN_URL);
-        }
-    }, 8000);
+    // Start redirect after five seconds.
+    window.setTimeout(openSignup, 5000);
 
 })();
 </script>
