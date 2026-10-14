@@ -314,4 +314,224 @@ function goToProfile() {
 }
 
 /* Login */
-loginSc
+loginScreen.addEventListener("submit", async event => {
+  event.preventDefault();
+  if (isBusy) return;
+  clearNotice();
+  if (!supabaseClient) {
+    showNotice("Authentication is unavailable. Check your Supabase configuration and internet connection.", "error");
+    return;
+  }
+  const email = $("loginEmail").value.trim();
+  const password = $("loginPassword").value;
+  if (!email || !password) {
+    showNotice("Enter your email address and password.", "error");
+    return;
+  }
+  setBusy(loginButton, "Signing in...");
+  showNotice("Verifying your account...", "info");
+  try {
+    const {data, error} = await supabaseClient.auth.signInWithPassword({email, password});
+    if (error) throw error;
+    if (!data.user) throw new Error("Login succeeded, but no user account was returned.");
+    showNotice("Login successful! Opening your developer profile...", "success");
+    setTimeout(goToProfile, 450);
+  } catch (error) {
+    clearBusy();
+    showNotice(friendlyAuthError(error, "login"), "error");
+  }
+});
+
+/* Sign up */
+signupScreen.addEventListener("submit", async event => {
+  event.preventDefault();
+  if (isBusy) return;
+  clearNotice();
+  if (!supabaseClient) {
+    showNotice("Authentication is unavailable. Check your Supabase configuration.", "error");
+    return;
+  }
+  const username = $("signupUsername").value.trim();
+  const email = $("signupEmail").value.trim();
+  const password = $("signupPassword").value;
+  const confirmPassword = $("confirmPassword").value;
+  if (!/^[A-Za-z0-9_]{3,24}$/.test(username)) {
+    showNotice("Your username must contain 3–24 letters, numbers or underscores.", "error");
+    $("signupUsername").focus();
+    return;
+  }
+  if (password.length < 8) {
+    showNotice("Your password must contain at least 8 characters.", "error");
+    $("signupPassword").focus();
+    return;
+  }
+  if (password !== confirmPassword) {
+    showNotice("Your passwords do not match.", "error");
+    $("confirmPassword").focus();
+    return;
+  }
+  setBusy(signupButton, "Creating account...");
+  showNotice("Creating your AlphaScript account...", "info");
+  try {
+    const {data, error} = await supabaseClient.auth.signUp({
+      email,
+      password,options: {
+        emailRedirectTo: LOGIN_PATH,
+        data: {username}
+      }
+    });
+    if (error) throw error;
+    if (data.session && data.user) {
+      showNotice("Your account is ready! Opening your developer profile...", "success");
+      setTimeout(goToProfile, 450);
+      return;
+    }
+    clearBusy();
+    showNotice("Account created! Check your email for the confirmation link. After confirming your email, you can sign in.", "success");
+    signupButton.textContent = "Account created ✓";
+  } catch (error) {
+    clearBusy();
+    showNotice(friendlyAuthError(error, "signup"), "error");
+  }
+});
+
+/* Forgot password */
+forgotScreen.addEventListener("submit", async event => {
+  event.preventDefault();
+  if (isBusy) return;
+  clearNotice();
+  if (!supabaseClient) {
+    showNotice("Authentication is unavailable. Check your Supabase configuration.", "error");
+    return;
+  }
+  const email = $("forgotEmail").value.trim();
+  if (!email) {
+    showNotice("Enter the email address associated with your account.", "error");
+    return;
+  }
+  setBusy(forgotButton, "Sending reset link...");
+  showNotice("Sending your password-reset email...", "info");
+  try {
+    const {error} = await supabaseClient.auth.resetPasswordForEmail(email, {redirectTo: RESET_CALLBACK_URL});
+    if (error) throw error;
+    clearBusy();
+    showNotice("If an account exists for that email, a password-reset link will be sent. Check your inbox and spam folder.", "success");
+    forgotButton.textContent = "Reset link requested ✓";
+  } catch (error) {
+    clearBusy();
+    showNotice(friendlyAuthError(error, "forgot"), "error");
+  }
+});
+
+/* Update password after opening a valid recovery link */
+resetScreen.addEventListener("submit", async event => {
+  event.preventDefault();
+  if (isBusy) return;
+  clearNotice();
+  if (!supabaseClient) {
+    showNotice("Authentication is unavailable. Check your Supabase configuration.", "error");
+    return;
+  }
+  const password = $("newPassword").value;
+  const confirmPassword = $("confirmNewPassword").value;
+  if (password.length < 8) {
+    showNotice("Your new password must contain at least 8 characters.", "error");
+    return;
+  }
+  if (password !== confirmPassword) {
+    showNotice("Your new passwords do not match.", "error");
+    return;
+  }
+  setBusy(resetButton, "Updating password...");
+  showNotice("Updating your password...", "info");
+  try {
+    const {error} = await supabaseClient.auth.updateUser({password});
+    if (error) throw error;
+    recoveryMode = false;
+    cleanAuthUrl();
+    showNotice("Your password has been updated successfully. Opening your developer profile...", "success");
+    setTimeout(goToProfile, 900);
+  } catch (error) {
+    clearBusy();
+    showNotice(friendlyAuthError(error, "reset"), "error");
+  }
+});
+
+/* Handle Supabase email-confirmation and password-recovery callbacks */
+async function handleAuthCallback() {
+  const url = new URL(window.location.href);
+  recoveryMode = url.searchParams.get("mode") === "reset";
+
+  const authError = url.searchParams.get("error_description") || url.searchParams.get("error");
+  if (authError) {
+    showScreen(recoveryMode ? "reset" : "login");
+    showNotice("Authentication link error: " + authError.replace(/\+/g, " "), "error");
+    return;
+  }
+
+  const code = url.searchParams.get("code");
+  if (code) {
+    const {error} = await supabaseClient.auth.exchangeCodeForSession(code);
+    if (error) {
+      showScreen(recoveryMode ? "reset" : "login");
+      showNotice(friendlyAuthError(error, "callback"), "error");
+      return;
+    }
+    if (!recoveryMode) cleanAuthUrl();
+  }
+
+  const hash = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+  if (hash.get("type") === "recovery") recoveryMode = true;
+
+  if (recoveryMode) {
+    showScreen("reset");
+    const {data} = await supabaseClient.auth.getSession();
+    if (!data.session) {
+      showNotice("Your password-reset session could not be verified. Please request a new reset link.", "error");
+    }
+    return;
+  }
+
+  const {data, error} = await supabaseClient.auth.getSession();
+  if (error) {
+    showScreen("login");
+    showNotice(friendlyAuthError(error, "callback"), "error");
+    return;
+  }
+  if (data.session) {
+    showNotice("You're signed in. Opening your developer profile...", "success");
+    setTimeout(goToProfile, 350);
+    return;
+  }
+
+  if (url.searchParams.get("screen") === "signup") showScreen("signup");
+  else showScreen("login");
+}
+
+/* Start page and play the short logo animation */
+async function start() {
+  const overlay = $("introOverlay");
+  window.setTimeout(() => overlay.classList.add("finished"), 1500);
+
+  if (!window.supabase) {
+    showNotice("Supabase failed to load. Check your internet connection and reload the page.", "error");
+    return;
+  }
+
+  try {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true
+      }
+    });
+    await handleAuthCallback();
+  } catch (error) {
+    showNotice(error.message || "Could not connect to Supabase. Check your project configuration.", "error");
+  }
+}
+start();
+</script>
+</body>
+</html>
