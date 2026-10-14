@@ -1,645 +1,303 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#071019">
-  <meta name="description" content="Sign in or create your AlphaScript developer account.">
-  <title>AlphaScript | Developer Hub</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg: #071019;
-      --panel: #0c1824;
-      --text: #edf7ff;
-      --muted: #9aafc4;
-      --border: #294156;
-      --green: #00e6ad;
-      --field: #09131e;
+<title>AlphaScript | Code Beyond Limits</title>
+
+<style>
+:root {
+    --bg: #030605;
+    --green: #00FF77;
+    --text: #F1FFF5;
+    --muted: #8BA997;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+/* ANIMATED GRID */
+
+.grid {
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(#00FF7710 1px, transparent 1px),
+        linear-gradient(90deg, #00FF7710 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridMove 12s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes gridMove {
+    to {
+        background-position: 40px 40px;
     }
+}
 
-    body.light {
-      color-scheme: light;
-      --bg: #edf4f7;
-      --panel: #fff;
-      --text: #122333;
-      --muted: #607487;
-      --border: #cfdae2;
-      --green: #008f70;
-      --field: #f5f8fa;
+/* INTRO SCREEN */
+
+.intro {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+    background: var(--bg);
+    animation: fadeOut 0.8s ease 5s forwards;
+}
+
+/* LOGO */
+
+.logo-container {
+    position: relative;
+    width: 170px;
+    height: 170px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+}
+
+.ring {
+    position: absolute;
+    inset: 0;
+    border: 2px solid transparent;
+    border-top-color: var(--green);
+    border-bottom-color: var(--green);
+    border-radius: 50%;
+    filter: drop-shadow(0 0 8px var(--green));
+    animation: rotate 4s linear infinite;
+}
+
+.ring.two {
+    inset: 13px;
+    border-top-color: transparent;
+    border-left-color: var(--green);
+    border-right-color: var(--green);
+    animation: rotateBack 3s linear infinite;
+}
+
+@keyframes rotate {
+    to {
+        transform: rotate(360deg);
     }
+}
 
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: var(--bg);
-      color: var(--text);
-      font-family: system-ui, Arial, sans-serif;
-      transition: background .2s, color .2s;
+@keyframes rotateBack {
+    to {
+        transform: rotate(-360deg);
     }
+}
 
-    button, input { font: inherit; }
+/* VISIBLE ALPHA LOGO */
 
-    button {
-      cursor: pointer;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 14px;
-      background: transparent;
-      color: var(--text);
+.logo {
+    position: relative;
+    z-index: 3;
+    font-size: 100px;
+    line-height: 1;
+    font-weight: 900;
+    font-family: Arial, sans-serif;
+    color: var(--green);
+    opacity: 1;
+    visibility: visible;
+    text-shadow:
+        0 0 12px #00FF77,
+        0 0 30px #00FF7780;
+    animation: logoAppear 1.2s ease both;
+}
+
+@keyframes logoAppear {
+    from {
+        transform: scale(0.5);
+        opacity: 0.3;
     }
-
-    button:hover { border-color: var(--green); }
-    button:disabled { opacity: .6; cursor: wait; }
-
-    button:focus-visible, input:focus-visible, a:focus-visible {
-      outline: 2px solid var(--green);
-      outline-offset: 3px;
+    to {
+        transform: scale(1);
+        opacity: 1;
     }
+}
 
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 16px 5%;
-      border-bottom: 1px solid var(--border);
+/* BRAND NAME */
+
+.brand {
+    font-size: clamp(27px, 7vw, 43px);
+    font-weight: 900;
+    letter-spacing: 5px;
+    color: var(--text);
+    animation: fadeUp 1s ease 0.4s both;
+}
+
+.brand span {
+    color: var(--green);
+}
+
+/* TAGLINE */
+
+.tagline {
+    margin-top: 14px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 2px;
+    line-height: 1.8;
+    animation: fadeUp 1s ease 0.8s both;
+}
+
+/* LOADING BAR */
+
+.loading-area {
+    width: 220px;
+    margin-top: 40px;
+}
+
+.loading-text {
+    margin-bottom: 12px;
+    color: var(--green);
+    font-size: 10px;
+    letter-spacing: 3px;
+}
+
+.loading-track {
+    width: 100%;
+    height: 3px;
+    background: #123321;
+    overflow: hidden;
+}
+
+.loading-bar {
+    width: 0;
+    height: 100%;
+    background: var(--green);
+    box-shadow: 0 0 12px var(--green);
+    animation: load 5s linear forwards;
+}
+
+@keyframes load {
+    to {
+        width: 100%;
     }
+}
 
-    .brand {
-      font-size: 23px;
-      font-weight: 800;
-      letter-spacing: -.8px;
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
     }
-
-    .brand span, .accent { color: var(--green); }
-
-    .header-actions { display: flex; gap: 8px; }
-
-    .primary {
-      background: var(--green);
-      color: #032019;
-      border-color: var(--green);
-      font-weight: 750;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
+}
 
-    main {
-      width: min(460px, 92%);
-      margin: 44px auto 30px;
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
     }
+}
 
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: clamp(22px, 6vw, 36px);
-      box-shadow: 0 18px 55px #0002;
+/* MOBILE */
+
+@media (max-width: 400px) {
+    .logo-container {
+        width: 145px;
+        height: 145px;
     }
 
     .logo {
-      text-align: center;
-      font-size: 43px;
-      font-weight: 900;
-      color: var(--green);
-      margin-bottom: 4px;
+        font-size: 85px;
     }
 
-    h1 {
-      text-align: center;
-      font-size: 25px;
-      margin: 5px 0 8px;
+    .tagline {
+        font-size: 9px;
+        letter-spacing: 1.5px;
     }
+}
 
-    .subtitle {
-      text-align: center;
-      color: var(--muted);
-      line-height: 1.6;
-      margin: 0 0 27px;
+/* ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+    .grid,
+    .ring,
+    .logo,
+    .brand,
+    .tagline,
+    .loading-bar,
+    .intro {
+        animation-duration: 0.01ms;
+        animation-iteration-count: 1;
     }
-
-    .field { margin: 17px 0; }
-
-    label {
-      display: block;
-      font-size: 14px;
-      font-weight: 650;
-      margin-bottom: 8px;
-    }
-
-    input {
-      width: 100%;
-      min-width: 0;
-      padding: 14px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: var(--field);
-      color: var(--text);
-      outline: none;
-    }
-
-    input:focus { border-color: var(--green); }
-
-    .password-wrap { display: flex; gap: 7px; }
-    .password-wrap input { flex: 1; }
-    .password-wrap button { padding: 0 11px; }
-
-    .options {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin: 18px 0;
-      font-size: 13px;
-    }
-
-    a, .text-button {
-      color: var(--green);
-      text-decoration: none;
-      background: none;
-      border: none;
-      padding: 0;
-    }
-
-    .check {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .check input {
-      width: auto;
-      accent-color: var(--green);
-    }
-
-    .submit {
-      width: 100%;
-      padding: 14px;
-      margin-top: 5px;
-      font-size: 16px;
-    }
-
-    .switch {
-      text-align: center;
-      margin: 25px 0 0;
-      font-size: 14px;
-      color: var(--muted);
-    }
-
-    .notice {
-      display: none;
-      padding: 12px;
-      margin-top: 15px;
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      color: var(--text);
-      font-size: 13px;
-      line-height: 1.5;
-      overflow-wrap: anywhere;
-    }
-
-    .notice.show { display: block; }
-
-    .notice.error { border-color: #ff7272; }
-    .notice.success { border-color: var(--green); }
-
-    footer {
-      text-align: center;
-      padding: 12px 16px 28px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 2;
-    }
-
-    footer strong { color: var(--green); }
-    [hidden] { display: none !important; }
-
-    @media (max-width: 380px) {
-      header { padding: 13px 4%; }
-      .brand { font-size: 19px; }
-      .header-actions button { padding: 8px; font-size: 12px; }
-      main { margin-top: 24px; }
-    }
-
-    @media (orientation: landscape) and (max-height: 550px) {
-      main { margin-top: 16px; }
-      .card { padding: 20px; }
-      header { padding-top: 10px; padding-bottom: 10px; }
-    }
-  </style>
+}
+</style>
 </head>
 
 <body>
-  <header>
-    <div class="brand">A<span>lphaScript</span></div>
-    <div class="header-actions">
-      <button id="themeButton" type="button">☀ Light mode</button>
-      <button id="headerLogin" type="button">Log in</button>
+
+<div class="grid"></div>
+
+<!-- ALPHASCRIPT INTRO -->
+
+<main class="intro">
+
+    <div class="logo-container">
+        <div class="ring"></div>
+        <div class="ring two"></div>
+
+        <div class="logo" aria-label="AlphaScript logo">A</div>
     </div>
-  </header>
 
-  <main>
-    <!-- LOGIN -->
-    <section class="card" id="loginScreen">
-      <div class="logo">A<span class="accent">.</span></div>
-      <h1>Welcome back, developer!</h1>
-      <p class="subtitle">Log in and continue building.</p>
+    <h1 class="brand">
+        ALPHA<span>SCRIPT</span>
+    </h1>
 
-      <form id="loginForm">
-        <div class="field">
-          <label for="loginEmail">Email address</label>
-          <input id="loginEmail" type="email" placeholder="you@example.com"
-            autocomplete="email" required>
+    <p class="tagline">
+        YOUR CODE. YOUR COMMUNITY. YOUR EVOLUTION.
+    </p>
+
+    <div class="loading-area">
+        <p class="loading-text">
+            INITIALIZING ALPHASCRIPT...
+        </p>
+
+        <div class="loading-track">
+            <div class="loading-bar"></div>
         </div>
+    </div>
 
-        <div class="field">
-          <label for="loginPassword">Password</label>
-          <div class="password-wrap">
-            <input id="loginPassword" type="password"
-              placeholder="Enter your password"
-              autocomplete="current-password" required>
-            <button type="button" data-toggle="loginPassword">Show</button>
-          </div>
-        </div>
+</main>
 
-        <div class="options">
-          <label class="check">
-            <input type="checkbox" id="rememberMe">
-            Remember me
-          </label>
-          <button class="text-button" type="button" data-screen="forgot">
-            Forgot password?
-          </button>
-        </div>
+<!-- REDIRECT TO YOUR EXISTING LOGIN/SIGNUP PAGE -->
 
-        <button class="primary submit" type="submit">Log in →</button>
-      </form>
+<script>
+(function () {
+    "use strict";
 
-      <div class="notice" id="loginNotice" role="status" aria-live="polite"></div>
+    const LOGIN_URL =
+        "https://junior-neutron.github.io/alphascriptalphascript-website-2026/login.html?screen=signup";
 
-      <p class="switch">
-        New to AlphaScript?
-        <button class="text-button" type="button" data-screen="signup">
-          Create an account
-        </button>
-      </p>
-    </section>
+    window.setTimeout(function () {
+        window.location.replace(LOGIN_URL);
+    }, 5000);
+})();
+</script>
 
-    <!-- SIGNUP -->
-    <section class="card" id="signupScreen" hidden>
-      <div class="logo">A<span class="accent">.</span></div>
-      <h1>Join AlphaScript</h1>
-      <p class="subtitle">Create your developer account.</p>
-
-      <form id="signupForm">
-        <div class="field">
-          <label for="username">Username</label>
-          <input id="username" type="text" placeholder="Choose a username"
-            minlength="3" maxlength="24" autocomplete="username" required>
-        </div>
-
-        <div class="field">
-          <label for="signupEmail">Email address</label>
-          <input id="signupEmail" type="email" placeholder="you@example.com"
-            autocomplete="email" required>
-        </div>
-
-        <div class="field">
-          <label for="signupPassword">Password</label>
-          <div class="password-wrap">
-            <input id="signupPassword" type="password"
-              placeholder="At least 8 characters" minlength="8"
-              autocomplete="new-password" required>
-            <button type="button" data-toggle="signupPassword">Show</button>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="confirmPassword">Confirm password</label>
-          <input id="confirmPassword" type="password"
-            placeholder="Enter the password again" minlength="8"
-            autocomplete="new-password" required>
-        </div>
-
-        <button class="primary submit" type="submit">Create account →</button>
-      </form>
-
-      <div class="notice" id="signupNotice" role="status" aria-live="polite"></div>
-
-      <p class="switch">
-        Already registered?
-        <button class="text-button" type="button" data-screen="login">
-          Log in
-        </button>
-      </p>
-    </section>
-
-    <!-- PASSWORD RESET REQUEST -->
-    <section class="card" id="forgotScreen" hidden>
-      <div class="logo">A<span class="accent">.</span></div>
-      <h1>Reset your password</h1>
-      <p class="subtitle">Enter your email to begin account recovery.</p>
-
-      <form id="forgotForm">
-        <div class="field">
-          <label for="resetEmail">Email address</label>
-          <input id="resetEmail" type="email" placeholder="you@example.com"
-            autocomplete="email" required>
-        </div>
-
-        <button class="primary submit" type="submit">
-          Request reset link
-        </button>
-      </form>
-
-      <div class="notice" id="forgotNotice" role="status" aria-live="polite"></div>
-
-      <p class="switch">
-        <button class="text-button" type="button" data-screen="login">
-          ← Back to login
-        </button>
-      </p>
-    </section>
-  </main>
-
-  <footer>
-    <strong>〈/〉 Build</strong> &nbsp; · &nbsp;
-    <strong>◎ Share</strong> &nbsp; · &nbsp;
-    <strong>ϟ Evolve</strong>
-    <br>
-    AlphaScript — Where Ideas Become Real Code.
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <script>
-    'use strict';
-
-    // SUPABASE CONFIGURATION
-    const SUPABASE_URL =
-      'https://qaivqscssdtsnthdiqtu.supabase.co';
-
-    // Replace this with your real sb_publishable_... key.
-    // Never put a service_role or secret key in public HTML.
-    const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_TjT6PMScm58zNVJiugk-zQ_6oIaJNU9';
-
-    let supabaseClient = null;
-
-    // These URLs automatically include the GitHub Pages repository path.
-    // Do not change them to Netlify URLs.
-    const PROFILE_URL = new URL('profile.html', window.location.href).href;
-    const RESET_URL = new URL('reset-password.html', window.location.href).href;
-
-    const screens = {
-      login: document.getElementById('loginScreen'),
-      signup: document.getElementById('signupScreen'),
-      forgot: document.getElementById('forgotScreen')
-    };
-
-    function showScreen(name) {
-      if (!Object.prototype.hasOwnProperty.call(screens, name)) return;
-
-      Object.keys(screens).forEach(key => {
-        screens[key].hidden = key !== name;
-      });
-
-      document.querySelectorAll('.notice').forEach(notice => {
-        notice.className = 'notice';
-        notice.textContent = '';
-      });
-
-      window.scrollTo(0, 0);
-    }
-
-    function showNotice(id, message, type = '') {
-      const notice = document.getElementById(id);
-      if (!notice) return;
-
-      notice.textContent = message;
-      notice.className = 'notice show' + (type ? ' ' + type : '');
-    }
-
-    function getClient() {
-      if (!window.supabase || !window.supabase.createClient) {
-        throw new Error(
-          'Supabase could not load. Check your internet connection and reload.'
-        );
-      }
-
-      if (
-        !SUPABASE_PUBLISHABLE_KEY ||
-        SUPABASE_PUBLISHABLE_KEY ===
-          '          eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhaXZxc2Nzc2R0c250aGRpcXR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE3Mjg3MjgsImV4cCI6MjEwNzMwNDcyOH0.i3cpwFKOCnfvGtAKsRpP3LxwIQl2l3-ZJq_9WTrRBP8'
-      ) {
-        throw new Error(
-          'Supabase is not configured. Add your real publishable key in login.html.'
-        );
-      }
-
-      if (!supabaseClient) {
-        supabaseClient = window.supabase.createClient(
-          SUPABASE_URL,
-          SUPABASE_PUBLISHABLE_KEY
-        );
-      }
-
-      return supabaseClient;
-    }
-
-    function setBusy(button, busy, busyText) {
-      if (busy) {
-        button.dataset.originalText = button.textContent;
-        button.textContent = busyText;
-        button.disabled = true;
-      } else {
-        button.textContent = button.dataset.originalText || button.textContent;
-        button.disabled = false;
-      }
-    }
-
-    // SCREEN NAVIGATION
-    document.querySelectorAll('[data-screen]').forEach(button => {
-      button.addEventListener('click', () => showScreen(button.dataset.screen));
-    });
-
-    document.getElementById('headerLogin').addEventListener('click', () => {
-      showScreen('login');
-    });
-
-    // SHOW / HIDE PASSWORD
-    document.querySelectorAll('[data-toggle]').forEach(button => {
-      button.addEventListener('click', () => {
-        const field = document.getElementById(button.dataset.toggle);
-        if (!field) return;
-
-        const reveal = field.type === 'password';
-        field.type = reveal ? 'text' : 'password';
-        button.textContent = reveal ? 'Hide' : 'Show';
-      });
-    });
-
-    // LIGHT / DARK MODE
-    document.getElementById('themeButton').addEventListener('click', () => {
-      document.body.classList.toggle('light');
-
-      const isLight = document.body.classList.contains('light');
-      document.getElementById('themeButton').textContent =
-        isLight ? '☾ Dark mode' : '☀ Light mode';
-    });
-
-    // LOGIN: successful authentication opens the profile wizard.
-    document.getElementById('loginForm').addEventListener('submit', async event => {
-      event.preventDefault();
-
-      const form = event.currentTarget;
-      const button = form.querySelector('[type="submit"]');
-      const email = document.getElementById('loginEmail').value.trim();
-      const password = document.getElementById('loginPassword').value;
-
-      setBusy(button, true, 'Logging in...');
-
-      try {
-        const client = getClient();
-        const { error } = await client.auth.signInWithPassword({ email, password });
-
-        if (error) {
-          showNotice('loginNotice', error.message, 'error');
-          return;
-        }
-
-        showNotice('loginNotice', 'Login successful. Opening your profile...', 'success');
-
-        // Relative URL keeps the GitHub Pages repository path correct.
-        window.location.assign(PROFILE_URL);
-      } catch (error) {
-        showNotice(
-          'loginNotice',
-          error.message || 'Connection failed. Please try again.',
-          'error'
-        );
-      } finally {
-        setBusy(button, false);
-      }
-    });
-
-    // SIGNUP: email confirmation returns to profile.html on this same website.
-    document.getElementById('signupForm').addEventListener('submit', async event => {
-      event.preventDefault();
-
-      const form = event.currentTarget;
-      const button = form.querySelector('[type="submit"]');
-      const username = document.getElementById('username').value.trim();
-      const email = document.getElementById('signupEmail').value.trim();
-      const password = document.getElementById('signupPassword').value;
-      const confirm = document.getElementById('confirmPassword').value;
-
-      if (!/^[a-zA-Z0-9_]{3,24}$/.test(username)) {
-        showNotice(
-          'signupNotice',
-          'Use 3–24 letters, numbers, or underscores for your username.',
-          'error'
-        );
-        return;
-      }
-
-      if (password.length < 8) {
-        showNotice('signupNotice', 'Your password must be at least 8 characters.', 'error');
-        return;
-      }
-
-      if (password !== confirm) {
-        showNotice('signupNotice', 'Your passwords do not match.', 'error');
-        return;
-      }
-
-      setBusy(button, true, 'Creating account...');
-
-      try {
-        const client = getClient();
-
-        const { data, error } = await client.auth.signUp({
-          email,
-          password,
-          options: {
-            data: { username },
-            emailRedirectTo: PROFILE_URL
-          }
-        });
-
-        if (error) {
-          showNotice('signupNotice', error.message, 'error');
-          return;
-        }
-
-        if (data.session) {
-          showNotice('signupNotice', 'Account created. Opening your profile...', 'success');
-          window.location.assign(PROFILE_URL);
-        } else {
-          showNotice(
-            'signupNotice',
-            'Account created. Check your email and confirm your address. The confirmation link is set to return to AlphaScript.',
-            'success'
-          );
-        }
-      } catch (error) {
-        showNotice(
-          'signupNotice',
-          error.message || 'Connection failed. Please try again.',
-          'error'
-        );
-      } finally {
-        setBusy(button, false);
-      }
-    });
-
-    // PASSWORD RESET: send the user to reset-password.html on this website.
-    document.getElementById('forgotForm').addEventListener('submit', async event => {
-      event.preventDefault();
-
-      const form = event.currentTarget;
-      const button = form.querySelector('[type="submit"]');
-      const email = document.getElementById('resetEmail').value.trim();
-
-      setBusy(button, true, 'Sending link...');
-
-      try {
-        const client = getClient();
-
-        const { error } = await client.auth.resetPasswordForEmail(email, {
-          redirectTo: RESET_URL
-        });
-
-        if (error) {
-          showNotice('forgotNotice', error.message, 'error');
-          return;
-        }
-
-        showNotice(
-          'forgotNotice',
-          'If an account exists for that address, a password reset email has been requested. Check your inbox.',
-          'success'
-        );
-      } catch (error) {
-        showNotice(
-          'forgotNotice',
-          error.message || 'Could not request a reset link. Please try again.',
-          'error'
-        );
-      } finally {
-        setBusy(button, false);
-      }
-    });
-
-    // Allow links such as login.html?screen=signup or ?screen=forgot.
-    const requestedScreen = new URLSearchParams(window.location.search).get('screen');
-
-    if (requestedScreen && screens[requestedScreen]) {
-      showScreen(requestedScreen);
-    }
-  </script>
 </body>
 </html>
