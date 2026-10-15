@@ -4,21 +4,55 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#070b14">
-  <meta name="description" content="Your AlphaScript developer profile.">
+  <meta
+    name="description"
+    content="Create and update your AlphaScript developer profile."
+  >
+
   <title>Developer Profile | AlphaScript</title>
+
+  <script>
+    try {
+      document.documentElement.dataset.theme =
+        localStorage.getItem("alphascript-theme") || "dark";
+    } catch (error) {
+      document.documentElement.dataset.theme = "dark";
+    }
+  </script>
 
   <style>
     :root {
+      color-scheme: dark;
       --bg: #070b14;
-      --panel: #0e1625;
-      --border: #243650;
-      --cyan: #53e7ff;
-      --blue: #568cff;
-      --violet: #a77bff;
-      --text: #f0f5ff;
-      --muted: #8e9db6;
-      --success: #71f5bc;
-      --danger: #ff8398;
+      --panel: #101827;
+      --panel-light: #151f31;
+      --text: #f4f7ff;
+      --muted: #a2aec4;
+      --border: #29364b;
+      --primary: #7c5cff;
+      --primary-hover: #6845f2;
+      --accent: #28d7a0;
+      --danger: #ff6b7d;
+      --success: #28d7a0;
+      --input: #0b1220;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    }
+
+    html[data-theme="light"] {
+      color-scheme: light;
+      --bg: #f3f6fc;
+      --panel: #ffffff;
+      --panel-light: #f5f7ff;
+      --text: #172033;
+      --muted: #657089;
+      --border: #dce3f0;
+      --primary: #6945e8;
+      --primary-hover: #5431d1;
+      --accent: #078d67;
+      --danger: #d93650;
+      --success: #078d67;
+      --input: #ffffff;
+      --shadow: 0 20px 60px rgba(31, 45, 75, 0.10);
     }
 
     * {
@@ -29,1095 +63,1137 @@
       margin: 0;
       min-height: 100vh;
       background:
-        radial-gradient(ellipse at 10% 0%, #12284b 0, transparent 42%),
-        radial-gradient(ellipse at 95% 80%, #251342 0, transparent 38%),
+        radial-gradient(
+          circle at 0% 0%,
+          rgba(124, 92, 255, 0.12),
+          transparent 35%
+        ),
         var(--bg);
       color: var(--text);
-      font-family: Inter, system-ui, -apple-system, sans-serif;
+      font-family:
+        Inter, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      line-height: 1.6;
+      transition: background 0.2s, color 0.2s;
     }
 
-    button, input, textarea {
+    button,
+    input,
+    textarea {
       font: inherit;
     }
 
-    a {
-      color: var(--cyan);
-      text-decoration: none;
-    }
-
-    button:focus-visible,
-    a:focus-visible,
-    input:focus-visible,
-    textarea:focus-visible {
-      outline: 2px solid var(--cyan);
-      outline-offset: 3px;
-    }
-
-    .shell {
-      width: min(760px, 100%);
-      margin: auto;
-      padding: 22px 16px 40px;
-    }
-
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 30px;
-    }
-
-    .brand {
-      color: var(--text);
-      font-size: 17px;
-      font-weight: 900;
-      letter-spacing: 2px;
-    }
-
-    .brand span {
-      color: var(--cyan);
-    }
-
-    .status {
-      color: var(--muted);
-      font-size: 11px;
-      letter-spacing: 1.5px;
-    }
-
-    .status::before {
-      content: "";
-      display: inline-block;
-      width: 7px;
-      height: 7px;
-      margin-right: 7px;
-      border-radius: 50%;
-      background: var(--success);
-    }
-
-    .eyebrow {
-      color: var(--cyan);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-
-    h1 {
-      margin: 12px 0;
-      font-size: clamp(30px, 7vw, 48px);
-      line-height: 1.1;
-    }
-
-    h1 span {
-      color: var(--cyan);
-      background: linear-gradient(90deg, var(--cyan), var(--violet));
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    h2 {
-      margin: 0;
-      font-size: clamp(23px, 5vw, 32px);
-      line-height: 1.25;
-    }
-
-    h3 {
-      margin: 0 0 8px;
-      font-size: 19px;
-    }
-
-    .muted, .question-help {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.7;
-    }
-
-    .intro {
-      margin-bottom: 26px;
-    }
-
-    .panel {
-      position: relative;
-      overflow: hidden;
-      padding: clamp(20px, 5vw, 34px);
-      margin-bottom: 20px;
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      background: linear-gradient(145deg, #101a2aee, #0b111eee);
-      box-shadow: 0 20px 70px #0005;
-    }
-
-    .panel::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 12%;
-      width: 76%;
-      height: 1px;
-      background: linear-gradient(
-        90deg, transparent, var(--cyan), var(--violet), transparent
-      );
-    }
-
-    .profile-picture-area {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      margin: 18px 0;
-      text-align: center;
-    }
-
-    .avatar {
-      width: 132px;
-      height: 132px;
-      border: 3px solid var(--cyan);
-      border-radius: 50%;
-      object-fit: cover;
-      background: #101b2c;
-      box-shadow: 0 0 28px #53e7ff20;
-    }
-
-    .avatar-placeholder {
-      display: grid;
-      width: 132px;
-      height: 132px;
-      place-items: center;
-      border: 2px dashed #42617e;
-      border-radius: 50%;
-      background: #101b2c;
-      color: var(--cyan);
-      font-size: 42px;
-      font-weight: 800;
-    }
-
-    .file-input {
-      display: none;
-    }
-
-    .btn {
-      display: inline-flex;
-      min-height: 46px;
-      align-items: center;
-      justify-content: center;
-      padding: 12px 17px;
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      background: #121e30;
-      color: var(--text);
-      font-weight: 750;
-      text-align: center;
+    button {
       cursor: pointer;
     }
 
-    .btn:disabled {
-      opacity: .5;
-      cursor: not-allowed;
+    a {
+      color: var(--primary);
+      text-decoration: none;
     }
 
-    .btn-primary {
-      border-color: transparent;
-      background: linear-gradient(100deg, #168fce, #5268f4 65%, #8554dc);
-      color: white;
+    a:hover {
+      text-decoration: underline;
     }
 
-    .btn-row {
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
+      outline: 3px solid rgba(124, 92, 255, 0.45);
+      outline-offset: 3px;
+    }
+
+    .topbar {
+      width: min(1080px, calc(100% - 32px));
+      min-height: 78px;
+      margin: 0 auto;
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    .small {
-      font-size: 12px;
-    }
-
-    .progress-row {
-      display: flex;
+      align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 12px;
-      color: var(--muted);
-      font-size: 12px;
+      gap: 15px;
     }
 
-    .progress-track {
-      height: 5px;
-      overflow: hidden;
-      margin-bottom: 30px;
-      border-radius: 99px;
-      background: #202c40;
-    }
-
-    .progress-fill {
-      width: 0;
-      height: 100%;
-      background: linear-gradient(90deg, var(--cyan), var(--blue), var(--violet));
-      transition: width .3s;
-    }
-
-    .step-tag {
-      margin-bottom: 12px;
-      color: var(--cyan);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 2px;
-    }
-
-    .question-help {
-      margin: 12px 0 24px;
-    }
-
-    .field {
-      display: block;
-      width: 100%;
-      padding: 15px;
-      border: 1px solid #30435e;
-      border-radius: 12px;
-      outline: none;
-      background: #080f1c;
-      color: var(--text);
-    }
-
-    .field:focus {
-      border-color: var(--cyan);
-      box-shadow: 0 0 0 3px #53e7ff14;
-    }
-
-    textarea.field {
-      min-height: 125px;
-      resize: vertical;
-    }
-
-    .field::placeholder {
-      color: #65758f;
-    }
-
-    .review {
-      display: grid;
+    .brand {
+      display: flex;
+      align-items: center;
       gap: 10px;
+      color: var(--text);
+      font-weight: 800;
+      font-size: 1.15rem;
     }
 
-    .review-item {
-      padding: 14px;
-      border: 1px solid var(--border);
+    .brand:hover {
+      text-decoration: none;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
       border-radius: 12px;
-      background: #09111e;
-      overflow-wrap: anywhere;
+      background: linear-gradient(135deg, var(--primary), #a18bff);
+      color: #fff;
+      font-weight: 900;
     }
 
-    .review-label {
-      margin-bottom: 6px;
-      color: var(--cyan);
-      font-size: 10px;
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .small-button {
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--panel);
+      color: var(--text);
+      font-size: 0.85rem;
+    }
+
+    .small-button:hover {
+      border-color: var(--primary);
+    }
+
+    .page {
+      width: min(850px, calc(100% - 32px));
+      margin: 25px auto 60px;
+    }
+
+    .page-heading {
+      margin-bottom: 25px;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-size: 0.8rem;
       font-weight: 800;
       letter-spacing: 1.5px;
       text-transform: uppercase;
     }
 
-    .review-value {
-      font-size: 13px;
-      line-height: 1.7;
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
+    .page-heading h1 {
+      margin: 8px 0;
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.2;
+      letter-spacing: -1.2px;
     }
 
-    .nav {
+    .page-heading p {
+      max-width: 650px;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .profile-card {
+      padding: clamp(20px, 4vw, 36px);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .section-heading {
+      margin: 0 0 5px;
+      font-size: 1.2rem;
+    }
+
+    .section-description {
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .avatar-section {
       display: flex;
-      gap: 12px;
-      margin-top: 28px;
+      align-items: center;
+      gap: 20px;
+      padding-bottom: 25px;
+      margin-bottom: 26px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .nav .btn-primary {
-      flex: 1;
+    .avatar {
+      width: 100px;
+      height: 100px;
+      flex: 0 0 100px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      background: var(--panel-light);
+      color: var(--muted);
+      font-size: 2rem;
+      font-weight: 800;
     }
 
-    #notice, #avatarNotice {
-      margin: 18px 0 0;
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .avatar-actions {
+      min-width: 0;
+    }
+
+    .avatar-actions h2 {
+      margin: 0 0 5px;
+      font-size: 1.05rem;
+    }
+
+    .avatar-actions p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .upload-label {
+      display: inline-block;
+      padding: 9px 13px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--panel-light);
+      color: var(--text);
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .upload-label:hover {
+      border-color: var(--primary);
+    }
+
+    .upload-input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      clip-path: inset(50%);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 19px;
+    }
+
+    .form-group {
+      min-width: 0;
+      margin-bottom: 20px;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .required {
+      color: var(--danger);
+    }
+
+    .form-group input,
+    .form-group textarea {
+      display: block;
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 13px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: var(--input);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-group textarea {
+      min-height: 115px;
+      resize: vertical;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.12);
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: var(--muted);
+      opacity: 0.75;
+    }
+
+    .help-text {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .privacy-note {
+      display: flex;
+      gap: 11px;
+      align-items: flex-start;
+      margin: 4px 0 23px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel-light);
+    }
+
+    .privacy-note-icon {
+      flex: 0 0 auto;
+      font-size: 1.2rem;
+    }
+
+    .privacy-note p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .status-message {
+      display: none;
+      margin-bottom: 20px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.88rem;
       overflow-wrap: anywhere;
-      font-size: 13px;
-      line-height: 1.7;
+    }
+
+    .status-message.show {
+      display: block;
+    }
+
+    .status-message.error {
+      border-color: rgba(255, 107, 125, 0.4);
+      background: rgba(255, 107, 125, 0.08);
+      color: var(--danger);
+    }
+
+    .status-message.success {
+      border-color: rgba(40, 215, 160, 0.4);
+      background: rgba(40, 215, 160, 0.08);
+      color: var(--success);
+    }
+
+    .status-message.info {
+      background: var(--panel-light);
+      color: var(--muted);
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 11px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+    }
+
+    .button {
+      min-height: 46px;
+      padding: 11px 18px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: var(--panel-light);
+      color: var(--text);
+      font-weight: 750;
+    }
+
+    .button:hover {
+      border-color: var(--primary);
+    }
+
+    .button.primary {
+      border-color: transparent;
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .button.primary:hover:not(:disabled) {
+      background: var(--primary-hover);
+    }
+
+    .button:disabled {
+      opacity: 0.6;
+      cursor: wait;
     }
 
     .footer {
-      padding-top: 24px;
-      color: #687991;
-      font-size: 11px;
+      padding: 20px 16px 28px;
+      color: var(--muted);
+      font-size: 0.8rem;
       text-align: center;
-      letter-spacing: 1px;
     }
 
     .hidden {
       display: none !important;
     }
 
-    .step-content {
-      animation: enter .24s ease both;
-    }
-
-    @keyframes enter {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @media (max-width: 430px) {
-      .status {
-        font-size: 9px;
+    @media (max-width: 620px) {
+      .topbar {
+        width: calc(100% - 24px);
+        min-height: 68px;
       }
 
-      .nav {
-        gap: 8px;
+      .page {
+        width: calc(100% - 24px);
+        margin-top: 20px;
       }
 
-      .btn {
-        padding: 12px;
+      .form-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .form-group.full-width {
+        grid-column: auto;
+      }
+
+      .avatar-section {
+        align-items: flex-start;
+        gap: 14px;
+      }
+
+      .avatar {
+        width: 78px;
+        height: 78px;
+        flex-basis: 78px;
+      }
+
+      .profile-card {
+        border-radius: 17px;
+      }
+
+      .form-actions {
+        flex-direction: column-reverse;
+      }
+
+      .form-actions .button {
+        width: 100%;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: .01ms !important;
-        transition-duration: .01ms !important;
+      *,
+      *::before,
+      *::after {
+        transition-duration: 0.01ms !important;
       }
     }
   </style>
 </head>
 
 <body>
-  <main class="shell">
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <span class="brand-icon">A</span>
+      <span>AlphaScript</span>
+    </a>
 
-    <header class="topbar">
-      <a class="brand" href="index.html">ALPHA<span>SCRIPT</span></a>
-      <div class="status">DEVELOPER PROFILE</div>
-    </header>
+    <div class="top-actions">
+      <button class="small-button" id="themeButton" type="button">
+        ☀️ Light mode
+      </button>
 
-    <section class="intro">
-      <div class="eyebrow">Your developer journey</div>
-      <h1>Build your <span>developer identity.</span></h1>
-      <p class="muted">
-        Tell us about your skills, interests, and goals.
-        Make your profile yours and get ready to build with AlphaScript.
+      <button class="small-button" id="logoutButton" type="button">
+        Log out
+      </button>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="page-heading">
+      <span class="eyebrow">Developer identity</span>
+      <h1>Your profile</h1>
+      <p>
+        Tell the AlphaScript community about yourself, your skills,
+        your interests, and what you are learning.
       </p>
     </section>
 
-    <section class="panel">
-      <h3>Your profile picture</h3>
-      <p class="muted">
-        Choose a photo from your device. Images must be 5 MB or smaller.
-      </p>
-
-      <div class="profile-picture-area">
-        <img id="avatarPreview" class="avatar hidden" alt="Your profile picture">
-
-        <div id="avatarPlaceholder" class="avatar-placeholder">A</div>
-
-        <input
-          class="file-input"
-          id="avatarFile"
-          type="file"
-          accept="image/jpeg,image/png,image/webp,image/gif"
-        >
-
-        <div class="btn-row">
-          <button type="button" class="btn btn-primary" id="chooseAvatar">
-            Choose photo
-          </button>
-
-          <button type="button" class="btn" id="removeAvatar">
-            Remove photo
-          </button>
-        </div>
-
-        <p class="muted small">JPG, PNG, WEBP or GIF · Maximum 5 MB</p>
-      </div>
-
-      <p id="avatarNotice" role="status" aria-live="polite"></p>
-    </section>
-
-    <section class="panel">
-      <div class="progress-row">
-        <span id="stepCounter">CONNECTING</span>
-        <span id="progressPercent">0% COMPLETE</span>
-      </div>
-
+    <section class="profile-card">
       <div
-        class="progress-track"
-        id="progressTrack"
-        role="progressbar"
-        aria-label="Profile completion"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        aria-valuenow="0"
-      >
-        <div class="progress-fill" id="progressFill"></div>
-      </div>
+        id="statusMessage"
+        class="status-message"
+        role="status"
+        aria-live="polite"
+      ></div>
 
-      <div id="wizard" class="hidden">
-        <div id="stepTag" class="step-tag"></div>
-        <h2 id="question"></h2>
-        <p id="questionHelp" class="question-help"></p>
-        <div id="answerArea"></div>
+      <form id="profileForm">
+        <section class="avatar-section">
+          <div class="avatar" id="avatarPreview">
+            <span id="avatarInitial">A</span>
+          </div>
 
-        <div class="nav">
-          <button type="button" class="btn" id="backButton">← Back</button>
-          <button type="button" class="btn btn-primary" id="nextButton">
-            Next →
+          <div class="avatar-actions">
+            <h2>Profile picture</h2>
+            <p>Choose a JPG, PNG, or WebP image up to 2 MB.</p>
+
+            <label class="upload-label" for="avatarInput">
+              Choose image
+            </label>
+
+            <input
+              class="upload-input"
+              id="avatarInput"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+            >
+
+            <button
+              class="small-button hidden"
+              id="removeAvatarButton"
+              type="button"
+            >
+              Remove picture
+            </button>
+          </div>
+        </section>
+
+        <h2 class="section-heading">Basic information</h2>
+        <p class="section-description">
+          These details help identify your developer profile.
+        </p>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="fullName">
+              Full name <span class="required">*</span>
+            </label>
+
+            <input
+              id="fullName"
+              name="full_name"
+              type="text"
+              maxlength="100"
+              autocomplete="name"
+              placeholder="Your full name"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="username">
+              Username <span class="required">*</span>
+            </label>
+
+            <input
+              id="username"
+              name="username"
+              type="text"
+              minlength="3"
+              maxlength="30"
+              pattern="[A-Za-z0-9_]+"
+              autocomplete="username"
+              placeholder="e.g. codebuilder"
+              title="Use 3–30 letters, numbers, or underscores."
+              required
+            >
+
+            <small class="help-text">
+              Use letters, numbers, and underscores only.
+            </small>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="country">
+              Country <span class="required">*</span>
+            </label>
+
+            <input
+              id="country"
+              name="country"
+              type="text"
+              maxlength="80"
+              autocomplete="country-name"
+              placeholder="Enter your country"
+              required
+            >
+          </div>
+        </div>
+
+        <h2 class="section-heading">Your developer journey</h2>
+        <p class="section-description">
+          Describe what you can do and what you want to learn.
+          Separate multiple entries with commas.
+        </p>
+
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label for="skills">
+              Skills <span class="required">*</span>
+            </label>
+
+            <textarea
+              id="skills"
+              name="skills"
+              maxlength="2000"
+              placeholder="HTML, CSS, Python, Java..."
+              required
+            ></textarea>
+
+            <small class="help-text">
+              Add the programming languages and skills you know.
+            </small>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="hobbies">
+              Hobbies <span class="required">*</span>
+            </label>
+
+            <textarea
+              id="hobbies"
+              name="hobbies"
+              maxlength="2000"
+              placeholder="Coding, reading, solving problems..."
+              required
+            ></textarea>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="learningGoals">
+              Learning goals <span class="required">*</span>
+            </label>
+
+            <textarea
+              id="learningGoals"
+              name="learning_goals"
+              maxlength="2000"
+              placeholder="Learn JavaScript, build websites, improve Python..."
+              required
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="privacy-note">
+          <span class="privacy-note-icon" aria-hidden="true">🔒</span>
+
+          <p>
+            <strong>Profile privacy:</strong>
+            Your email address is not displayed by this form.
+            Your profile visibility is controlled by your database
+            policies and any privacy settings implemented by AlphaScript.
+            Do not enter sensitive personal information into public fields.
+          </p>
+        </div>
+
+        <div class="form-actions">
+          <button class="button" id="cancelButton" type="button">
+            Back to homepage
+          </button>
+
+          <button class="button primary" id="saveButton" type="submit">
+            Save profile
           </button>
         </div>
-      </div>
-
-      <p id="notice" role="status" aria-live="polite">
-        Connecting to AlphaScript...
-      </p>
+      </form>
     </section>
-
-    <footer class="footer">
-      BUILD WITH PURPOSE · LEARN WITHOUT LIMITS
-    </footer>
-
   </main>
+
+  <footer class="footer">
+    &copy; <span id="currentYear"></span> AlphaScript.
+    Keep learning. Keep building.
+  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
     "use strict";
 
+    // --------------------------------------------------
+    // SUPABASE CONFIGURATION
+    // --------------------------------------------------
+
     const SUPABASE_URL =
       "https://qaivqscssdtsnthdiqtu.supabase.co";
 
-    const SUPABASE_PUBLISHABLE_KEY =
-      "sb_publishable_TjT6PMScm58zNVJiugk-zQ_6oIaJNU9";
+    const SUPABASE_ANON_KEY =
+      "sb_publishable_TjT6PMScm58zNVJiug-kzQ_6oIaJNU9";
+
+    const supabase = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY,
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true
+        }
+      }
+    );
 
     const AVATAR_BUCKET = "avatars";
-    const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
+    const MAX_AVATAR_SIZE = 2 * 1024 * 1024;
 
-    const ALLOWED_TYPES = [
-      "image/jpeg",
-      "image/png",
-      "image/webp",
-      "image/gif"
-    ];
-
-    const steps = [
-      {
-        key: "username",
-        title: "What should we call you?",
-        help: "Choose a username with 3–24 letters, numbers or underscores.",
-        type: "text",
-        placeholder: "e.g. Junior_Dev",
-        max: 24
-      },
-      {
-        key: "display_name",
-        title: "What's your display name?",
-        help: "The name other developers can see. Optional.",
-        type: "text",
-        placeholder: "Your preferred name",
-        max: 100
-      },
-      {
-        key: "country",
-        title: "Where are you based?",
-        help: "Your country or region. Optional.",
-        type: "text",
-        placeholder: "e.g. Ghana",
-        max: 100
-      },
-      {
-        key: "skills",
-        title: "What are your coding skills?",
-        help: "List the programming languages and technologies you know or are learning.",
-        type: "textarea",
-        placeholder: "Python, Java, C++, HTML, CSS...",
-        max: 500
-      },
-      {
-        key: "hobbies",
-        title: "What interests you?",
-        help: "Share your interests outside coding or topics you enjoy exploring.",
-        type: "textarea",
-        placeholder: "Technology, AI, gaming, science...",
-        max: 300
-      },
-      {
-        key: "learning_goals",
-        title: "What do you want to build or learn?",
-        help: "Tell us what you want to achieve with AlphaScript.",
-        type: "textarea",
-        placeholder: "Build websites, improve Python, create applications...",
-        max: 500
-      },
-      {
-        key: "review",
-        title: "Your developer profile",
-        help: "Review your information before saving.",
-        type: "review"
-      }
-    ];
-
-    const defaults = {
-      username: "",
-      display_name: "",
-      country: "",
-      skills: "",
-      hobbies: "",
-      learning_goals: ""
-    };
-
-    let answers = { ...defaults };
-    let currentStep = 0;
-    let client = null;
     let currentUser = null;
+    let existingProfile = null;
+    let existingAvatarUrl = null;
+    let selectedAvatarFile = null;
+    let removeAvatar = false;
     let isSaving = false;
-    let profileSaved = false;
-    let currentAvatarUrl = "";
-    let pendingAvatarFile = null;
-    let originalAvatarUrl = "";
 
-    const $ = id => document.getElementById(id);
+    const profileForm = document.getElementById("profileForm");
+    const statusMessage = document.getElementById("statusMessage");
+    const saveButton = document.getElementById("saveButton");
+    const avatarInput = document.getElementById("avatarInput");
+    const avatarPreview = document.getElementById("avatarPreview");
+    const avatarInitial = document.getElementById("avatarInitial");
+    const removeAvatarButton =
+      document.getElementById("removeAvatarButton");
 
-    const wizard = $("wizard");
-    const notice = $("notice");
-    const avatarNotice = $("avatarNotice");
-    const answerArea = $("answerArea");
-    const backButton = $("backButton");
-    const nextButton = $("nextButton");
+    document.getElementById("currentYear").textContent =
+      new Date().getFullYear();
 
-    function showNotice(message, type = "info") {
-      notice.replaceChildren();
-      notice.style.color =
-        type === "error" ? "var(--danger)" :
-        type === "success" ? "var(--success)" :
-        "var(--muted)";
+    // --------------------------------------------------
+    // STATUS MESSAGES
+    // --------------------------------------------------
 
-      notice.textContent = message;
+    function showMessage(message, type = "info") {
+      statusMessage.textContent = message;
+      statusMessage.className =
+        `status-message show ${type}`;
+
+      statusMessage.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+      });
     }
 
-    function showAvatarNotice(message, type = "info") {
-      avatarNotice.textContent = message;
-      avatarNotice.style.color =
-        type === "error" ? "var(--danger)" :
-        type === "success" ? "var(--success)" :
-        "var(--muted)";
+    function clearMessage() {
+      statusMessage.textContent = "";
+      statusMessage.className = "status-message";
     }
 
-    function addLoginLink() {
-      const link = document.createElement("a");
-      link.href = "login.html?screen=login";
-      link.textContent = "Go to login →";
-      link.style.display = "inline-block";
-      link.style.marginTop = "12px";
+    // --------------------------------------------------
+    // THEME
+    // --------------------------------------------------
 
-      notice.append(document.createElement("br"), link);
+    const themeButton = document.getElementById("themeButton");
+
+    function applyTheme(theme) {
+      const selectedTheme =
+        theme === "light" ? "light" : "dark";
+
+      document.documentElement.dataset.theme = selectedTheme;
+
+      try {
+        localStorage.setItem(
+          "alphascript-theme",
+          selectedTheme
+        );
+      } catch (error) {
+        console.warn("Could not save theme preference:", error);
+      }
+
+      themeButton.textContent =
+        selectedTheme === "dark"
+          ? "☀️ Light mode"
+          : "🌙 Dark mode";
     }
 
-    function setAvatar(url) {
-      const image = $("avatarPreview");
-      const placeholder = $("avatarPlaceholder");
+    themeButton.addEventListener("click", () => {
+      const currentTheme =
+        document.documentElement.dataset.theme || "dark";
+
+      applyTheme(
+        currentTheme === "dark" ? "light" : "dark"
+      );
+    });
+
+    applyTheme(
+      document.documentElement.dataset.theme || "dark"
+    );
+
+    // --------------------------------------------------
+    // AVATAR PREVIEW
+    // --------------------------------------------------
+
+    function renderAvatar(url, fallbackName = "A") {
+      avatarPreview.replaceChildren();
 
       if (url) {
+        const image = document.createElement("img");
+
         image.src = url;
-        image.classList.remove("hidden");
-        placeholder.classList.add("hidden");
+        image.alt = "Profile picture";
+
+        image.onerror = () => {
+          avatarPreview.replaceChildren();
+
+          const initial = document.createElement("span");
+          initial.textContent =
+            (fallbackName.trim()[0] || "A").toUpperCase();
+
+          avatarPreview.appendChild(initial);
+        };
+
+        avatarPreview.appendChild(image);
       } else {
-        image.removeAttribute("src");
-        image.classList.add("hidden");
-        placeholder.classList.remove("hidden");
+        const initial = document.createElement("span");
 
-        placeholder.textContent =
-          (answers.display_name || answers.username || "A")
-            .trim()
-            .charAt(0)
-            .toUpperCase() || "A";
+        initial.textContent =
+          (fallbackName.trim()[0] || "A").toUpperCase();
+
+        avatarPreview.appendChild(initial);
       }
+
+      removeAvatarButton.classList.toggle(
+        "hidden",
+        !url && !selectedAvatarFile
+      );
     }
 
-    function createField(step) {
-      const field = document.createElement(
-        step.type === "textarea" ? "textarea" : "input"
+    function updateAvatarFallback() {
+      const name =
+                document.getElementById("fullName").value.trim() ||
+        document.getElementById("username").value.trim() ||
+        currentUser.email ||
+        "AlphaScript";
+
+      renderAvatar("", name);
+    }
+
+    fullNameInput.addEventListener("input", () => {
+      if (!selectedAvatarFile && !avatarUrlInput.value) {
+        updateAvatarFallback();
+      }
+    });
+
+    usernameInput.addEventListener("input", () => {
+      if (!selectedAvatarFile && !avatarUrlInput.value) {
+        updateAvatarFallback();
+      }
+    });
+
+    avatarInput.addEventListener("change", () => {
+      const file = avatarInput.files && avatarInput.files[0];
+
+      if (!file) {
+        selectedAvatarFile = null;
+        updateAvatarFallback();
+        return;
+      }
+
+      if (!file.type.startsWith("image/")) {
+        showMessage("Please select a valid image file.", "error");
+        avatarInput.value = "";
+        selectedAvatarFile = null;
+        updateAvatarFallback();
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        showMessage("Your image must be smaller than 5 MB.", "error");
+        avatarInput.value = "";
+        selectedAvatarFile = null;
+        updateAvatarFallback();
+        return;
+      }
+
+      selectedAvatarFile = file;
+
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        renderAvatar(
+          event.target.result,
+          fullNameInput.value.trim() ||
+            usernameInput.value.trim() ||
+            currentUser.email ||
+            "AlphaScript"
+        );
+      };
+
+      reader.onerror = () => {
+        showMessage("Could not preview this image. Try another one.", "error");
+      };
+
+      reader.readAsDataURL(file);
+      showMessage("Image selected. Save your profile to upload it.", "success");
+    });
+
+    removeAvatarButton.addEventListener("click", () => {
+      selectedAvatarFile = null;
+      avatarInput.value = "";
+      avatarUrlInput.value = "";
+      renderAvatar(
+        "",
+        fullNameInput.value.trim() ||
+          usernameInput.value.trim() ||
+          currentUser.email ||
+          "AlphaScript"
       );
 
-      field.className = "field";
-      field.id = "currentAnswer";
-      field.name = step.key;
-      field.placeholder = step.placeholder || "";
-      field.maxLength = step.max || 500;
-      field.value = answers[step.key] || "";
-
-      if (step.type === "text") {
-        field.type = "text";
-        field.autocomplete =
-          step.key === "username" ? "nickname" : "off";
-      }
-
-      field.addEventListener("input", () => {
-        answers[step.key] = field.value;
-
-        if (
-          step.key === "username" ||
-          step.key === "display_name"
-        ) {
-          if (!currentAvatarUrl && !pendingAvatarFile) {
-            setAvatar("");
-          }
-        }
-      });
-
-      return field;
-    }
-
-    function renderReview() {
-      const container = document.createElement("div");
-      container.className = "review";
-
-      const fields = [
-        ["Username", "username"],
-        ["Display name", "display_name"],
-        ["Country / region", "country"],
-        ["Coding skills", "skills"],
-        ["Interests", "hobbies"],
-        ["Learning goals", "learning_goals"]
-      ];
-
-      fields.forEach(([label, key]) => {
-        const item = document.createElement("div");
-        item.className = "review-item";
-
-        const heading = document.createElement("div");
-        heading.className = "review-label";
-        heading.textContent = label;
-
-        const value = document.createElement("div");
-        value.className = "review-value";
-        value.textContent =
-          String(answers[key] || "").trim() || "Not specified";
-
-        item.append(heading, value);
-        container.appendChild(item);
-      });
-
-      return container;
-    }
-
-    function renderStep() {
-      const step = steps[currentStep];
-
-      const percent = Math.round(
-        ((currentStep + 1) / steps.length) * 100
+      showMessage(
+        "Avatar removal selected. Save your profile to apply the change.",
+        "success"
       );
-
-      $("stepCounter").textContent =
-        "STEP " +
-        String(currentStep + 1).padStart(2, "0") +
-        " / " +
-        String(steps.length).padStart(2, "0");
-
-      $("progressPercent").textContent = percent + "% COMPLETE";
-      $("progressFill").style.width = percent + "%";
-      $("progressTrack").setAttribute("aria-valuenow", String(percent));
-
-      $("stepTag").textContent =
-        "ALPHASCRIPT // " +
-        String(currentStep + 1).padStart(2, "0");
-
-      $("question").textContent = step.title;
-      $("questionHelp").textContent = step.help;
-
-      answerArea.replaceChildren();
-      answerArea.className = "step-content";
-
-      if (step.type === "text" || step.type === "textarea") {
-        answerArea.appendChild(createField(step));
-      } else if (step.type === "review") {
-        answerArea.appendChild(renderReview());
-      }
-
-      backButton.disabled = currentStep === 0 || isSaving;
-      nextButton.disabled = isSaving || profileSaved;
-
-      nextButton.textContent = profileSaved
-        ? "Profile saved ✓"
-        : currentStep === steps.length - 1
-          ? "Save profile ✓"
-          : "Next →";
-
-      showNotice("");
-    }
-
-    function validateCurrentStep() {
-      const step = steps[currentStep];
-
-      if (step.key === "username") {
-        const username = String(answers.username || "").trim();
-
-        if (!/^[A-Za-z0-9_]{3,24}$/.test(username)) {
-          showNotice(
-            "Enter a username with 3–24 letters, numbers or underscores.",
-            "error"
-          );
-          return false;
-        }
-
-        answers.username = username;
-      }
-
-      const field = $("currentAnswer");
-
-      if (field && !field.checkValidity()) {
-        field.reportValidity();
-        return false;
-      }
-
-      if (field) {
-        answers[step.key] = field.value;
-      }
-
-      return true;
-    }
-
-    function showContinueButton() {
-      const button = document.createElement("a");
-
-      button.href = "index.html";
-      button.className = "btn btn-primary";
-      button.textContent = "Continue to AlphaScript →";
-      button.style.display = "flex";
-      button.style.marginTop = "16px";
-      button.style.width = "100%";
-
-      notice.appendChild(document.createElement("br"));
-      notice.appendChild(button);
-    }
+    });
 
     async function uploadAvatar() {
-      if (!pendingAvatarFile) {
-        return currentAvatarUrl;
+      if (!selectedAvatarFile) {
+        return avatarUrlInput.value.trim() || null;
       }
 
-      const file = pendingAvatarFile;
+      const file = selectedAvatarFile;
+      const extension = file.name.includes(".")
+        ? file.name.split(".").pop().toLowerCase()
+        : "jpg";
 
-      if (file.size > MAX_AVATAR_SIZE) {
-        throw new Error("Your profile picture must be 5 MB or smaller.");
-      }
+      const filePath = `${currentUser.id}/avatar-${Date.now()}.${extension}`;
 
-      if (!ALLOWED_TYPES.includes(file.type)) {
-        throw new Error("Choose a JPG, PNG, WEBP or GIF image.");
-      }
-
-      showNotice("Uploading your profile picture...");
-
-      const extension =
-        file.type === "image/jpeg"
-          ? "jpg"
-          : file.type.split("/")[1];
-
-      const path =
-        currentUser.id + "/" + Date.now() + "." + extension;
-
-      const { error } = await client.storage
-        .from(AVATAR_BUCKET)
-        .upload(path, file, {
+      const { error: uploadError } = await supabase.storage
+        .from("avatars")
+        .upload(filePath, file, {
           cacheControl: "3600",
           upsert: false,
           contentType: file.type
         });
 
-      if (error) {
-        throw error;
+      if (uploadError) {
+        throw new Error(
+          "Avatar upload failed: " + uploadError.message
+        );
       }
 
-      const { data } = client.storage
-        .from(AVATAR_BUCKET)
-        .getPublicUrl(path);
+      const { data } = supabase.storage
+        .from("avatars")
+        .getPublicUrl(filePath);
 
       return data.publicUrl;
     }
 
-    async function saveProfile() {
-      if (isSaving || profileSaved) return;
+    function parseCommaSeparatedValues(value) {
+      return value
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean);
+    }
 
-      if (!client || !currentUser) {
-        showNotice("Please log in before saving your profile.", "error");
+    function validateProfile() {
+      const fullName = fullNameInput.value.trim();
+      const username = usernameInput.value.trim();
+      const country = countryInput.value.trim();
+      const skills = skillsInput.value.trim();
+      const hobbies = hobbiesInput.value.trim();
+      const learningGoals = learningGoalsInput.value.trim();
+
+      if (!fullName || !username || !country) {
+        showMessage(
+          "Please complete your name, username, and country.",
+          "error"
+        );
+        return false;
+      }
+
+      if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
+        showMessage(
+          "Username must be 3–20 characters and contain only letters, numbers, and underscores.",
+          "error"
+        );
+        return false;
+      }
+
+      if (!skills || !hobbies || !learningGoals) {
+        showMessage(
+          "Please complete your skills, hobbies, and learning goals.",
+          "error"
+        );
+        return false;
+      }
+
+      return true;
+    }
+
+    async function loadProfile() {
+      showMessage("Loading your profile...", "info");
+
+      const { data, error } = await supabase
+        .from("profiles")
+        .select(
+          "id, username, full_name, country, skills, hobbies, learning_goals, avatar_url"
+        )
+        .eq("id", currentUser.id)
+        .maybeSingle();
+
+      if (error) {
+        console.error("Profile loading error:", error);
+        showMessage(
+          "Could not load your profile: " + error.message,
+          "error"
+        );
         return;
       }
 
-      isSaving = true;
-      nextButton.disabled = true;
-      backButton.disabled = true;
-      $("chooseAvatar").disabled = true;
-      $("removeAvatar").disabled = true;
+      if (data) {
+        fullNameInput.value = data.full_name || "";
+        usernameInput.value = data.username || "";
+        countryInput.value = data.country || "";
+
+        skillsInput.value = Array.isArray(data.skills)
+          ? data.skills.join(", ")
+          : data.skills || "";
+
+        hobbiesInput.value = Array.isArray(data.hobbies)
+          ? data.hobbies.join(", ")
+          : data.hobbies || "";
+
+        learningGoalsInput.value = Array.isArray(data.learning_goals)
+          ? data.learning_goals.join(", ")
+          : data.learning_goals || "";
+
+        avatarUrlInput.value = data.avatar_url || "";
+
+        renderAvatar(
+          data.avatar_url || "",
+          data.full_name || data.username || currentUser.email || "AlphaScript"
+        );
+      } else {
+        updateAvatarFallback();
+      }
+
+      showMessage("", "info");
+    }
+
+    profileForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!validateProfile()) {
+        return;
+      }
+
+      saveButton.disabled = true;
+      saveButton.textContent = "Saving...";
+      showMessage("Saving your profile...", "info");
 
       try {
-        showNotice("Saving your profile...");
-
         const avatarUrl = await uploadAvatar();
 
         const profileData = {
           id: currentUser.id,
-          username: answers.username.trim(),
-          full_name: answers.display_name.trim(),
-          country: answers.country.trim(),
-          skills: answers.skills.trim(),
-          hobbies: answers.hobbies.trim(),
-          learning_goals: answers.learning_goals.trim(),
+          full_name: fullNameInput.value.trim(),
+          username: usernameInput.value.trim(),
+          country: countryInput.value.trim(),
+          skills: parseCommaSeparatedValues(skillsInput.value),
+          hobbies: parseCommaSeparatedValues(hobbiesInput.value),
+          learning_goals: parseCommaSeparatedValues(
+            learningGoalsInput.value
+          ),
+          avatar_url: avatarUrl,
           updated_at: new Date().toISOString()
         };
 
-        if (avatarUrl) {
-          profileData.avatar_url = avatarUrl;
-        }
-
-        const { error } = await client
+        const { error: saveError } = await supabase
           .from("profiles")
           .upsert(profileData, { onConflict: "id" });
+
+        if (saveError) {
+          throw new Error(saveError.message);
+        }
+
+        showMessage(
+          "Profile saved successfully! Redirecting to AlphaScript...",
+          "success"
+        );
+
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1200);
+      } catch (error) {
+        console.error("Profile save error:", error);
+        showMessage(
+          error.message || "Something went wrong while saving your profile.",
+          "error"
+        );
+      } finally {
+        saveButton.disabled = false;
+        saveButton.textContent = "Save Profile";
+      }
+    });
+
+    async function initializeProfilePage() {
+      try {
+        const {
+          data: { session },
+          error
+        } = await supabase.auth.getSession();
 
         if (error) {
           throw error;
         }
 
-        currentAvatarUrl = avatarUrl;
-        originalAvatarUrl = avatarUrl;
-        pendingAvatarFile = null;
-        profileSaved = true;
-
-        setAvatar(currentAvatarUrl);
-
-        showNotice(
-          "Your profile has been saved successfully!",
-          "success"
-        );
-
-        nextButton.textContent = "Profile saved ✓";
-        nextButton.disabled = true;
-        backButton.disabled = true;
-
-        showContinueButton();
-
-      } catch (error) {
-        console.error("Profile save error:", error);
-
-        showNotice(
-          error.message ||
-          "Could not save your profile. Please try again.",
-          "error"
-        );
-
-        nextButton.disabled = false;
-        backButton.disabled = currentStep === 0;
-
-      } finally {
-        isSaving = false;
-        $("chooseAvatar").disabled = false;
-        $("removeAvatar").disabled = false;
-      }
-    }
-
-    nextButton.addEventListener("click", async () => {
-      if (isSaving || profileSaved) return;
-
-      if (!validateCurrentStep()) return;
-
-      if (currentStep === steps.length - 1) {
-        await saveProfile();
-        return;
-      }
-
-      currentStep++;
-      renderStep();
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-    });
-
-    backButton.addEventListener("click", () => {
-      if (currentStep === 0 || isSaving || profileSaved) return;
-
-      currentStep--;
-      renderStep();
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-    });
-
-    $("chooseAvatar").addEventListener("click", () => {
-      if (isSaving) return;
-      $("avatarFile").click();
-    });
-
-    $("avatarFile").addEventListener("change", event => {
-      const file = event.target.files?.[0];
-
-      if (!file) return;
-
-      if (!ALLOWED_TYPES.includes(file.type)) {
-        showAvatarNotice(
-          "Choose a JPG, PNG, WEBP or GIF image.",
-          "error"
-        );
-
-        event.target.value = "";
-        return;
-      }
-
-      if (file.size > MAX_AVATAR_SIZE) {
-        showAvatarNotice(
-          "Your image must be 5 MB or smaller.",
-          "error"
-        );
-
-        event.target.value = "";
-        return;
-      }
-
-      pendingAvatarFile = file;
-
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        setAvatar(reader.result);
-
-        showAvatarNotice(
-          "Photo selected. Save your profile to upload it.",
-          "success"
-        );
-      };
-
-      reader.onerror = () => {
-        pendingAvatarFile = null;
-        showAvatarNotice(
-          "Could not preview that image.",
-          "error"
-        );
-      };
-
-      reader.readAsDataURL(file);
-    });
-
-    $("removeAvatar").addEventListener("click", () => {
-      if (isSaving) return;
-
-      pendingAvatarFile = null;
-      currentAvatarUrl = "";
-      $("avatarFile").value = "";
-
-      setAvatar("");
-
-      showAvatarNotice(
-        "Photo removed from the preview. Save your profile to apply changes."
-      );
-    });
-
-    async function start() {
-      try {
-        if (!window.supabase?.createClient) {
-          throw new Error(
-            "Supabase could not be loaded. Check your internet connection and refresh."
-          );
-        }
-
-        client = window.supabase.createClient(
-          SUPABASE_URL,
-          SUPABASE_PUBLISHABLE_KEY
-        );
-
-        const {
-          data: { session },
-          error: sessionError
-        } = await client.auth.getSession();
-
-        if (sessionError) {
-          throw sessionError;
-        }
-
-        if (!session?.user) {
-          showNotice(
-            "Please log in to access your developer profile.",
-            "error"
-          );
-
-          addLoginLink();
-
-          $("stepCounter").textContent = "LOGIN REQUIRED";
-          $("progressPercent").textContent = "0% COMPLETE";
-
+        if (!session) {
+          window.location.replace("login.html");
           return;
         }
 
         currentUser = session.user;
 
-        showNotice("Loading your profile...");
-
-        const { data: profile, error: profileError } = await client
-          .from("profiles")
-          .select("*")
-          .eq("id", currentUser.id)
-          .maybeSingle();
-
-        if (profileError) {
-          throw profileError;
+        if (userEmailElement) {
+          userEmailElement.textContent = currentUser.email || "";
         }
 
-        if (profile) {
-          answers.username = profile.username || "";
-          answers.display_name = profile.full_name || "";
-          answers.country = profile.country || "";
-          answers.skills = profile.skills || "";
-          answers.hobbies = profile.hobbies || "";
-
-          answers.learning_goals = Array.isArray(profile.learning_goals)
-            ? profile.learning_goals.join(", ")
-            : profile.learning_goals || "";
-
-          currentAvatarUrl = profile.avatar_url || "";
-          originalAvatarUrl = currentAvatarUrl;
-
-          setAvatar(currentAvatarUrl);
-        }
-
-        if (!answers.username && currentUser.email) {
-          const suggestion = currentUser.email
-            .split("@")[0]
-            .replace(/[^A-Za-z0-9_]/g, "")
-            .slice(0, 24);
-
-          if (suggestion.length >= 3) {
-            answers.username = suggestion;
-          }
-        }
-
-        wizard.classList.remove("hidden");
-        renderStep();
-
-        showNotice(
-          profile
-            ? "Your existing profile is ready to edit."
-            : "Welcome! Let's create your developer profile.",
-          "success"
-        );
-
+        await loadProfile();
       } catch (error) {
         console.error("Profile initialization error:", error);
-
-        showNotice(
-          error.message ||
-          "Could not connect to AlphaScript. Please try again.",
+        showMessage(
+          "Unable to initialize your profile: " + error.message,
           "error"
         );
       }
     }
 
-    start();
+    logoutButton.addEventListener("click", async () => {
+      logoutButton.disabled = true;
+      logoutButton.textContent = "Logging out...";
+
+      const { error } = await supabase.auth.signOut();
+
+      if (error) {
+        console.error("Logout error:", error);
+        showMessage("Logout failed: " + error.message, "error");
+        logoutButton.disabled = false;
+        logoutButton.textContent = "Log out";
+        return;
+      }
+
+      window.location.replace("login.html");
+    });
+
+    // Restore the saved theme.
+    const savedTheme = localStorage.getItem("alphascript-theme");
+
+    if (savedTheme === "light" || savedTheme === "dark") {
+      document.documentElement.setAttribute("data-theme", savedTheme);
+    }
+
+    if (themeButton) {
+      themeButton.addEventListener("click", () => {
+        const currentTheme =
+          document.documentElement.getAttribute("data-theme") || "dark";
+
+        const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+        document.documentElement.setAttribute("data-theme", newTheme);
+        localStorage.setItem("alphascript-theme", newTheme);
+      });
+    }
+
+    initializeProfilePage();
   </script>
 </body>
 </html>
