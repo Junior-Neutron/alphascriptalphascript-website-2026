@@ -390,7 +390,7 @@ body.light .btn {
   display: none !important;
 }
 
-/* Animated logo introduction */
+/* Animated introduction */
 
 #introOverlay {
   position: fixed;
@@ -535,7 +535,6 @@ body.light .btn {
 
 <div id="introOverlay" aria-label="Loading AlphaScript">
   <div class="intro-orb"></div>
-
   <div class="intro-content">
     <div class="intro-logo">ALPHA<span>SCRIPT</span></div>
     <div class="intro-line"></div>
@@ -548,23 +547,15 @@ body.light .btn {
 
   <header class="topbar">
     <a class="brand" href="index.html">ALPHA<span>SCRIPT</span></a>
-
     <div class="top-actions">
-      <button
-        type="button"
-        class="icon-btn"
-        id="themeToggle"
-        aria-label="Toggle light and dark theme"
-        title="Toggle theme"
-      >☀</button>
+      <button type="button" class="icon-btn" id="themeToggle"
+        aria-label="Toggle light and dark theme" title="Toggle theme">☀</button>
     </div>
   </header>
 
   <section class="intro">
     <div class="eyebrow">Your next chapter starts here</div>
-
     <h1 id="pageTitle">Welcome to <span>AlphaScript.</span></h1>
-
     <p class="subtitle" id="pageSubtitle">
       Sign in to continue your developer journey, manage your profile,
       and connect with a community of builders.
@@ -573,49 +564,26 @@ body.light .btn {
 
   <section class="panel">
 
-    <!-- LOGIN -->
-
     <form id="loginScreen" novalidate>
       <h2>Welcome back</h2>
-
-      <p class="panel-description">
-        Sign in to access your AlphaScript account.
-      </p>
+      <p class="panel-description">Sign in to access your AlphaScript account.</p>
 
       <div class="form-group">
         <label for="loginEmail">Email address</label>
-
-        <input
-          class="field"
-          type="email"
-          id="loginEmail"
-          name="email"
-          placeholder="you@example.com"
-          autocomplete="email"
-          maxlength="254"
-          required
-        >
+        <input class="field" type="email" id="loginEmail" name="email"
+          placeholder="you@example.com" autocomplete="email"
+          maxlength="254" required>
       </div>
 
       <div class="form-group">
         <label for="loginPassword">Password</label>
-
         <div class="input-wrap">
-          <input
-            class="field password-field"
-            type="password"
-            id="loginPassword"
-            name="password"
+          <input class="field password-field" type="password"
+            id="loginPassword" name="password"
             placeholder="Enter your password"
-            autocomplete="current-password"
-            required
-          >
-
-          <button
-            class="password-toggle"
-            type="button"
-            data-password="loginPassword"
-          >SHOW</button>
+            autocomplete="current-password" required>
+          <button class="password-toggle" type="button"
+            data-password="loginPassword">SHOW</button>
         </div>
       </div>
 
@@ -624,10 +592,7 @@ body.light .btn {
           <input type="checkbox" id="rememberMe" checked>
           Remember me
         </label>
-
-        <a href="#" class="text-link" id="forgotLink">
-          Forgot password?
-        </a>
+        <a href="#" class="text-link" id="forgotLink">Forgot password?</a>
       </div>
 
       <button type="submit" class="btn btn-primary" id="loginButton">
@@ -642,31 +607,18 @@ body.light .btn {
       </p>
     </form>
 
-    <!-- SIGN UP -->
-
     <form id="signupScreen" class="hidden" novalidate>
       <h2>Create your account</h2>
-
       <p class="panel-description">
         Join AlphaScript and start building your developer identity.
       </p>
 
       <div class="form-group">
         <label for="signupUsername">Username</label>
-
-        <input
-          class="field"
-          type="text"
-          id="signupUsername"
-          name="username"
-          placeholder="e.g. Junior_Neutron"
-          autocomplete="username"
-          minlength="3"
-          maxlength="24"
-          pattern="[A-Za-z0-9_]{3,24}"
-          required
-        >
-
+        <input class="field" type="text" id="signupUsername"
+          name="username" placeholder="e.g. Junior_Neutron"
+          autocomplete="username" minlength="3" maxlength="24"
+          pattern="[A-Za-z0-9_]{3,24}" required>
         <p class="subtitle" style="font-size:11px;margin-top:7px">
           Use 3–24 letters, numbers or underscores.
         </p>
@@ -674,62 +626,32 @@ body.light .btn {
 
       <div class="form-group">
         <label for="signupEmail">Email address</label>
-
-        <input
-          class="field"
-          type="email"
-          id="signupEmail"
-          name="email"
-          placeholder="you@example.com"
-          autocomplete="email"
-          maxlength="254"
-          required
-        >
+        <input class="field" type="email" id="signupEmail"
+          name="email" placeholder="you@example.com"
+          autocomplete="email" maxlength="254" required>
       </div>
 
       <div class="form-group">
         <label for="signupPassword">Password</label>
-
         <div class="input-wrap">
-          <input
-            class="field password-field"
-            type="password"
-            id="signupPassword"
-            name="password"
+          <input class="field password-field" type="password"
+            id="signupPassword" name="password"
             placeholder="Create a strong password"
-            autocomplete="new-password"
-            minlength="8"
-            required
-          >
-
-          <button
-            class="password-toggle"
-            type="button"
-            data-password="signupPassword"
-          >SHOW</button>
+            autocomplete="new-password" minlength="8" required>
+          <button class="password-toggle" type="button"
+            data-password="signupPassword">SHOW</button>
         </div>
       </div>
 
       <div class="form-group">
         <label for="confirmPassword">Confirm password</label>
-
         <div class="input-wrap">
-          <input
-            class="field password-field"
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
+          <input class="field password-field" type="password"
+            id="confirmPassword" name="confirmPassword"
             placeholder="Enter your password again"
-            autocomplete="new-password"
-            minlength="8"
-            required
-          >
-
-          <button
-            class="password-toggle"
-            type="button"
-            data-password="confirmPassword"
-          >SHOW</button>
+            autocomplete="new-password" minlength="8" required>
+          <button class="password-toggle" type="button"
+            data-password="confirmPassword">SHOW</button>
         </div>
       </div>
 
@@ -743,11 +665,8 @@ body.light .btn {
       </p>
     </form>
 
-    <!-- FORGOT PASSWORD -->
-
     <form id="forgotScreen" class="hidden" novalidate>
       <h2>Reset your password</h2>
-
       <p class="panel-description">
         Enter the email address associated with your account.
         We'll send you a password-reset link.
@@ -755,17 +674,9 @@ body.light .btn {
 
       <div class="form-group">
         <label for="forgotEmail">Email address</label>
-
-        <input
-          class="field"
-          type="email"
-          id="forgotEmail"
-          name="email"
-          placeholder="you@example.com"
-          autocomplete="email"
-          maxlength="254"
-          required
-        >
+        <input class="field" type="email" id="forgotEmail"
+          name="email" placeholder="you@example.com"
+          autocomplete="email" maxlength="254" required>
       </div>
 
       <button type="submit" class="btn btn-primary" id="forgotButton">
@@ -778,58 +689,33 @@ body.light .btn {
       </p>
     </form>
 
-    <!-- NEW PASSWORD -->
-
     <form id="resetScreen" class="hidden" novalidate>
       <h2>Choose a new password</h2>
-
       <p class="panel-description">
         Enter a new password for your AlphaScript account.
       </p>
 
       <div class="form-group">
         <label for="newPassword">New password</label>
-
         <div class="input-wrap">
-          <input
-            class="field password-field"
-            type="password"
-            id="newPassword"
-            name="newPassword"
+          <input class="field password-field" type="password"
+            id="newPassword" name="newPassword"
             placeholder="Create a new password"
-            autocomplete="new-password"
-            minlength="8"
-            required
-          >
-
-          <button
-            class="password-toggle"
-            type="button"
-            data-password="newPassword"
-          >SHOW</button>
+            autocomplete="new-password" minlength="8" required>
+          <button class="password-toggle" type="button"
+            data-password="newPassword">SHOW</button>
         </div>
       </div>
 
       <div class="form-group">
         <label for="confirmNewPassword">Confirm new password</label>
-
         <div class="input-wrap">
-          <input
-            class="field password-field"
-            type="password"
-            id="confirmNewPassword"
-            name="confirmNewPassword"
+          <input class="field password-field" type="password"
+            id="confirmNewPassword" name="confirmNewPassword"
             placeholder="Enter the new password again"
-            autocomplete="new-password"
-            minlength="8"
-            required
-          >
-
-          <button
-            class="password-toggle"
-            type="button"
-            data-password="confirmNewPassword"
-          >SHOW</button>
+            autocomplete="new-password" minlength="8" required>
+          <button class="password-toggle" type="button"
+            data-password="confirmNewPassword">SHOW</button>
         </div>
       </div>
 
@@ -842,9 +728,7 @@ body.light .btn {
 
   </section>
 
-  <footer class="footer">
-    BUILD WITH PURPOSE · LEARN WITHOUT LIMITS
-  </footer>
+  <footer class="footer">BUILD WITH PURPOSE · LEARN WITHOUT LIMITS</footer>
 
 </main>
 
@@ -854,24 +738,21 @@ body.light .btn {
 "use strict";
 
 /* Supabase configuration */
-
 const SUPABASE_URL =
   "https://qaivqscssdtsnthdiqtu.supabase.co";
 
+/* Corrected key: Jiugk-zQ, not Jiug-kzQ */
 const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_TjT6PMScm58zNVJiug-kzQ_6oIaJNU9";
+  "sb_publishable_TjT6PMScm58zNVJiugk-zQ_6oIaJNU9";
 
 /* Page addresses */
-
 const HOME_URL = new URL("index.html", window.location.href).href;
 const PROFILE_URL = new URL("profile.html", window.location.href).href;
 
 const $ = id => document.getElementById(id);
 
 let supabaseClient = null;
-let currentScreen = "login";
 let isBusy = false;
-let recoveryMode = false;
 
 const loginScreen = $("loginScreen");
 const signupScreen = $("signupScreen");
@@ -884,8 +765,6 @@ const signupButton = $("signupButton");
 const forgotButton = $("forgotButton");
 const resetButton = $("resetButton");
 
-/* Notices */
-
 function showNotice(message, type = "info") {
   notice.textContent = message;
   notice.className = "notice show " + type;
@@ -896,12 +775,8 @@ function clearNotice() {
   notice.className = "notice";
 }
 
-/* Form navigation */
-
 function showScreen(screen) {
   if (isBusy) return;
-
-  currentScreen = screen;
 
   loginScreen.classList.toggle("hidden", screen !== "login");
   signupScreen.classList.toggle("hidden", screen !== "signup");
@@ -935,19 +810,17 @@ function showScreen(screen) {
 
   const info = titles[screen] || titles.login;
 
-  $("pageTitle").replaceChildren(
-    document.createTextNode(info.title + " ")
-  );
+  $("pageTitle").replaceChildren(document.createTextNode(info.title + " "));
 
   const span = document.createElement("span");
   span.textContent = info.word;
   $("pageTitle").appendChild(span);
-
   $("pageSubtitle").textContent = info.subtitle;
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+/* Form navigation */
 $("showSignup").addEventListener("click", event => {
   event.preventDefault();
   showScreen("signup");
@@ -970,7 +843,6 @@ $("backToLogin").addEventListener("click", event => {
 });
 
 /* Show and hide passwords */
-
 document.querySelectorAll("[data-password]").forEach(button => {
   button.addEventListener("click", () => {
     const field = $(button.dataset.password);
@@ -983,10 +855,8 @@ document.querySelectorAll("[data-password]").forEach(button => {
 });
 
 /* Theme */
-
 function applyTheme(theme) {
   document.body.classList.toggle("light", theme === "light");
-
   $("themeToggle").textContent = theme === "light" ? "☾" : "☀";
 
   $("themeToggle").setAttribute(
@@ -1015,25 +885,19 @@ $("themeToggle").addEventListener("click", () => {
 
   try {
     localStorage.setItem("alphascript-theme", nextTheme);
-  } catch (_) {}
+} catch (_) {}
 });
 
-/* Loading states */
-
+/* Button loading state */
 function setBusy(button, busyText) {
   isBusy = true;
-
-  if (!button.dataset.originalText) {
-    button.dataset.originalText = button.textContent;
-  }
-
+  button.dataset.originalText = button.textContent;
+  button.disabled = true;
   button.textContent = busyText;
 
   document.querySelectorAll(
     "#loginScreen button, #signupScreen button, #forgotScreen button, #resetScreen button"
-  ).forEach(item => {
-    item.disabled = true;
-  });
+  ).forEach(item => item.disabled = true);
 }
 
 function clearBusy() {
@@ -1041,37 +905,24 @@ function clearBusy() {
 
   document.querySelectorAll(
     "#loginScreen button, #signupScreen button, #forgotScreen button, #resetScreen button"
-  ).forEach(item => {
-    item.disabled = false;
-  });
+  ).forEach(item => item.disabled = false);
 
-  loginButton.textContent =
-    loginButton.dataset.originalText || "Sign in →";
-
-  signupButton.textContent =
-    signupButton.dataset.originalText || "Create account →";
-
-  forgotButton.textContent =
-    forgotButton.dataset.originalText || "Send reset link →";
-
-  resetButton.textContent =
-    resetButton.dataset.originalText || "Update password →";
+  loginButton.textContent = loginButton.dataset.originalText || "Sign in →";
+  signupButton.textContent = signupButton.dataset.originalText || "Create account →";
+  forgotButton.textContent = forgotButton.dataset.originalText || "Send reset link →";
+  resetButton.textContent = resetButton.dataset.originalText || "Update password →";
 }
-
-/* Friendly authentication errors */
 
 function friendlyAuthError(error, action) {
   const message = String(error?.message || "").toLowerCase();
 
-  if (
-    message.includes("invalid login credentials") ||
-    message.includes("invalid credentials")
-  ) {
-    return "Incorrect email or password. Check your details and try again.";
+  if (message.includes("invalid login credentials") ||
+      message.includes("invalid credentials")) {
+    return "Incorrect email or password. Please check your details and try again.";
   }
 
   if (message.includes("email not confirmed")) {
-    return "Your email hasn't been confirmed. Check your inbox for the confirmation link.";
+    return "Your email hasn't been confirmed yet. Check your inbox for the confirmation link.";
   }
 
   if (message.includes("user already registered")) {
@@ -1082,17 +933,13 @@ function friendlyAuthError(error, action) {
     return "Your password is too short. Use at least 8 characters.";
   }
 
-  if (
-    message.includes("rate limit") ||
-    message.includes("too many requests")
-  ) {
+  if (message.includes("rate limit") ||
+      message.includes("too many requests")) {
     return "Too many attempts. Please wait a little and try again.";
   }
 
-  if (
-    message.includes("network") ||
-    message.includes("fetch")
-  ) {
+  if (message.includes("network") ||
+      message.includes("fetch")) {
     return "A network error occurred. Check your internet connection and try again.";
   }
 
@@ -1103,60 +950,21 @@ function friendlyAuthError(error, action) {
   return error?.message || "Something went wrong. Please try again.";
 }
 
-/*
- * Check whether the user's profile is complete.
- * A complete profile must have both username and full_name.
- */
-
-async function getProfileDestination(user) {
-  if (!user) {
-    return "login";
-  }
-
-  const { data: profile, error } = await supabaseClient
-    .from("profiles")
-    .select("username, full_name")
-    .eq("id", user.id)
-    .maybeSingle();
-
-  if (error) {
-    console.error("Profile check failed:", error);
-
-    throw new Error(
-      "We signed you in, but couldn't check your profile. Please try again. Details: " +
-      error.message
+function cleanAuthUrl() {
+  try {
+    window.history.replaceState(
+      {},
+      document.title,
+      window.location.pathname
     );
-  }
-
-  if (
-    profile &&
-    typeof profile.username === "string" &&
-    profile.username.trim() !== "" &&
-    typeof profile.full_name === "string" &&
-    profile.full_name.trim() !== ""
-  ) {
-    return "home";
-  }
-
-  return "profile";
+  } catch (_) {}
 }
 
-async function redirectAccordingToProfile(user) {
-  const destination = await getProfileDestination(user);
-
-  if (destination === "home") {
-    window.location.replace(HOME_URL);
-  } else if (destination === "profile") {
-    window.location.replace(PROFILE_URL);
-  } else {
-    window.location.replace(
-      new URL("login.html", window.location.href).href
-    );
-  }
+function goToProfile() {
+  window.location.replace(PROFILE_URL);
 }
 
-/* LOGIN */
-
+/* Login */
 loginScreen.addEventListener("submit", async event => {
   event.preventDefault();
 
@@ -1183,29 +991,33 @@ loginScreen.addEventListener("submit", async event => {
   showNotice("Verifying your account...", "info");
 
   try {
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
-      email,
-      password
-    });
+    const { data, error } =
+      await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+      });
 
     if (error) throw error;
 
     if (!data.user) {
-      throw new Error("No user account was returned.");
+      throw new Error(
+        "Login succeeded, but no user account was returned."
+      );
     }
 
-    showNotice("Login successful! Checking your profile...", "success");
+    showNotice(
+      "Login successful! Opening your developer profile...",
+      "success"
+    );
 
-    await redirectAccordingToProfile(data.user);
-
+    setTimeout(goToProfile, 450);
   } catch (error) {
     clearBusy();
     showNotice(friendlyAuthError(error, "login"), "error");
   }
 });
 
-/* SIGN UP */
-
+/* Sign up */
 signupScreen.addEventListener("submit", async event => {
   event.preventDefault();
 
@@ -1235,7 +1047,10 @@ signupScreen.addEventListener("submit", async event => {
   }
 
   if (password.length < 8) {
-    showNotice("Your password must contain at least 8 characters.", "error");
+    showNotice(
+      "Your password must contain at least 8 characters.",
+      "error"
+    );
     $("signupPassword").focus();
     return;
   }
@@ -1254,7 +1069,7 @@ signupScreen.addEventListener("submit", async event => {
       email,
       password,
       options: {
-        emailRedirectTo: HOME_URL,
+        emailRedirectTo: LOGIN_PATH,
         data: { username }
       }
     });
@@ -1263,30 +1078,30 @@ signupScreen.addEventListener("submit", async event => {
 
     if (data.session && data.user) {
       showNotice(
-        "Your account is ready! Opening profile setup...",
+        "Your account is ready! Opening your developer profile...",
         "success"
       );
 
-      await redirectAccordingToProfile(data.user);
+      setTimeout(goToProfile, 450);
       return;
     }
 
     clearBusy();
 
     showNotice(
-      "Your account has been created. Check your email to confirm it. After confirmation, sign in to continue to profile setup.",
+      "Account created! Check your email for the confirmation link. After confirming your email, you can sign in.",
       "success"
     );
 
+    signupButton.textContent = "Account created ✓";
   } catch (error) {
     clearBusy();
     showNotice(friendlyAuthError(error, "signup"), "error");
   }
 });
 
-/* FORGOT PASSWORD */
-
-$("forgotScreen").addEventListener("submit", async event => {
+/* Forgot password */
+forgotScreen.addEventListener("submit", async event => {
   event.preventDefault();
 
   if (isBusy) return;
@@ -1294,7 +1109,7 @@ $("forgotScreen").addEventListener("submit", async event => {
 
   if (!supabaseClient) {
     showNotice(
-      "Authentication is unavailable. Check your configuration.",
+      "Authentication is unavailable. Check your Supabase configuration.",
       "error"
     );
     return;
@@ -1314,14 +1129,9 @@ $("forgotScreen").addEventListener("submit", async event => {
   showNotice("Sending your password-reset email...", "info");
 
   try {
-    const resetUrl = new URL(
-      "login.html?mode=reset",
-      window.location.href
-    ).href;
-
     const { error } =
       await supabaseClient.auth.resetPasswordForEmail(email, {
-        redirectTo: resetUrl
+        redirectTo: RESET_CALLBACK_URL
       });
 
     if (error) throw error;
@@ -1333,14 +1143,14 @@ $("forgotScreen").addEventListener("submit", async event => {
       "success"
     );
 
+    forgotButton.textContent = "Reset link requested ✓";
   } catch (error) {
     clearBusy();
     showNotice(friendlyAuthError(error, "forgot"), "error");
   }
 });
 
-/* UPDATE PASSWORD */
-
+/* Update password */
 resetScreen.addEventListener("submit", async event => {
   event.preventDefault();
 
@@ -1349,7 +1159,7 @@ resetScreen.addEventListener("submit", async event => {
 
   if (!supabaseClient) {
     showNotice(
-      "Authentication is unavailable. Check your configuration.",
+      "Authentication is unavailable. Check your Supabase configuration.",
       "error"
     );
     return;
@@ -1375,50 +1185,27 @@ resetScreen.addEventListener("submit", async event => {
   showNotice("Updating your password...", "info");
 
   try {
-    const { error } = await supabaseClient.auth.updateUser({
-      password
-    });
+    const { error } =
+      await supabaseClient.auth.updateUser({ password });
 
     if (error) throw error;
 
+    recoveryMode = false;
+    cleanAuthUrl();
+
     showNotice(
-      "Your password has been updated. Checking your profile...",
+      "Your password has been updated successfully. Opening your developer profile...",
       "success"
     );
 
-    const { data, error: sessionError } =
-      await supabaseClient.auth.getSession();
-
-    if (sessionError) throw sessionError;
-
-    if (data.session?.user) {
-      await redirectAccordingToProfile(data.session.user);
-    } else {
-      window.location.replace(
-        new URL("login.html", window.location.href).href
-      );
-    }
-
+    setTimeout(goToProfile, 900);
   } catch (error) {
     clearBusy();
     showNotice(friendlyAuthError(error, "reset"), "error");
   }
 });
 
-/* CLEAN AUTHENTICATION CALLBACK URL */
-
-function cleanAuthUrl() {
-  try {
-    window.history.replaceState(
-      {},
-      document.title,
-      window.location.pathname
-    );
-  } catch (_) {}
-}
-
-/* CHECK FOR AN EXISTING SESSION */
-
+/* Handle email-confirmation and password-recovery callbacks */
 async function handleAuthCallback() {
   const url = new URL(window.location.href);
 
@@ -1432,7 +1219,8 @@ async function handleAuthCallback() {
     showScreen(recoveryMode ? "reset" : "login");
 
     showNotice(
-      "Authentication link error: " + authError.replace(/\+/g, " "),
+      "Authentication link error: " +
+      authError.replace(/\+/g, " "),
       "error"
     );
 
@@ -1450,6 +1238,8 @@ async function handleAuthCallback() {
       showNotice(friendlyAuthError(error, "callback"), "error");
       return;
     }
+
+    if (!recoveryMode) cleanAuthUrl();
   }
 
   const hash = new URLSearchParams(
@@ -1463,9 +1253,9 @@ async function handleAuthCallback() {
   if (recoveryMode) {
     showScreen("reset");
 
-    const { data, error } = await supabaseClient.auth.getSession();
+    const { data } = await supabaseClient.auth.getSession();
 
-    if (error || !data.session) {
+    if (!data.session) {
       showNotice(
         "Your password-reset session could not be verified. Please request a new reset link.",
         "error"
@@ -1475,31 +1265,22 @@ async function handleAuthCallback() {
     return;
   }
 
-  const { data, error } = await supabaseClient.auth.getSession();
+  const { data, error } =
+    await supabaseClient.auth.getSession();
 
   if (error) {
     showScreen("login");
-    showNotice(friendlyAuthError(error, "session"), "error");
+    showNotice(friendlyAuthError(error, "callback"), "error");
     return;
   }
 
-  /*
-   * A logged-in user should not need to sign in again.
-   * Check their profile and choose the correct destination.
-   */
-
-  if (data.session?.user) {
+  if (data.session) {
     showNotice(
-      "You're already signed in. Checking your profile...",
-      "info"
+      "You're signed in. Opening your developer profile...",
+      "success"
     );
 
-    try {
-      await redirectAccordingToProfile(data.session.user);
-    } catch (profileError) {
-      showNotice(profileError.message, "error");
-    }
-
+    setTimeout(goToProfile, 350);
     return;
   }
 
@@ -1510,8 +1291,7 @@ async function handleAuthCallback() {
   }
 }
 
-/* START ALPHASCRIPT AUTHENTICATION */
-
+/* Start page */
 async function start() {
   const overlay = $("introOverlay");
 
@@ -1526,6 +1306,7 @@ async function start() {
     );
     return;
   }
+
   try {
     supabaseClient = window.supabase.createClient(
       SUPABASE_URL,
@@ -1540,7 +1321,6 @@ async function start() {
     );
 
     await handleAuthCallback();
-
   } catch (error) {
     showNotice(
       error.message ||
@@ -1552,6 +1332,5 @@ async function start() {
 
 start();
 </script>
-
 </body>
 </html>
