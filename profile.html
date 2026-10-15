@@ -1,1037 +1,1123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#070b14">
-<title>Developer Profile | AlphaScript</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#070b14">
+  <meta name="description" content="Your AlphaScript developer profile.">
+  <title>Developer Profile | AlphaScript</title>
 
-<style>
-:root {
-  --bg:#070b14;
-  --panel:#0e1625;
-  --border:#243650;
-  --cyan:#53e7ff;
-  --blue:#568cff;
-  --violet:#a77bff;
-  --text:#f0f5ff;
-  --muted:#8e9db6;
-  --success:#71f5bc;
-  --danger:#ff8398;
-}
-* {box-sizing:border-box}
-body {
-  margin:0;
-  min-height:100vh;
-  background:
-    radial-gradient(ellipse at 10% 0%,#12284b 0,transparent 42%),
-    radial-gradient(ellipse at 95% 80%,#251342 0,transparent 38%),
-    var(--bg);
-  color:var(--text);
-  font-family:Inter,system-ui,-apple-system,sans-serif;
-}
-button,input,textarea {font:inherit}
-a {color:var(--cyan);text-decoration:none}
-.shell {width:min(760px,100%);margin:auto;padding:22px 16px 40px}
-.topbar {
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;margin-bottom:30px
-}
-.brand {font-size:17px;font-weight:900;letter-spacing:2px}
-.brand span {color:var(--cyan)}
-.status {color:var(--muted);font-size:11px;letter-spacing:1.5px}
-.status:before {
-  content:"";display:inline-block;width:7px;height:7px;
-  margin-right:7px;border-radius:50%;background:var(--success)
-}
-.eyebrow {
-  color:var(--cyan);font-size:11px;font-weight:800;
-  letter-spacing:3px;text-transform:uppercase
-}
-h1 {margin:12px 0;font-size:clamp(30px,7vw,48px);line-height:1.1}
-h1 span {
-  color:var(--cyan);
-  background:linear-gradient(90deg,var(--cyan),var(--violet));
-  -webkit-background-clip:text;background-clip:text;
-  -webkit-text-fill-color:transparent
-}
-h2 {margin:0;font-size:clamp(23px,5vw,32px);line-height:1.25}
-h3 {margin:0 0 8px;font-size:19px}
-.muted,.question-help {color:var(--muted);font-size:14px;line-height:1.7}
-.intro {margin-bottom:26px}
-.panel {
-  position:relative;overflow:hidden;padding:clamp(20px,5vw,34px);
-  border:1px solid var(--border);border-radius:22px;
-  background:linear-gradient(145deg,#101a2aee,#0b111eee);
-  box-shadow:0 20px 70px #0005;margin-bottom:20px
-}
-.panel:before {
-  content:"";position:absolute;top:0;left:12%;width:76%;height:1px;
-  background:linear-gradient(90deg,transparent,var(--cyan),var(--violet),transparent)
-}
-.profile-picture-area {
-  display:flex;flex-direction:column;align-items:center;
-  text-align:center;gap:12px;margin:4px 0 18px
-}
-.avatar {
-  width:132px;height:132px;border-radius:50%;
-  object-fit:cover;border:3px solid var(--cyan);
-  background:#101b2c;box-shadow:0 0 28px #53e7ff20
-}
-.avatar-placeholder {
-  width:132px;height:132px;border-radius:50%;
-  display:grid;place-items:center;
-  border:2px dashed #42617e;background:#101b2c;
-  color:var(--cyan);font-size:42px;font-weight:800
-}
-.file-input {display:none}
-.btn {
-  min-height:46px;padding:12px 17px;border:1px solid var(--border);
-  border-radius:11px;background:#121e30;color:var(--text);
-  font-weight:750;cursor:pointer
-}
-.btn:disabled {opacity:.5;cursor:not-allowed}
-.btn-primary {
-  border-color:transparent;
-  background:linear-gradient(100deg,#168fce,#5268f4 65%,#8554dc)
-}
-.btn-row {display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
-.small {font-size:12px}
-.progress-row {
-  display:flex;justify-content:space-between;gap:12px;
-  margin-bottom:12px;color:var(--muted);font-size:12px
-}
-.progress-track {
-  height:5px;overflow:hidden;margin-bottom:30px;
-  border-radius:99px;background:#202c40
-}
-.progress-fill {
-  width:0;height:100%;
-  background:linear-gradient(90deg,var(--cyan),var(--blue),var(--violet));
-  transition:width .3s
-}
-.step-tag {margin-bottom:12px;color:var(--cyan);font-size:11px;font-weight:800;letter-spacing:2px}
-.question-help {margin:12px 0 24px}
-.field {
-  display:block;width:100%;padding:15px;border:1px solid #30435e;
-  border-radius:12px;outline:none;background:#080f1c;color:var(--text)
-}
-.field:focus {border-color:var(--cyan);box-shadow:0 0 0 3px #53e7ff14}
-textarea.field {min-height:125px;resize:vertical}
-.field::placeholder {color:#65758f}
-.choices {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.choice {
-  display:flex;align-items:center;gap:10px;min-height:54px;padding:13px;
-  border:1px solid var(--border);border-radius:12px;background:#0a1220;
-  color:#d9e5fa;cursor:pointer;font-size:13px;line-height:1.45
-}
-.choice input {accent-color:var(--cyan);flex-shrink:0}
-.choice:has(input:checked) {border-color:var(--cyan);background:#123047;color:white}
-.choice:has(input:disabled:not(:checked)) {
-  opacity:.45;
-  cursor:not-allowed
-}
-.selection-counter {
-  margin-top:12px;
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.6
-}
-.selection-counter.at-limit {color:var(--cyan)}
-.review {display:grid;gap:10px}
-.review-item {
-  padding:14px;border:1px solid var(--border);
-  border-radius:12px;background:#09111e;overflow-wrap:anywhere
-}
-.review-label {
-  margin-bottom:6px;color:var(--cyan);font-size:10px;
-  font-weight:800;letter-spacing:1.5px;text-transform:uppercase
-}
-.review-value {font-size:13px;line-height:1.7;white-space:pre-wrap}
-.nav {display:flex;gap:12px;margin-top:28px}
-.nav .btn-primary {flex:1}
-#notice,#avatarNotice {
-  margin:18px 0 0;overflow-wrap:anywhere;font-size:13px;line-height:1.7
-}
-.footer {padding-top:24px;color:#687991;font-size:11px;text-align:center;letter-spacing:1px}
-.hidden {display:none!important}
-.step-content {animation:enter .24s ease both}
-@keyframes enter {
-  from{opacity:0;transform:translateY(8px)}
-  to{opacity:1;transform:translateY(0)}
-}
-@media(max-width:430px) {
-  .choices {grid-template-columns:1fr}
-  .status {font-size:9px}
-  .nav {gap:8px}
-  .btn {padding:12px}
-}
-</style>
+  <style>
+    :root {
+      --bg: #070b14;
+      --panel: #0e1625;
+      --border: #243650;
+      --cyan: #53e7ff;
+      --blue: #568cff;
+      --violet: #a77bff;
+      --text: #f0f5ff;
+      --muted: #8e9db6;
+      --success: #71f5bc;
+      --danger: #ff8398;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at 10% 0%, #12284b 0, transparent 42%),
+        radial-gradient(ellipse at 95% 80%, #251342 0, transparent 38%),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+    }
+
+    button, input, textarea {
+      font: inherit;
+    }
+
+    a {
+      color: var(--cyan);
+      text-decoration: none;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 3px;
+    }
+
+    .shell {
+      width: min(760px, 100%);
+      margin: auto;
+      padding: 22px 16px 40px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    .brand {
+      color: var(--text);
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+
+    .brand span {
+      color: var(--cyan);
+    }
+
+    .status {
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 1.5px;
+    }
+
+    .status::before {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-right: 7px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+
+    .eyebrow {
+      color: var(--cyan);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 12px 0;
+      font-size: clamp(30px, 7vw, 48px);
+      line-height: 1.1;
+    }
+
+    h1 span {
+      color: var(--cyan);
+      background: linear-gradient(90deg, var(--cyan), var(--violet));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(23px, 5vw, 32px);
+      line-height: 1.25;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 19px;
+    }
+
+    .muted, .question-help {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .intro {
+      margin-bottom: 26px;
+    }
+
+    .panel {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(20px, 5vw, 34px);
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: linear-gradient(145deg, #101a2aee, #0b111eee);
+      box-shadow: 0 20px 70px #0005;
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 12%;
+      width: 76%;
+      height: 1px;
+      background: linear-gradient(
+        90deg, transparent, var(--cyan), var(--violet), transparent
+      );
+    }
+
+    .profile-picture-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin: 18px 0;
+      text-align: center;
+    }
+
+    .avatar {
+      width: 132px;
+      height: 132px;
+      border: 3px solid var(--cyan);
+      border-radius: 50%;
+      object-fit: cover;
+      background: #101b2c;
+      box-shadow: 0 0 28px #53e7ff20;
+    }
+
+    .avatar-placeholder {
+      display: grid;
+      width: 132px;
+      height: 132px;
+      place-items: center;
+      border: 2px dashed #42617e;
+      border-radius: 50%;
+      background: #101b2c;
+      color: var(--cyan);
+      font-size: 42px;
+      font-weight: 800;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .btn {
+      display: inline-flex;
+      min-height: 46px;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 17px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: #121e30;
+      color: var(--text);
+      font-weight: 750;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .btn:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      border-color: transparent;
+      background: linear-gradient(100deg, #168fce, #5268f4 65%, #8554dc);
+      color: white;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .small {
+      font-size: 12px;
+    }
+
+    .progress-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .progress-track {
+      height: 5px;
+      overflow: hidden;
+      margin-bottom: 30px;
+      border-radius: 99px;
+      background: #202c40;
+    }
+
+    .progress-fill {
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--cyan), var(--blue), var(--violet));
+      transition: width .3s;
+    }
+
+    .step-tag {
+      margin-bottom: 12px;
+      color: var(--cyan);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    .question-help {
+      margin: 12px 0 24px;
+    }
+
+    .field {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #30435e;
+      border-radius: 12px;
+      outline: none;
+      background: #080f1c;
+      color: var(--text);
+    }
+
+    .field:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px #53e7ff14;
+    }
+
+    textarea.field {
+      min-height: 125px;
+      resize: vertical;
+    }
+
+    .field::placeholder {
+      color: #65758f;
+    }
+
+    .review {
+      display: grid;
+      gap: 10px;
+    }
+
+    .review-item {
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #09111e;
+      overflow-wrap: anywhere;
+    }
+
+    .review-label {
+      margin-bottom: 6px;
+      color: var(--cyan);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .review-value {
+      font-size: 13px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .nav {
+      display: flex;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .nav .btn-primary {
+      flex: 1;
+    }
+
+    #notice, #avatarNotice {
+      margin: 18px 0 0;
+      overflow-wrap: anywhere;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .footer {
+      padding-top: 24px;
+      color: #687991;
+      font-size: 11px;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .step-content {
+      animation: enter .24s ease both;
+    }
+
+    @keyframes enter {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 430px) {
+      .status {
+        font-size: 9px;
+      }
+
+      .nav {
+        gap: 8px;
+      }
+
+      .btn {
+        padding: 12px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
 </head>
 
 <body>
-<main class="shell">
-  <header class="topbar">
-    <a class="brand" href="index.html">ALPHA<span>SCRIPT</span></a>
-    <div class="status">DEVELOPER PROFILE</div>
-  </header>
+  <main class="shell">
 
-  <section class="intro">
-    <div class="eyebrow">Your journey starts here</div>
-    <h1>Define your <span>developer identity.</span></h1>
-    <p class="muted">
-      Personalize your profile, show your interests, and tell the community
-      what you're building.
-    </p>
-  </section>
+    <header class="topbar">
+      <a class="brand" href="index.html">ALPHA<span>SCRIPT</span></a>
+      <div class="status">DEVELOPER PROFILE</div>
+    </header>
 
-  <section class="panel">
-    <h3>Your profile picture</h3>
-    <p class="muted">
-      Choose a photo from your device or take a new one if your device offers
-      that option. Images must be 5 MB or smaller.
-    </p>
+    <section class="intro">
+      <div class="eyebrow">Your developer journey</div>
+      <h1>Build your <span>developer identity.</span></h1>
+      <p class="muted">
+        Tell us about your skills, interests, and goals.
+        Make your profile yours and get ready to build with AlphaScript.
+      </p>
+    </section>
 
-    <div class="profile-picture-area">
-      <img id="avatarPreview" class="avatar hidden"
-           alt="Your profile picture">
-      <div id="avatarPlaceholder" class="avatar-placeholder"
-           aria-label="Default profile picture">A</div>
+    <section class="panel">
+      <h3>Your profile picture</h3>
+      <p class="muted">
+        Choose a photo from your device. Images must be 5 MB or smaller.
+      </p>
 
-      <input class="file-input" id="avatarFile"
-             type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+      <div class="profile-picture-area">
+        <img id="avatarPreview" class="avatar hidden" alt="Your profile picture">
 
-      <div class="btn-row">
-        <button type="button" class="btn btn-primary" id="chooseAvatar">
-          Choose photo
-        </button>
-        <button type="button" class="btn" id="removeAvatar">
-          Remove photo
-        </button>
+        <div id="avatarPlaceholder" class="avatar-placeholder">A</div>
+
+        <input
+          class="file-input"
+          id="avatarFile"
+          type="file"
+          accept="image/jpeg,image/png,image/webp,image/gif"
+        >
+
+        <div class="btn-row">
+          <button type="button" class="btn btn-primary" id="chooseAvatar">
+            Choose photo
+          </button>
+
+          <button type="button" class="btn" id="removeAvatar">
+            Remove photo
+          </button>
+        </div>
+
+        <p class="muted small">JPG, PNG, WEBP or GIF · Maximum 5 MB</p>
       </div>
-      <p class="muted small">JPG, PNG, WEBP or GIF · Maximum 5 MB</p>
-    </div>
-    <p id="avatarNotice" role="status" aria-live="polite"></p>
-  </section>
 
-  <section class="panel">
-    <div class="progress-row">
-      <span id="stepCounter">CONNECTING</span>
-      <span id="progressPercent">0% COMPLETE</span>
-    </div>
-    <div class="progress-track" id="progressTrack"
-         role="progressbar" aria-valuemin="0" aria-valuemax="100"
-         aria-valuenow="0">
-      <div class="progress-fill" id="progressFill"></div>
-    </div>
+      <p id="avatarNotice" role="status" aria-live="polite"></p>
+    </section>
 
-    <div id="wizard" class="hidden">
-      <div id="stepTag" class="step-tag"></div>
-      <h2 id="question"></h2>
-      <p id="questionHelp" class="question-help"></p>
-      <div id="answerArea"></div>
-      <div class="nav">
-        <button type="button" class="btn" id="backButton">← Back</button>
-        <button type="button" class="btn btn-primary" id="nextButton">Next →</button>
+    <section class="panel">
+      <div class="progress-row">
+        <span id="stepCounter">CONNECTING</span>
+        <span id="progressPercent">0% COMPLETE</span>
       </div>
-    </div>
-    <p id="notice" role="status" aria-live="polite">Connecting to AlphaScript...</p>
-  </section>
 
-  <footer class="footer">BUILD WITH PURPOSE · LEARN WITHOUT LIMITS</footer>
-</main>
+      <div
+        class="progress-track"
+        id="progressTrack"
+        role="progressbar"
+        aria-label="Profile completion"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="0"
+      >
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-"use strict";
+      <div id="wizard" class="hidden">
+        <div id="stepTag" class="step-tag"></div>
+        <h2 id="question"></h2>
+        <p id="questionHelp" class="question-help"></p>
+        <div id="answerArea"></div>
 
-const SUPABASE_URL = "https://qaivqscssdtsnthdiqtu.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_TjT6PMScm58zNVJiugk-zQ_6oIaJNU9";
-const AVATAR_BUCKET = "avatars";
-const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
-const MAX_DEVELOPER_ROLES = 3;
-const MAX_TECHNOLOGIES = 5;
+        <div class="nav">
+          <button type="button" class="btn" id="backButton">← Back</button>
+          <button type="button" class="btn btn-primary" id="nextButton">
+            Next →
+          </button>
+        </div>
+      </div>
 
-const ALLOWED_TYPES = [
-  "image/jpeg", "image/png", "image/webp", "image/gif"
-];
+      <p id="notice" role="status" aria-live="polite">
+        Connecting to AlphaScript...
+      </p>
+    </section>
 
-const roleOptions = [
-  "Web Developer",
-  "Mobile App Developer",
-  "Software Developer",
-  "Full-Stack Developer",
-  "AI / Machine Learning Developer",
-  "Data Scientist / Data Analyst",
-  "Game Developer",
-  "Cybersecurity Specialist",
-  "Systems / Embedded Developer",
-  "DevOps / Cloud Engineer",
-  "Other / Exploring"
-];
+    <footer class="footer">
+      BUILD WITH PURPOSE · LEARN WITHOUT LIMITS
+    </footer>
 
-const languageOptions = [
-  "Python",
-  "JavaScript",
-  "TypeScript",
-  "HTML & CSS",
-  "Java",
-  "C / C++",
-  "C#",
-  "PHP",
-  "SQL",
-  "Go",
-  "Rust",
-  "Other"
-];
+  </main>
 
-const occupationOptions = [
-  "Student",
-  "Employed developer",
-  "Self-employed ",
-  "Business owner ",
-  "Researcher",
-  "Seeking opportunities",
-  "Other"
-];
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-const experienceOptions = [
-  "Complete beginner",
-  "Basic knowledge",
-  "Intermediate",
-  "Advanced",
-  "Professional experience"
-];
+  <script>
+    "use strict";
 
-const steps = [
-  {
-    key:"username",
-    title:"What should we call you?",
-    help:"Choose a unique username using 3–24 letters, numbers or underscores.",
-    type:"text",
-    placeholder:"e.g. Junior_Dev",
-    max:24
-  },
-  {
-    key:"display_name",
-    title:"What's your display name?",
-    help:"The name other developers can see. Optional.",
-    type:"text",
-    placeholder:"Your preferred display name",
-    max:30
-  },
-  {
-    key:"bio",
-    title:"What's your story?",
-    help:"Introduce yourself and your interests. Optional.",
-    type:"textarea",
-    placeholder:"I'm interested in programming, AI and building useful projects...",
-    max:300
-  },
-  {
-    key:"country",
-    title:"Where are you based?",
-    help:"Your country or region. Optional.",
-    type:"text",
-    placeholder:"e.g. Ghana",
-    max:20
-  },
-  {
-    key:"developer_roles",
-    title:"What kind of developer are you?",
-    help:"Choose up to 3 roles that interest you.",
-    type:"checks",
-    options:roleOptions,
-    maxSelections:MAX_DEVELOPER_ROLES
-  },
-  {
-    key:"programming_languages",
-    title:"Which technologies interest you?",
-    help:"Choose up to 5 languages and technologies you use or want to learn.",
-    type:"checks",
-    options:languageOptions,
-    maxSelections:MAX_TECHNOLOGIES
-  },
-  {
-    key:"occupation",
-    title:"What best describes you?",
-    help:"Choose your current situation.",
-    type:"radio",
-    options:occupationOptions
-  },
-  {
-    key:"experience_level",
-    title:"Where are you on your journey?",
-    help:"Choose the option that best describes your experience.",
-    type:"radio",
-    options:experienceOptions
-  },
-  {
-    key:"learning_goals",
-    title:"What do you want to achieve?",
-    help:"List the things you want to learn or build, separated by commas.",
-    type:"textarea",
-    placeholder:"Build websites, develop games, learn AI, collaborate...",
-    max:100
-  },
-  {
-    key:"review",
-    title:"Ready to define your profile?",
-    help:"Review your answers before saving them.",
-    type:"review"
-  }
-];
+    const SUPABASE_URL =
+      "https://qaivqscssdtsnthdiqtu.supabase.co";
 
-const defaults = {
-  username:"",
-  display_name:"",
-  bio:"",
-  country:"",
-  developer_roles:[],
-  programming_languages:[],
-  occupation:"",
-  experience_level:"",
-  learning_goals:""
-};
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_TjT6PMScm58zNVJiugk-zQ_6oIaJNU9";
 
-let answers = {...defaults};
-let currentStep = 0;
-let client = null;
-let currentUser = null;
-let isSaving = false;
-let profileSaved = false;
-let currentAvatarUrl = "";
-let pendingAvatarFile = null;
-let avatarBusy = false;
+    const AVATAR_BUCKET = "avatars";
+    const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
 
-const $ = id => document.getElementById(id);
-const wizard = $("wizard");
-const notice = $("notice");
-const avatarNotice = $("avatarNotice");
-const answerArea = $("answerArea");
-const backButton = $("backButton");
-const nextButton = $("nextButton");
+    const ALLOWED_TYPES = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "image/gif"
+    ];
 
-function showNotice(message,type="info") {
-  notice.replaceChildren();
-  notice.style.color =
-    type === "error" ? "var(--danger)" :
-    type === "success" ? "var(--success)" : "var(--muted)";
-  notice.appendChild(document.createTextNode(message));
-}
+    const steps = [
+      {
+        key: "username",
+        title: "What should we call you?",
+        help: "Choose a username with 3–24 letters, numbers or underscores.",
+        type: "text",
+        placeholder: "e.g. Junior_Dev",
+        max: 24
+      },
+      {
+        key: "display_name",
+        title: "What's your display name?",
+        help: "The name other developers can see. Optional.",
+        type: "text",
+        placeholder: "Your preferred name",
+        max: 100
+      },
+      {
+        key: "country",
+        title: "Where are you based?",
+        help: "Your country or region. Optional.",
+        type: "text",
+        placeholder: "e.g. Ghana",
+        max: 100
+      },
+      {
+        key: "skills",
+        title: "What are your coding skills?",
+        help: "List the programming languages and technologies you know or are learning.",
+        type: "textarea",
+        placeholder: "Python, Java, C++, HTML, CSS...",
+        max: 500
+      },
+      {
+        key: "hobbies",
+        title: "What interests you?",
+        help: "Share your interests outside coding or topics you enjoy exploring.",
+        type: "textarea",
+        placeholder: "Technology, AI, gaming, science...",
+        max: 300
+      },
+      {
+        key: "learning_goals",
+        title: "What do you want to build or learn?",
+        help: "Tell us what you want to achieve with AlphaScript.",
+        type: "textarea",
+        placeholder: "Build websites, improve Python, create applications...",
+        max: 500
+      },
+      {
+        key: "review",
+        title: "Your developer profile",
+        help: "Review your information before saving.",
+        type: "review"
+      }
+    ];
 
-function showAvatarNotice(message,type="info") {
-  avatarNotice.textContent = message;
-  avatarNotice.style.color =
-    type === "error" ? "var(--danger)" :
-    type === "success" ? "var(--success)" : "var(--muted)";
-}
+    const defaults = {
+      username: "",
+      display_name: "",
+      country: "",
+      skills: "",
+      hobbies: "",
+      learning_goals: ""
+    };
 
-function showLoginLink() {
-  const link = document.createElement("a");
-  link.href = "login.html?screen=login";
-  link.textContent = "Go to login →";
-  link.style.display = "inline-block";
-  link.style.marginTop = "12px";
-  notice.append(document.createElement("br"),link);
-}
+    let answers = { ...defaults };
+    let currentStep = 0;
+    let client = null;
+    let currentUser = null;
+    let isSaving = false;
+    let profileSaved = false;
+    let currentAvatarUrl = "";
+    let pendingAvatarFile = null;
+    let originalAvatarUrl = "";
 
-function setAvatar(url) {
-  const image = $("avatarPreview");
-  const placeholder = $("avatarPlaceholder");
+    const $ = id => document.getElementById(id);
 
-  if (url) {
-    image.src = url;
-    image.classList.remove("hidden");
-    placeholder.classList.add("hidden");
-  } else {
-    image.removeAttribute("src");
-    image.classList.add("hidden");
-    placeholder.classList.remove("hidden");
-    placeholder.textContent =
-      (answers.display_name || answers.username || "A")
-        .trim().charAt(0).toUpperCase() || "A";
-  }
-}
+    const wizard = $("wizard");
+    const notice = $("notice");
+    const avatarNotice = $("avatarNotice");
+    const answerArea = $("answerArea");
+    const backButton = $("backButton");
+    const nextButton = $("nextButton");
 
-function createField(step) {
-  const field = document.createElement(
-    step.type === "textarea" ? "textarea" : "input"
-  );
+    function showNotice(message, type = "info") {
+      notice.replaceChildren();
+      notice.style.color =
+        type === "error" ? "var(--danger)" :
+        type === "success" ? "var(--success)" :
+        "var(--muted)";
 
-  field.className = "field";
-  field.id = "currentAnswer";
-  field.name = step.key;
-  field.placeholder = step.placeholder || "";
-  field.maxLength = step.max || 1500;
-  field.value = answers[step.key] || "";
-
-  if (step.type === "text") {
-    field.type = "text";
-    field.autocomplete =
-      step.key === "username" ? "nickname" : "off";
-  }
-
-  field.addEventListener("input", () => {
-    answers[step.key] = field.value;
-
-    if (step.key === "username" || step.key === "display_name") {
-      if (!currentAvatarUrl && !pendingAvatarFile) setAvatar("");
+      notice.textContent = message;
     }
-  });
 
-  return field;
-}
+    function showAvatarNotice(message, type = "info") {
+      avatarNotice.textContent = message;
+      avatarNotice.style.color =
+        type === "error" ? "var(--danger)" :
+        type === "success" ? "var(--success)" :
+        "var(--muted)";
+    }
 
-function renderChoices(step) {
-  const wrapper = document.createElement("div");
-  const container = document.createElement("div");
-  container.className = "choices";
+    function addLoginLink() {
+      const link = document.createElement("a");
+      link.href = "login.html?screen=login";
+      link.textContent = "Go to login →";
+      link.style.display = "inline-block";
+      link.style.marginTop = "12px";
 
-  const selected = Array.isArray(answers[step.key])
-    ? answers[step.key] : [];
+      notice.append(document.createElement("br"), link);
+    }
 
-  const counter = document.createElement("p");
-  counter.className = "selection-counter";
-  counter.setAttribute("aria-live","polite");
+    function setAvatar(url) {
+      const image = $("avatarPreview");
+      const placeholder = $("avatarPlaceholder");
 
-  function updateSelectionUI() {
-    const checkedInputs = Array.from(
-      container.querySelectorAll('input[type="checkbox"]:checked')
-    );
-    const count = checkedInputs.length;
-    const limit = step.maxSelections;
+      if (url) {
+        image.src = url;
+        image.classList.remove("hidden");
+        placeholder.classList.add("hidden");
+      } else {
+        image.removeAttribute("src");
+        image.classList.add("hidden");
+        placeholder.classList.remove("hidden");
 
-    if (!limit) return;
+        placeholder.textContent =
+          (answers.display_name || answers.username || "A")
+            .trim()
+            .charAt(0)
+            .toUpperCase() || "A";
+      }
+    }
 
-    counter.textContent =
-      count + " / " + limit + " selected" +
-      (count >= limit ? " — deselect one to choose another." : "");
+    function createField(step) {
+      const field = document.createElement(
+        step.type === "textarea" ? "textarea" : "input"
+      );
 
-    counter.classList.toggle("at-limit",count >= limit);
+      field.className = "field";
+      field.id = "currentAnswer";
+      field.name = step.key;
+      field.placeholder = step.placeholder || "";
+      field.maxLength = step.max || 500;
+      field.value = answers[step.key] || "";
 
-    Array.from(
-      container.querySelectorAll('input[type="checkbox"]')
-    ).forEach(input => {
-      input.disabled = count >= limit && !input.checked;
-    });
-  }
+      if (step.type === "text") {
+        field.type = "text";
+        field.autocomplete =
+          step.key === "username" ? "nickname" : "off";
+      }
 
-  step.options.forEach((option,index) => {
-    const label = document.createElement("label");
-    label.className = "choice";
+      field.addEventListener("input", () => {
+        answers[step.key] = field.value;
 
-    const input = document.createElement("input");
-    input.type = step.type === "checks" ? "checkbox" : "radio";
-    input.name = step.key;
-    input.value = option;
-    input.id = "choice-" + index;
+        if (
+          step.key === "username" ||
+          step.key === "display_name"
+        ) {
+          if (!currentAvatarUrl && !pendingAvatarFile) {
+            setAvatar("");
+          }
+        }
+      });
 
-    input.checked = step.type === "checks"
-      ? selected.includes(option)
-      : answers[step.key] === option;
+      return field;
+    }
 
-    input.addEventListener("change",() => {
-      if (step.type === "checks") {
-        let chosen = Array.from(
-          container.querySelectorAll('input[type="checkbox"]:checked')
-        ).map(item => item.value);
+    function renderReview() {
+      const container = document.createElement("div");
+      container.className = "review";
 
-        if (step.maxSelections && chosen.length > step.maxSelections) {
-          input.checked = false;
-          chosen = chosen.filter(value => value !== option);
+      const fields = [
+        ["Username", "username"],
+        ["Display name", "display_name"],
+        ["Country / region", "country"],
+        ["Coding skills", "skills"],
+        ["Interests", "hobbies"],
+        ["Learning goals", "learning_goals"]
+      ];
+
+      fields.forEach(([label, key]) => {
+        const item = document.createElement("div");
+        item.className = "review-item";
+
+        const heading = document.createElement("div");
+        heading.className = "review-label";
+        heading.textContent = label;
+
+        const value = document.createElement("div");
+        value.className = "review-value";
+        value.textContent =
+          String(answers[key] || "").trim() || "Not specified";
+
+        item.append(heading, value);
+        container.appendChild(item);
+      });
+
+      return container;
+    }
+
+    function renderStep() {
+      const step = steps[currentStep];
+
+      const percent = Math.round(
+        ((currentStep + 1) / steps.length) * 100
+      );
+
+      $("stepCounter").textContent =
+        "STEP " +
+        String(currentStep + 1).padStart(2, "0") +
+        " / " +
+        String(steps.length).padStart(2, "0");
+
+      $("progressPercent").textContent = percent + "% COMPLETE";
+      $("progressFill").style.width = percent + "%";
+      $("progressTrack").setAttribute("aria-valuenow", String(percent));
+
+      $("stepTag").textContent =
+        "ALPHASCRIPT // " +
+        String(currentStep + 1).padStart(2, "0");
+
+      $("question").textContent = step.title;
+      $("questionHelp").textContent = step.help;
+
+      answerArea.replaceChildren();
+      answerArea.className = "step-content";
+
+      if (step.type === "text" || step.type === "textarea") {
+        answerArea.appendChild(createField(step));
+      } else if (step.type === "review") {
+        answerArea.appendChild(renderReview());
+      }
+
+      backButton.disabled = currentStep === 0 || isSaving;
+      nextButton.disabled = isSaving || profileSaved;
+
+      nextButton.textContent = profileSaved
+        ? "Profile saved ✓"
+        : currentStep === steps.length - 1
+          ? "Save profile ✓"
+          : "Next →";
+
+      showNotice("");
+    }
+
+    function validateCurrentStep() {
+      const step = steps[currentStep];
+
+      if (step.key === "username") {
+        const username = String(answers.username || "").trim();
+
+        if (!/^[A-Za-z0-9_]{3,24}$/.test(username)) {
           showNotice(
-            "You can select a maximum of " +
-              step.maxSelections + " options.",
+            "Enter a username with 3–24 letters, numbers or underscores.",
             "error"
           );
-        } else {
-          showNotice("");
+          return false;
         }
 
-        answers[step.key] = chosen;
-        updateSelectionUI();
-      } else {
-        answers[step.key] = input.value;
+        answers.username = username;
       }
-    });
 
-    const text = document.createElement("span");
-    text.textContent = option;
-    label.append(input,text);
-    container.appendChild(label);
-  });
+      const field = $("currentAnswer");
 
-  wrapper.appendChild(container);
+      if (field && !field.checkValidity()) {
+        field.reportValidity();
+        return false;
+      }
 
-  if (step.maxSelections) {
-    wrapper.appendChild(counter);
-    updateSelectionUI();
-  }
+      if (field) {
+        answers[step.key] = field.value;
+      }
 
-  return wrapper;
-}
-
-function renderReview() {
-  const container = document.createElement("div");
-  container.className = "review";
-
-  const fields = [
-    ["Username","username"],
-    ["Display name","display_name"],
-    ["Bio","bio"],
-    ["Country / region","country"],
-    ["Developer roles","developer_roles"],
-    ["Languages / technologies","programming_languages"],
-    ["Occupation","occupation"],
-    ["Experience level","experience_level"],
-    ["Learning goals","learning_goals"]
-  ];
-
-  fields.forEach(([label,key]) => {
-    const item = document.createElement("div");
-    item.className = "review-item";
-
-    const heading = document.createElement("div");
-    heading.className = "review-label";
-    heading.textContent = label;
-
-    const value = document.createElement("div");
-    value.className = "review-value";
-    const raw = answers[key];
-
-    value.textContent = Array.isArray(raw)
-      ? raw.join(", ") || "Not specified"
-      : String(raw || "").trim() || "Not specified";
-
-    item.append(heading,value);
-    container.appendChild(item);
-  });
-
-  return container;
-}
-
-function renderStep() {
-  const step = steps[currentStep];
-  const percent = Math.round(((currentStep + 1) / steps.length) * 100);
-
-  $("stepCounter").textContent =
-    "STEP " + String(currentStep + 1).padStart(2,"0") +
-    " / " + String(steps.length).padStart(2,"0");
-
-  $("progressPercent").textContent = percent + "% COMPLETE";
-  $("progressFill").style.width = percent + "%";
-  $("progressTrack").setAttribute("aria-valuenow",String(percent));
-
-  $("stepTag").textContent =
-    "ALPHASCRIPT // " + String(currentStep + 1).padStart(2,"0");
-
-  $("question").textContent = step.title;
-  $("questionHelp").textContent = step.help;
-
-  answerArea.replaceChildren();
-  answerArea.className = "step-content";
-
-  if (step.type === "text" || step.type === "textarea") {
-    answerArea.appendChild(createField(step));
-  } else if (step.type === "checks" || step.type === "radio") {
-    answerArea.appendChild(renderChoices(step));
-  } else if (step.type === "review") {
-    answerArea.appendChild(renderReview());
-  }
-
-  backButton.disabled = currentStep === 0 || isSaving;
-  nextButton.disabled = isSaving || profileSaved;
-
-  nextButton.textContent = profileSaved ? "Profile saved ✓" :
-    currentStep === steps.length - 1 ? "Save profile ✓" : "Next →";
-
-  showNotice("");
-}
-
-function validateCurrentStep() {
-  const step = steps[currentStep];
-
-  if (step.key === "username") {
-    const username = String(answers.username || "").trim();
-
-    if (!/^[A-Za-z0-9_]{3,24}$/.test(username)) {
-      showNotice(
-        "Enter a username with 3–24 letters, numbers or underscores.",
-        "error"
-      );
-      return false;
+      return true;
     }
 
-    answers.username = username;
-  }
+    function showContinueButton() {
+      const button = document.createElement("a");
 
-  if (step.type === "checks" && step.maxSelections) {
-    const selected = Array.isArray(answers[step.key])
-      ? answers[step.key] : [];
+      button.href = "index.html";
+      button.className = "btn btn-primary";
+      button.textContent = "Continue to AlphaScript →";
+      button.style.display = "flex";
+      button.style.marginTop = "16px";
+      button.style.width = "100%";
 
-    if (selected.length > step.maxSelections) {
-      showNotice(
-        "Choose no more than " + step.maxSelections + " options.",
-        "error"
-      );
-      return false;
+      notice.appendChild(document.createElement("br"));
+      notice.appendChild(button);
     }
-  }
 
-  const field = $("currentAnswer");
+    async function uploadAvatar() {
+      if (!pendingAvatarFile) {
+        return currentAvatarUrl;
+      }
 
-  if (field && !field.checkValidity()) {
-    field.reportValidity();
-    return false;
-  }
+      const file = pendingAvatarFile;
 
-  if (field) answers[step.key] = field.value;
-
-  return true;
-}
-
-async function saveProfile() {
-  if (isSaving || profileSaved) return;
-
-  if (!client || !currentUser) {
-    showNotice("Please log in before saving your profile.","error");
-        return;
-  }
-
-  isSaving = true;
-  nextButton.disabled = true;
-  backButton.disabled = true;
-
-  try {
-    showNotice("Saving your profile...", "info");
-
-    let avatarUrl = currentAvatarUrl;
-
-    // Upload a new profile picture if one was selected.
-    if (pendingAvatarFile) {
-      if (pendingAvatarFile.size > MAX_AVATAR_SIZE) {
+      if (file.size > MAX_AVATAR_SIZE) {
         throw new Error("Your profile picture must be 5 MB or smaller.");
       }
 
-      if (!ALLOWED_TYPES.includes(pendingAvatarFile.type)) {
-        throw new Error("Please choose a JPG, PNG, WEBP or GIF image.");
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        throw new Error("Choose a JPG, PNG, WEBP or GIF image.");
       }
 
-      showNotice("Uploading your profile picture...", "info");
+      showNotice("Uploading your profile picture...");
 
-      const extension = pendingAvatarFile.type === "image/jpeg" ? "jpg" :
-        pendingAvatarFile.type.split("/")[1];
+      const extension =
+        file.type === "image/jpeg"
+          ? "jpg"
+          : file.type.split("/")[1];
 
-      const avatarPath =
+      const path =
         currentUser.id + "/" + Date.now() + "." + extension;
 
-      const { error: uploadError } = await client.storage
+      const { error } = await client.storage
         .from(AVATAR_BUCKET)
-        .upload(avatarPath, pendingAvatarFile, {
+        .upload(path, file, {
           cacheControl: "3600",
-          upsert: true,
-          contentType: pendingAvatarFile.type
+          upsert: false,
+          contentType: file.type
         });
 
-      if (uploadError) {
-        throw uploadError;
+      if (error) {
+        throw error;
       }
 
-      const { data: publicData } = client.storage
+      const { data } = client.storage
         .from(AVATAR_BUCKET)
-        .getPublicUrl(avatarPath);
+        .getPublicUrl(path);
 
-      avatarUrl = publicData.publicUrl;
+      return data.publicUrl;
     }
 
-    const profileData = {
-      id: currentUser.id,
-      username: answers.username.trim(),
-      full_name: answers.display_name.trim(),
-      bio: answers.bio.trim(),
-      country: answers.country.trim(),
-      developer_roles: answers.developer_roles,
-      programming_languages: answers.programming_languages,
-      occupation: answers.occupation,
-      experience_level: answers.experience_level,
-      learning_goals: answers.learning_goals
-        .split(",")
-        .map(item => item.trim())
-        .filter(Boolean),
-      updated_at: new Date().toISOString()
-    };
+    async function saveProfile() {
+      if (isSaving || profileSaved) return;
 
-    // Include the avatar URL if your profiles table has this column.
-    if (avatarUrl) {
-      profileData.avatar_url = avatarUrl;
-    }
+      if (!client || !currentUser) {
+        showNotice("Please log in before saving your profile.", "error");
+        return;
+      }
 
-    showNotice("Saving your profile...", "info");
+      isSaving = true;
+      nextButton.disabled = true;
+      backButton.disabled = true;
+      $("chooseAvatar").disabled = true;
+      $("removeAvatar").disabled = true;
 
-    const { error: saveError } = await client
-      .from("profiles")
-      .upsert(profileData, {
-        onConflict: "id"
-      });
+      try {
+        showNotice("Saving your profile...");
 
-    if (saveError) {
-      throw saveError;
-    }
+        const avatarUrl = await uploadAvatar();
 
-    currentAvatarUrl = avatarUrl;
-    pendingAvatarFile = null;
-    profileSaved = true;
+        const profileData = {
+          id: currentUser.id,
+          username: answers.username.trim(),
+          full_name: answers.display_name.trim(),
+          country: answers.country.trim(),
+          skills: answers.skills.trim(),
+          hobbies: answers.hobbies.trim(),
+          learning_goals: answers.learning_goals.trim(),
+          updated_at: new Date().toISOString()
+        };
 
-    if (currentAvatarUrl) {
-      setAvatar(currentAvatarUrl);
-    }
+        if (avatarUrl) {
+          profileData.avatar_url = avatarUrl;
+        }
 
-    showNotice("Your profile has been saved successfully!", "success");
+        const { error } = await client
+          .from("profiles")
+          .upsert(profileData, { onConflict: "id" });
 
-    nextButton.textContent = "Profile saved ✓";
-    nextButton.disabled = true;
-    backButton.disabled = true;
+        if (error) {
+          throw error;
+        }
 
-  } catch (error) {
-    console.error("Profile save error:", error);
+        currentAvatarUrl = avatarUrl;
+        originalAvatarUrl = avatarUrl;
+        pendingAvatarFile = null;
+        profileSaved = true;
 
-    showNotice(
-      error.message || "Could not save your profile. Please try again.",
-      "error"
-    );
+        setAvatar(currentAvatarUrl);
 
-    nextButton.disabled = false;
-    backButton.disabled = currentStep === 0;
-
-  } finally {
-    isSaving = false;
-  }
-}
-
-
-// Move to the next step or save the profile.
-nextButton.addEventListener("click", async () => {
-  if (isSaving || profileSaved) return;
-
-  if (!validateCurrentStep()) return;
-
-  if (currentStep === steps.length - 1) {
-    await saveProfile();
-    return;
-  }
-
-  currentStep++;
-  renderStep();
-  window.scrollTo({ top: 0, behavior: "smooth" });
-});
-
-
-// Return to the previous step.
-backButton.addEventListener("click", () => {
-  if (currentStep === 0 || isSaving || profileSaved) return;
-
-  if (!validateCurrentStep()) return;
-
-  currentStep--;
-  renderStep();
-  window.scrollTo({ top: 0, behavior: "smooth" });
-});
-
-
-// Open the device's image picker.
-$("chooseAvatar").addEventListener("click", () => {
-  if (avatarBusy || isSaving) return;
-  $("avatarFile").click();
-});
-
-
-// Preview a selected image before saving.
-$("avatarFile").addEventListener("change", event => {
-  const file = event.target.files?.[0];
-
-  if (!file) return;
-
-  if (!ALLOWED_TYPES.includes(file.type)) {
-    showAvatarNotice(
-      "Please choose a JPG, PNG, WEBP or GIF image.",
-      "error"
-    );
-    event.target.value = "";
-    return;
-  }
-
-  if (file.size > MAX_AVATAR_SIZE) {
-    showAvatarNotice(
-      "Your image must be 5 MB or smaller.",
-      "error"
-    );
-    event.target.value = "";
-    return;
-  }
-
-  pendingAvatarFile = file;
-
-  const reader = new FileReader();
-
-  reader.onload = () => {
-    setAvatar(reader.result);
-    showAvatarNotice(
-      "Photo selected. Save your profile to upload it.",
-      "success"
-    );
-  };
-
-  reader.onerror = () => {
-    pendingAvatarFile = null;
-    showAvatarNotice("Could not preview that image.", "error");
-  };
-
-  reader.readAsDataURL(file);
-});
-
-
-// Remove the selected or existing profile picture.
-$("removeAvatar").addEventListener("click", async () => {
-  if (avatarBusy || isSaving) return;
-
-  pendingAvatarFile = null;
-  $("avatarFile").value = "";
-  currentAvatarUrl = "";
-
-  setAvatar("");
-
-  showAvatarNotice(
-    "Photo removed from the preview. Save your profile to apply changes."
-  );
-});
-
-
-// Connect to Supabase and load the signed-in user's profile.
-async function start() {
-  try {
-    if (!window.supabase || !window.supabase.createClient) {
-      throw new Error("Supabase could not be loaded. Refresh the page.");
-    }
-
-    if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
-      throw new Error("Supabase configuration is missing.");
-    }
-
-    client = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_PUBLISHABLE_KEY
-    );
-
-    const {
-      data: { session },
-      error: sessionError
-    } = await client.auth.getSession();
-
-    if (sessionError) throw sessionError;
-
-    if (!session || !session.user) {
-      showNotice("Please log in to create your developer profile.", "error");
-      showLoginLink();
-      $("stepCounter").textContent = "LOGIN REQUIRED";
-      $("progressPercent").textContent = "0% COMPLETE";
-      return;
-    }
-
-    currentUser = session.user;
-console.log("CURRENT USER ID:", currentUser.id);
-
-    showNotice("Loading your profile...", "info");
-
-    const { data: profile, error: profileError } = await client
-      .from("profiles")
-      .select("*")
-      .eq("id", currentUser.id)
-      .maybeSingle();
-
-    if (profileError) throw profileError;
-
-    if (profile) {
-      answers.username = profile.username || "";
-      answers.display_name = profile.full_name || "";
-      answers.bio = profile.bio || "";
-      answers.country = profile.country || "";
-
-      answers.developer_roles = Array.isArray(profile.developer_roles)
-        ? profile.developer_roles.filter(role =>
-            roleOptions.includes(role)
-          ).slice(0, MAX_DEVELOPER_ROLES)
-        : [];
-
-      answers.programming_languages =
-        Array.isArray(profile.programming_languages)
-          ? profile.programming_languages.filter(language =>
-              languageOptions.includes(language)
-            ).slice(0, MAX_TECHNOLOGIES)
-          : [];
-
-      answers.occupation = occupationOptions.includes(profile.occupation)
-        ? profile.occupation
-        : "";
-
-      answers.experience_level =
-        experienceOptions.includes(profile.experience_level)
-          ? profile.experience_level
-          : "";
-
-      answers.learning_goals = Array.isArray(profile.learning_goals)
-        ? profile.learning_goals.join(", ")
-        : typeof profile.learning_goals === "string"
-          ? profile.learning_goals
-          : "";
-
-      currentAvatarUrl = profile.avatar_url || "";
-      setAvatar(currentAvatarUrl);
-
-      if (profile.username) {
         showNotice(
-          "Your existing profile has been loaded. Review your answers and save when ready.",
-          "info"
+          "Your profile has been saved successfully!",
+          "success"
+        );
+
+        nextButton.textContent = "Profile saved ✓";
+        nextButton.disabled = true;
+        backButton.disabled = true;
+
+        showContinueButton();
+
+      } catch (error) {
+        console.error("Profile save error:", error);
+
+        showNotice(
+          error.message ||
+          "Could not save your profile. Please try again.",
+          "error"
+        );
+
+        nextButton.disabled = false;
+        backButton.disabled = currentStep === 0;
+
+      } finally {
+        isSaving = false;
+        $("chooseAvatar").disabled = false;
+        $("removeAvatar").disabled = false;
+      }
+    }
+
+    nextButton.addEventListener("click", async () => {
+      if (isSaving || profileSaved) return;
+
+      if (!validateCurrentStep()) return;
+
+      if (currentStep === steps.length - 1) {
+        await saveProfile();
+        return;
+      }
+
+      currentStep++;
+      renderStep();
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
+
+    backButton.addEventListener("click", () => {
+      if (currentStep === 0 || isSaving || profileSaved) return;
+
+      currentStep--;
+      renderStep();
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
+
+    $("chooseAvatar").addEventListener("click", () => {
+      if (isSaving) return;
+      $("avatarFile").click();
+    });
+
+    $("avatarFile").addEventListener("change", event => {
+      const file = event.target.files?.[0];
+
+      if (!file) return;
+
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        showAvatarNotice(
+          "Choose a JPG, PNG, WEBP or GIF image.",
+          "error"
+        );
+
+        event.target.value = "";
+        return;
+      }
+
+      if (file.size > MAX_AVATAR_SIZE) {
+        showAvatarNotice(
+          "Your image must be 5 MB or smaller.",
+          "error"
+        );
+
+        event.target.value = "";
+        return;
+      }
+
+      pendingAvatarFile = file;
+
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        setAvatar(reader.result);
+
+        showAvatarNotice(
+          "Photo selected. Save your profile to upload it.",
+          "success"
+        );
+      };
+
+      reader.onerror = () => {
+        pendingAvatarFile = null;
+        showAvatarNotice(
+          "Could not preview that image.",
+          "error"
+        );
+      };
+
+      reader.readAsDataURL(file);
+    });
+
+    $("removeAvatar").addEventListener("click", () => {
+      if (isSaving) return;
+
+      pendingAvatarFile = null;
+      currentAvatarUrl = "";
+      $("avatarFile").value = "";
+
+      setAvatar("");
+
+      showAvatarNotice(
+        "Photo removed from the preview. Save your profile to apply changes."
+      );
+    });
+
+    async function start() {
+      try {
+        if (!window.supabase?.createClient) {
+          throw new Error(
+            "Supabase could not be loaded. Check your internet connection and refresh."
+          );
+        }
+
+        client = window.supabase.createClient(
+          SUPABASE_URL,
+          SUPABASE_PUBLISHABLE_KEY
+        );
+
+        const {
+          data: { session },
+          error: sessionError
+        } = await client.auth.getSession();
+
+        if (sessionError) {
+          throw sessionError;
+        }
+
+        if (!session?.user) {
+          showNotice(
+            "Please log in to access your developer profile.",
+            "error"
+          );
+
+          addLoginLink();
+
+          $("stepCounter").textContent = "LOGIN REQUIRED";
+          $("progressPercent").textContent = "0% COMPLETE";
+
+          return;
+        }
+
+        currentUser = session.user;
+
+        showNotice("Loading your profile...");
+
+        const { data: profile, error: profileError } = await client
+          .from("profiles")
+          .select("*")
+          .eq("id", currentUser.id)
+          .maybeSingle();
+
+        if (profileError) {
+          throw profileError;
+        }
+
+        if (profile) {
+          answers.username = profile.username || "";
+          answers.display_name = profile.full_name || "";
+          answers.country = profile.country || "";
+          answers.skills = profile.skills || "";
+          answers.hobbies = profile.hobbies || "";
+
+          answers.learning_goals = Array.isArray(profile.learning_goals)
+            ? profile.learning_goals.join(", ")
+            : profile.learning_goals || "";
+
+          currentAvatarUrl = profile.avatar_url || "";
+          originalAvatarUrl = currentAvatarUrl;
+
+          setAvatar(currentAvatarUrl);
+        }
+
+        if (!answers.username && currentUser.email) {
+          const suggestion = currentUser.email
+            .split("@")[0]
+            .replace(/[^A-Za-z0-9_]/g, "")
+            .slice(0, 24);
+
+          if (suggestion.length >= 3) {
+            answers.username = suggestion;
+          }
+        }
+
+        wizard.classList.remove("hidden");
+        renderStep();
+
+        showNotice(
+          profile
+            ? "Your existing profile is ready to edit."
+            : "Welcome! Let's create your developer profile.",
+          "success"
+        );
+
+      } catch (error) {
+        console.error("Profile initialization error:", error);
+
+        showNotice(
+          error.message ||
+          "Could not connect to AlphaScript. Please try again.",
+          "error"
         );
       }
     }
 
-    // Use the email prefix as a starting username for new profiles.
-    if (!answers.username && currentUser.email) {
-      const suggestedUsername = currentUser.email
-        .split("@")[0]
-        .replace(/[^A-Za-z0-9_]/g, "")
-        .slice(0, 24);
-
-      if (suggestedUsername.length >= 3) {
-        answers.username = suggestedUsername;
-      }
-    }
-
-    wizard.classList.remove("hidden");
-    renderStep();
-
-    showNotice(
-      profile
-        ? "Your profile is ready to edit."
-        : "Welcome! Let's create your developer profile.",
-      "success"
-    );
-
-  } catch (error) {
-    console.error("Profile initialization error:", error);
-
-    showNotice(
-      error.message || "Could not connect to AlphaScript. Please try again.",
-      "error"
-    );
-  }
-}
-
-
-// Start the profile wizard.
-start();
-</script>
+    start();
+  </script>
 </body>
 </html>
