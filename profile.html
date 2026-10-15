@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -128,6 +127,17 @@ textarea.field {min-height:125px;resize:vertical}
 }
 .choice input {accent-color:var(--cyan);flex-shrink:0}
 .choice:has(input:checked) {border-color:var(--cyan);background:#123047;color:white}
+.choice:has(input:disabled:not(:checked)) {
+  opacity:.45;
+  cursor:not-allowed
+}
+.selection-counter {
+  margin-top:12px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6
+}
+.selection-counter.at-limit {color:var(--cyan)}
 .review {display:grid;gap:10px}
 .review-item {
   padding:14px;border:1px solid var(--border);
@@ -240,73 +250,138 @@ const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_TjT6PMScm58zNVJiugk-zQ_6oIaJNU9";
 const AVATAR_BUCKET = "avatars";
 const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
+const MAX_DEVELOPER_ROLES = 3;
+const MAX_TECHNOLOGIES = 5;
+
 const ALLOWED_TYPES = [
   "image/jpeg", "image/png", "image/webp", "image/gif"
 ];
 
 const roleOptions = [
-  "Python Developer","Frontend Developer","Backend Developer",
-  "Full-Stack Developer","Web Developer","Mobile Developer",
-  "Game Developer","AI / Machine Learning Developer","Data Scientist",
-  "Cybersecurity","Systems Programmer","Software Engineer",
-  "Embedded Developer","DevOps Engineer","Database Developer",
+  "Web Developer",
+  "Mobile App Developer",
+  "Software Developer",
+  "Full-Stack Developer",
+  "AI / Machine Learning Developer",
+  "Data Scientist / Data Analyst",
+  "Game Developer",
+  "Cybersecurity Specialist",
+  "Systems / Embedded Developer",
+  "DevOps / Cloud Engineer",
   "Other / Exploring"
 ];
 
 const languageOptions = [
-  "Python","JavaScript","TypeScript","HTML","CSS","Java","C","C++",
-  "C#","PHP","Go","Rust","Kotlin","Swift","SQL","Lua","Dart","R",
-  "Ruby","Bash","Assembly","Other"
+  "Python",
+  "JavaScript",
+  "TypeScript",
+  "HTML & CSS",
+  "Java",
+  "C / C++",
+  "C#",
+  "PHP",
+  "SQL",
+  "Go",
+  "Rust",
+  "Other"
 ];
 
 const occupationOptions = [
-  "Student","Employed developer","Self-employed / Freelancer",
-  "Business owner / Founder","Teacher / Instructor","Researcher",
-  "Seeking opportunities","Hobbyist","Other"
+  "Student",
+  "Employed developer",
+  "Self-employed / Freelancer",
+  "Business owner / Founder",
+  "Researcher",
+  "Seeking opportunities",
+  "Hobbyist",
+  "Other"
 ];
 
 const experienceOptions = [
-  "Complete beginner","Basic knowledge","Intermediate",
-  "Advanced","Professional experience"
+  "Complete beginner",
+  "Basic knowledge",
+  "Intermediate",
+  "Advanced",
+  "Professional experience"
 ];
 
 const steps = [
-  {key:"username",title:"What should we call you?",
-   help:"Choose a unique username using 3–24 letters, numbers or underscores.",
-   type:"text",placeholder:"e.g. Junior_Neutron",max:24},
-  {key:"display_name",title:"What's your display name?",
-   help:"The name other developers can see. Optional.",
-   type:"text",placeholder:"Your preferred display name",max:60},
-  {key:"bio",title:"What's your story?",
-   help:"Introduce yourself and your interests. Optional.",
-   type:"textarea",
-   placeholder:"I'm interested in programming, AI and building useful projects...",
-   max:300},
-  {key:"country",title:"Where are you based?",
-   help:"Your country or region. Optional.",
-   type:"text",placeholder:"e.g. Ghana",max:80},
-  {key:"developer_roles",title:"What kind of developer are you?",
-   help:"Choose all the roles that interest you.",
-   type:"checks",options:roleOptions},
-  {key:"programming_languages",title:"Which technologies interest you?",
-   help:"Select languages and technologies you use or want to learn.",
-   type:"checks",options:languageOptions},
-  {key:"occupation",title:"What best describes you?",
-   help:"Choose your current situation.",
-   type:"radio",options:occupationOptions},
-  {key:"experience_level",title:"Where are you on your journey?",
-   help:"Choose the option that best describes your experience.",
-   type:"radio",options:experienceOptions},
-  {key:"skills",title:"What can you do today?",
-   help:"Describe your current skills, concepts or projects. Separate items with commas. Optional.",
-   type:"textarea",placeholder:"Variables, loops, HTML pages, small Python projects...",
-   max:1500},
-  {key:"learning_goals",title:"What do you want to achieve?",
-   help:"List the things you want to learn or build, separated by commas.",
-   type:"textarea",placeholder:"Build websites, develop games, learn AI, collaborate...",
-   max:1000},
-  {key:"review",title:"Ready to define your profile?",
-   help:"Review your answers before saving them.",type:"review"}
+  {
+    key:"username",
+    title:"What should we call you?",
+    help:"Choose a unique username using 3–24 letters, numbers or underscores.",
+    type:"text",
+    placeholder:"e.g. Junior_Neutron",
+    max:24
+  },
+  {
+    key:"display_name",
+    title:"What's your display name?",
+    help:"The name other developers can see. Optional.",
+    type:"text",
+    placeholder:"Your preferred display name",
+    max:60
+  },
+  {
+    key:"bio",
+    title:"What's your story?",
+    help:"Introduce yourself and your interests. Optional.",
+    type:"textarea",
+    placeholder:"I'm interested in programming, AI and building useful projects...",
+    max:300
+  },
+  {
+    key:"country",
+    title:"Where are you based?",
+    help:"Your country or region. Optional.",
+    type:"text",
+    placeholder:"e.g. Ghana",
+    max:80
+  },
+  {
+    key:"developer_roles",
+    title:"What kind of developer are you?",
+    help:"Choose up to 3 roles that interest you.",
+    type:"checks",
+    options:roleOptions,
+    maxSelections:MAX_DEVELOPER_ROLES
+  },
+  {
+    key:"programming_languages",
+    title:"Which technologies interest you?",
+    help:"Choose up to 5 languages and technologies you use or want to learn.",
+    type:"checks",
+    options:languageOptions,
+    maxSelections:MAX_TECHNOLOGIES
+  },
+  {
+    key:"occupation",
+    title:"What best describes you?",
+    help:"Choose your current situation.",
+    type:"radio",
+    options:occupationOptions
+  },
+  {
+    key:"experience_level",
+    title:"Where are you on your journey?",
+    help:"Choose the option that best describes your experience.",
+    type:"radio",
+    options:experienceOptions
+  },
+  {
+    key:"learning_goals",
+    title:"What do you want to achieve?",
+    help:"List the things you want to learn or build, separated by commas.",
+    type:"textarea",
+    placeholder:"Build websites, develop games, learn AI, collaborate...",
+    max:1000
+  },
+  {
+    key:"review",
+    title:"Ready to define your profile?",
+    help:"Review your answers before saving them.",
+    type:"review"
+  }
 ];
 
 const defaults = {
@@ -318,7 +393,6 @@ const defaults = {
   programming_languages:[],
   occupation:"",
   experience_level:"",
-  skills:"",
   learning_goals:""
 };
 
@@ -386,6 +460,7 @@ function createField(step) {
   const field = document.createElement(
     step.type === "textarea" ? "textarea" : "input"
   );
+
   field.className = "field";
   field.id = "currentAnswer";
   field.name = step.key;
@@ -401,6 +476,7 @@ function createField(step) {
 
   field.addEventListener("input", () => {
     answers[step.key] = field.value;
+
     if (step.key === "username" || step.key === "display_name") {
       if (!currentAvatarUrl && !pendingAvatarFile) setAvatar("");
     }
@@ -410,11 +486,38 @@ function createField(step) {
 }
 
 function renderChoices(step) {
+  const wrapper = document.createElement("div");
   const container = document.createElement("div");
   container.className = "choices";
 
   const selected = Array.isArray(answers[step.key])
     ? answers[step.key] : [];
+
+  const counter = document.createElement("p");
+  counter.className = "selection-counter";
+  counter.setAttribute("aria-live","polite");
+
+  function updateSelectionUI() {
+    const checkedInputs = Array.from(
+      container.querySelectorAll('input[type="checkbox"]:checked')
+    );
+    const count = checkedInputs.length;
+    const limit = step.maxSelections;
+
+    if (!limit) return;
+
+    counter.textContent =
+      count + " / " + limit + " selected" +
+      (count >= limit ? " — deselect one to choose another." : "");
+
+    counter.classList.toggle("at-limit",count >= limit);
+
+    Array.from(
+      container.querySelectorAll('input[type="checkbox"]')
+    ).forEach(input => {
+      input.disabled = count >= limit && !input.checked;
+    });
+  }
 
   step.options.forEach((option,index) => {
     const label = document.createElement("label");
@@ -425,15 +528,31 @@ function renderChoices(step) {
     input.name = step.key;
     input.value = option;
     input.id = "choice-" + index;
+
     input.checked = step.type === "checks"
       ? selected.includes(option)
       : answers[step.key] === option;
 
     input.addEventListener("change",() => {
       if (step.type === "checks") {
-        answers[step.key] = Array.from(
+        let chosen = Array.from(
           container.querySelectorAll('input[type="checkbox"]:checked')
         ).map(item => item.value);
+
+        if (step.maxSelections && chosen.length > step.maxSelections) {
+          input.checked = false;
+          chosen = chosen.filter(value => value !== option);
+          showNotice(
+            "You can select a maximum of " +
+              step.maxSelections + " options.",
+            "error"
+          );
+        } else {
+          showNotice("");
+        }
+
+        answers[step.key] = chosen;
+        updateSelectionUI();
       } else {
         answers[step.key] = input.value;
       }
@@ -445,7 +564,14 @@ function renderChoices(step) {
     container.appendChild(label);
   });
 
-  return container;
+  wrapper.appendChild(container);
+
+  if (step.maxSelections) {
+    wrapper.appendChild(counter);
+    updateSelectionUI();
+  }
+
+  return wrapper;
 }
 
 function renderReview() {
@@ -461,7 +587,6 @@ function renderReview() {
     ["Languages / technologies","programming_languages"],
     ["Occupation","occupation"],
     ["Experience level","experience_level"],
-    ["Current skills","skills"],
     ["Learning goals","learning_goals"]
   ];
 
@@ -476,6 +601,7 @@ function renderReview() {
     const value = document.createElement("div");
     value.className = "review-value";
     const raw = answers[key];
+
     value.textContent = Array.isArray(raw)
       ? raw.join(", ") || "Not specified"
       : String(raw || "").trim() || "Not specified";
@@ -494,11 +620,14 @@ function renderStep() {
   $("stepCounter").textContent =
     "STEP " + String(currentStep + 1).padStart(2,"0") +
     " / " + String(steps.length).padStart(2,"0");
+
   $("progressPercent").textContent = percent + "% COMPLETE";
   $("progressFill").style.width = percent + "%";
   $("progressTrack").setAttribute("aria-valuenow",String(percent));
+
   $("stepTag").textContent =
     "ALPHASCRIPT // " + String(currentStep + 1).padStart(2,"0");
+
   $("question").textContent = step.title;
   $("questionHelp").textContent = step.help;
 
@@ -515,8 +644,10 @@ function renderStep() {
 
   backButton.disabled = currentStep === 0 || isSaving;
   nextButton.disabled = isSaving || profileSaved;
+
   nextButton.textContent = profileSaved ? "Profile saved ✓" :
     currentStep === steps.length - 1 ? "Save profile ✓" : "Next →";
+
   showNotice("");
 }
 
@@ -525,6 +656,7 @@ function validateCurrentStep() {
 
   if (step.key === "username") {
     const username = String(answers.username || "").trim();
+
     if (!/^[A-Za-z0-9_]{3,24}$/.test(username)) {
       showNotice(
         "Enter a username with 3–24 letters, numbers or underscores.",
@@ -532,15 +664,32 @@ function validateCurrentStep() {
       );
       return false;
     }
+
     answers.username = username;
   }
 
+  if (step.type === "checks" && step.maxSelections) {
+    const selected = Array.isArray(answers[step.key])
+      ? answers[step.key] : [];
+
+    if (selected.length > step.maxSelections) {
+      showNotice(
+        "Choose no more than " + step.maxSelections + " options.",
+        "error"
+      );
+      return false;
+    }
+  }
+
   const field = $("currentAnswer");
+
   if (field && !field.checkValidity()) {
     field.reportValidity();
     return false;
   }
+
   if (field) answers[step.key] = field.value;
+
   return true;
 }
 
@@ -549,327 +698,251 @@ async function saveProfile() {
 
   if (!client || !currentUser) {
     showNotice("Please log in before saving your profile.","error");
-    return;
-  }
-
-  if (!/^[A-Za-z0-9_]{3,24}$/.test(String(answers.username || "").trim())) {
-    currentStep = 0;
-    renderStep();
-    showNotice("Please enter a valid username first.","error");
-    return;
+        return;
   }
 
   isSaving = true;
   nextButton.disabled = true;
   backButton.disabled = true;
-  nextButton.textContent = "Saving...";
-  showNotice("Saving your developer profile...");
 
   try {
-    const profile = {
-      id:currentUser.id,
-      username:answers.username.trim(),
-      display_name:answers.display_name.trim() || null,
-      bio:answers.bio.trim(),
-      country:answers.country.trim() || null,
-      developer_roles:answers.developer_roles,
-      programming_languages:answers.programming_languages,
-      occupation:answers.occupation || null,
-      experience_level:answers.experience_level || null,
-      skills:answers.skills.split(",").map(s => s.trim()).filter(Boolean),
-      learning_goals:answers.learning_goals.split(",").map(s => s.trim()).filter(Boolean),
-      avatar_url:currentAvatarUrl || null,
-      updated_at:new Date().toISOString()
-    };
+    showNotice("Saving your profile...", "info");
 
-    const {error} = await client.from("profiles")
-      .upsert(profile,{onConflict:"id"});
+    let avatarUrl = currentAvatarUrl;
 
-    if (error) {
-      if (error.code === "23505") {
-        currentStep = 0;
-        renderStep();
-        showNotice("That username is already taken. Choose another.","error");
-      } else {
-        showNotice("Could not save profile: " + error.message,"error");
+    // Upload a new profile picture if one was selected.
+    if (pendingAvatarFile) {
+      if (pendingAvatarFile.size > MAX_AVATAR_SIZE) {
+        throw new Error("Your profile picture must be 5 MB or smaller.");
       }
-      return;
+
+      if (!ALLOWED_TYPES.includes(pendingAvatarFile.type)) {
+        throw new Error("Please choose a JPG, PNG, WEBP or GIF image.");
+      }
+
+      showNotice("Uploading your profile picture...", "info");
+
+      const extension = pendingAvatarFile.type === "image/jpeg" ? "jpg" :
+        pendingAvatarFile.type.split("/")[1];
+
+      const avatarPath =
+        currentUser.id + "/" + Date.now() + "." + extension;
+
+      const { error: uploadError } = await client.storage
+        .from(AVATAR_BUCKET)
+        .upload(avatarPath, pendingAvatarFile, {
+          cacheControl: "3600",
+          upsert: true,
+          contentType: pendingAvatarFile.type
+        });
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      const { data: publicData } = client.storage
+        .from(AVATAR_BUCKET)
+        .getPublicUrl(avatarPath);
+
+      avatarUrl = publicData.publicUrl;
     }
 
-    profileSaved = true;
-    nextButton.textContent = "Profile saved ✓";
-    nextButton.disabled = true;
-    showNotice("Profile saved successfully! Welcome to AlphaScript.","success");
-
-  } catch (error) {
-    showNotice(error.message || "Something went wrong. Please try again.","error");
-  } finally {
-    isSaving = false;
-    backButton.disabled = currentStep === 0;
-    
-    if (!profileSaved) {
-      nextButton.disabled = false;
-      nextButton.textContent =
-        currentStep === steps.length - 1
-          ? "Save profile ✓"
-          : "Next →";
-    }
-  }
-}
-
-async function uploadAvatar() {
-  if (avatarBusy) return;
-
-  if (!client || !currentUser) {
-    showAvatarNotice("Please log in before uploading a picture.", "error");
-    return;
-  }
-
-  if (!pendingAvatarFile) {
-    showAvatarNotice("Choose a photo first.", "error");
-    return;
-  }
-
-  const file = pendingAvatarFile;
-
-  if (!ALLOWED_TYPES.includes(file.type)) {
-    showAvatarNotice("Choose a JPG, PNG, WEBP or GIF image.", "error");
-    return;
-  }
-
-  if (file.size > MAX_AVATAR_SIZE) {
-    showAvatarNotice("Your image is too large. Maximum size is 5 MB.", "error");
-    return;
-  }
-
-  avatarBusy = true;
-  $("chooseAvatar").disabled = true;
-  $("removeAvatar").disabled = true;
-  showAvatarNotice("Uploading your profile picture...");
-
-  let uploadedPath = "";
-
-  try {
-    const extensionByType = {
-      "image/jpeg": "jpg",
-      "image/png": "png",
-      "image/webp": "webp",
-      "image/gif": "gif"
+    const profileData = {
+      id: currentUser.id,
+      username: answers.username.trim(),
+      full_name: answers.display_name.trim(),
+      bio: answers.bio.trim(),
+      country: answers.country.trim(),
+      developer_roles: answers.developer_roles,
+      programming_languages: answers.programming_languages,
+      occupation: answers.occupation,
+      experience_level: answers.experience_level,
+      learning_goals: answers.learning_goals
+        .split(",")
+        .map(item => item.trim())
+        .filter(Boolean),
+      updated_at: new Date().toISOString()
     };
 
-    const extension = extensionByType[file.type];
-    uploadedPath = currentUser.id + "/" + Date.now() + "." + extension;
+    // Include the avatar URL if your profiles table has this column.
+    if (avatarUrl) {
+      profileData.avatar_url = avatarUrl;
+    }
 
-    const { error: uploadError } = await client.storage
-      .from(AVATAR_BUCKET)
-      .upload(uploadedPath, file, {
-        contentType: file.type,
-        upsert: false,
-        cacheControl: "3600"
+    showNotice("Saving your profile...", "info");
+
+    const { error: saveError } = await client
+      .from("profiles")
+      .upsert(profileData, {
+        onConflict: "id"
       });
 
-    if (uploadError) throw uploadError;
-
-    const { data: urlData } = client.storage
-      .from(AVATAR_BUCKET)
-      .getPublicUrl(uploadedPath);
-
-    const publicUrl = urlData.publicUrl;
-
-    const { error: updateError } = await client
-      .from("profiles")
-      .update({
-        avatar_url: publicUrl,
-        updated_at: new Date().toISOString()
-      })
-      .eq("id", currentUser.id);
-
-    if (updateError) {
-      await client.storage.from(AVATAR_BUCKET).remove([uploadedPath]);
-      throw updateError;
+    if (saveError) {
+      throw saveError;
     }
 
-    currentAvatarUrl = publicUrl;
+    currentAvatarUrl = avatarUrl;
     pendingAvatarFile = null;
-    $("avatarFile").value = "";
-    setAvatar(publicUrl);
+    profileSaved = true;
 
-    showAvatarNotice(
-      "Profile picture uploaded and saved successfully!",
-      "success"
-    );
+    if (currentAvatarUrl) {
+      setAvatar(currentAvatarUrl);
+    }
+
+    showNotice("Your profile has been saved successfully!", "success");
+
+    nextButton.textContent = "Profile saved ✓";
+    nextButton.disabled = true;
+    backButton.disabled = true;
+
   } catch (error) {
-    showAvatarNotice(
-      "Upload failed: " + (error.message || "Please try again."),
+    console.error("Profile save error:", error);
+
+    showNotice(
+      error.message || "Could not save your profile. Please try again.",
       "error"
     );
+
+    nextButton.disabled = false;
+    backButton.disabled = currentStep === 0;
+
   } finally {
-    avatarBusy = false;
-    $("chooseAvatar").disabled = false;
-    $("removeAvatar").disabled = false;
+    isSaving = false;
   }
 }
 
-async function removeAvatar() {
-  if (avatarBusy) return;
 
-  if (!client || !currentUser) {
-    showAvatarNotice("Please log in first.", "error");
+// Move to the next step or save the profile.
+nextButton.addEventListener("click", async () => {
+  if (isSaving || profileSaved) return;
+
+  if (!validateCurrentStep()) return;
+
+  if (currentStep === steps.length - 1) {
+    await saveProfile();
     return;
   }
 
-  if (!currentAvatarUrl && !pendingAvatarFile) {
-    showAvatarNotice("You don't have a profile picture to remove.");
-    return;
-  }
+  currentStep++;
+  renderStep();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
 
-  if (pendingAvatarFile && !currentAvatarUrl) {
-    pendingAvatarFile = null;
-    $("avatarFile").value = "";
-    setAvatar("");
-    showAvatarNotice("Selected photo cleared.");
-    return;
-  }
 
-  if (!confirm("Remove your current profile picture?")) return;
+// Return to the previous step.
+backButton.addEventListener("click", () => {
+  if (currentStep === 0 || isSaving || profileSaved) return;
 
-  avatarBusy = true;
-  $("chooseAvatar").disabled = true;
-  $("removeAvatar").disabled = true;
-  showAvatarNotice("Removing your profile picture...");
+  if (!validateCurrentStep()) return;
 
-  try {
-    const { error } = await client
-      .from("profiles")
-      .update({
-        avatar_url: null,
-        updated_at: new Date().toISOString()
-      })
-      .eq("id", currentUser.id);
+  currentStep--;
+  renderStep();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
 
-    if (error) throw error;
 
-    currentAvatarUrl = "";
-    pendingAvatarFile = null;
-    $("avatarFile").value = "";
-    setAvatar("");
-    showAvatarNotice("Profile picture removed.", "success");
-  } catch (error) {
-    showAvatarNotice(
-      "Could not remove picture: " +
-        (error.message || "Please try again."),
-      "error"
-    );
-  } finally {
-    avatarBusy = false;
-    $("chooseAvatar").disabled = false;
-    $("removeAvatar").disabled = false;
-  }
-}
-
+// Open the device's image picker.
 $("chooseAvatar").addEventListener("click", () => {
-  if (!currentUser) {
-    showAvatarNotice("Log in before choosing a profile picture.", "error");
-    return;
-  }
-
+  if (avatarBusy || isSaving) return;
   $("avatarFile").click();
 });
 
-$("avatarFile").addEventListener("change", () => {
-  const file = $("avatarFile").files[0];
+
+// Preview a selected image before saving.
+$("avatarFile").addEventListener("change", event => {
+  const file = event.target.files?.[0];
+
   if (!file) return;
 
   if (!ALLOWED_TYPES.includes(file.type)) {
-    pendingAvatarFile = null;
-    $("avatarFile").value = "";
-    showAvatarNotice("Choose a JPG, PNG, WEBP or GIF image.", "error");
+    showAvatarNotice(
+      "Please choose a JPG, PNG, WEBP or GIF image.",
+      "error"
+    );
+    event.target.value = "";
     return;
   }
 
   if (file.size > MAX_AVATAR_SIZE) {
-    pendingAvatarFile = null;
-    $("avatarFile").value = "";
-    showAvatarNotice("Your image is too large. Maximum size is 5 MB.", "error");
+    showAvatarNotice(
+      "Your image must be 5 MB or smaller.",
+      "error"
+    );
+    event.target.value = "";
     return;
   }
 
   pendingAvatarFile = file;
 
-  const previewUrl = URL.createObjectURL(file);
-  $("avatarPreview").onload = () => URL.revokeObjectURL(previewUrl);
-  setAvatar(previewUrl);
+  const reader = new FileReader();
 
-  uploadAvatar();
+  reader.onload = () => {
+    setAvatar(reader.result);
+    showAvatarNotice(
+      "Photo selected. Save your profile to upload it.",
+      "success"
+    );
+  };
+
+  reader.onerror = () => {
+    pendingAvatarFile = null;
+    showAvatarNotice("Could not preview that image.", "error");
+  };
+
+  reader.readAsDataURL(file);
 });
 
-$("removeAvatar").addEventListener("click", removeAvatar);
 
-backButton.addEventListener("click", () => {
-  if (currentStep > 0 && !isSaving && !profileSaved) {
-    currentStep--;
-    renderStep();
-  }
+// Remove the selected or existing profile picture.
+$("removeAvatar").addEventListener("click", async () => {
+  if (avatarBusy || isSaving) return;
+
+  pendingAvatarFile = null;
+  $("avatarFile").value = "";
+  currentAvatarUrl = "";
+
+  setAvatar("");
+
+  showAvatarNotice(
+    "Photo removed from the preview. Save your profile to apply changes."
+  );
 });
 
-nextButton.addEventListener("click", async () => {
-  if (isSaving || profileSaved || !validateCurrentStep()) return;
 
-  if (currentStep < steps.length - 1) {
-    currentStep++;
-    renderStep();
-  } else {
-    await saveProfile();
-  }
-});
-
+// Connect to Supabase and load the signed-in user's profile.
 async function start() {
-  if (!window.supabase) {
-    wizard.classList.add("hidden");
-    showNotice(
-      "Supabase library failed to load. Check your internet connection and reload.",
-      "error"
-    );
-    return;
-  }
-
-  if (
-    !SUPABASE_PUBLISHABLE_KEY ||
-    SUPABASE_PUBLISHABLE_KEY ===
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhaXZxc2Nzc2R0c250aGRpcXR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE3Mjg3MjgsImV4cCI6MjEwNzMwNDcyOH0.i3cpwFKOCnfvGtAKsRpP3LxwIQl2l3-ZJq_9WTrRBP8"
-  ) {
-    wizard.classList.add("hidden");
-    showNotice(
-      "Setup required: add your existing Supabase publishable key in profile.html.",
-      "error"
-    );
-    showAvatarNotice("Add your Supabase publishable key before uploading.");
-    return;
-  }
-
   try {
+    if (!window.supabase || !window.supabase.createClient) {
+      throw new Error("Supabase could not be loaded. Refresh the page.");
+    }
+
+    if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
+      throw new Error("Supabase configuration is missing.");
+    }
+
     client = window.supabase.createClient(
       SUPABASE_URL,
       SUPABASE_PUBLISHABLE_KEY
     );
 
-    showNotice("Checking your AlphaScript login...");
+    const {
+      data: { session },
+      error: sessionError
+    } = await client.auth.getSession();
 
-    const { data, error } = await client.auth.getUser();
+    if (sessionError) throw sessionError;
 
-    if (error || !data.user) {
-      wizard.classList.add("hidden");
-      showNotice(
-        "You're not logged in. Please log in, then return to your profile.",
-        "error"
-      );
+    if (!session || !session.user) {
+      showNotice("Please log in to create your developer profile.", "error");
       showLoginLink();
-      showAvatarNotice("Log in to upload a profile picture.");
+      $("stepCounter").textContent = "LOGIN REQUIRED";
+      $("progressPercent").textContent = "0% COMPLETE";
       return;
     }
 
-    currentUser = data.user;
-    showNotice("Loading your profile...");
+    currentUser = session.user;
+
+    showNotice("Loading your profile...", "info");
 
     const { data: profile, error: profileError } = await client
       .from("profiles")
@@ -877,57 +950,87 @@ async function start() {
       .eq("id", currentUser.id)
       .maybeSingle();
 
-    if (profileError) {
-      showNotice(
-        "Could not load saved profile: " + profileError.message,
-        "error"
-      );
-    } else if (profile) {
-      answers = {
-        username: profile.username || "",
-        display_name: profile.display_name || "",
-        bio: profile.bio || "",
-        country: profile.country || "",
-        developer_roles: profile.developer_roles || [],
-        programming_languages: profile.programming_languages || [],
-        occupation: profile.occupation || "",
-        experience_level: profile.experience_level || "",
-        skills: Array.isArray(profile.skills) ? profile.skills.join(", ") : "",
-        learning_goals: Array.isArray(profile.learning_goals)
-          ? profile.learning_goals.join(", ")
-          : ""
-      };
+    if (profileError) throw profileError;
+
+    if (profile) {
+      answers.username = profile.username || "";
+      answers.display_name = profile.full_name || "";
+      answers.bio = profile.bio || "";
+      answers.country = profile.country || "";
+
+      answers.developer_roles = Array.isArray(profile.developer_roles)
+        ? profile.developer_roles.filter(role =>
+            roleOptions.includes(role)
+          ).slice(0, MAX_DEVELOPER_ROLES)
+        : [];
+
+      answers.programming_languages =
+        Array.isArray(profile.programming_languages)
+          ? profile.programming_languages.filter(language =>
+              languageOptions.includes(language)
+            ).slice(0, MAX_TECHNOLOGIES)
+          : [];
+
+      answers.occupation = occupationOptions.includes(profile.occupation)
+        ? profile.occupation
+        : "";
+
+      answers.experience_level =
+        experienceOptions.includes(profile.experience_level)
+          ? profile.experience_level
+          : "";
+
+      answers.learning_goals = Array.isArray(profile.learning_goals)
+        ? profile.learning_goals.join(", ")
+        : typeof profile.learning_goals === "string"
+          ? profile.learning_goals
+          : "";
 
       currentAvatarUrl = profile.avatar_url || "";
       setAvatar(currentAvatarUrl);
-    } else {
-      setAvatar("");
+
+      if (profile.username) {
+        showNotice(
+          "Your existing profile has been loaded. Review your answers and save when ready.",
+          "info"
+        );
+      }
+    }
+
+    // Use the email prefix as a starting username for new profiles.
+    if (!answers.username && currentUser.email) {
+      const suggestedUsername = currentUser.email
+        .split("@")[0]
+        .replace(/[^A-Za-z0-9_]/g, "")
+        .slice(0, 24);
+
+      if (suggestedUsername.length >= 3) {
+        answers.username = suggestedUsername;
+      }
     }
 
     wizard.classList.remove("hidden");
     renderStep();
 
-    if (profile) {
-      showNotice("Welcome back. Your saved answers have been loaded.");
-      showAvatarNotice(
-        currentAvatarUrl
-          ? "Your saved profile picture is loaded."
-          : "Choose a photo to personalize your profile."
-      );
-    } else {
-      showNotice("Connected! Let's set up your developer profile.");
-      showAvatarNotice("Choose a photo to personalize your profile.");
-    }
-  } catch (error) {
-    wizard.classList.add("hidden");
     showNotice(
-      error.message ||
-        "Could not connect. Check your internet and Supabase configuration.",
+      profile
+        ? "Your profile is ready to edit."
+        : "Welcome! Let's create your developer profile.",
+      "success"
+    );
+
+  } catch (error) {
+    console.error("Profile initialization error:", error);
+
+    showNotice(
+      error.message || "Could not connect to AlphaScript. Please try again.",
       "error"
     );
   }
 }
 
+
+// Start the profile wizard.
 start();
 </script>
 </body>
