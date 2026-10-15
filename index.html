@@ -1,845 +1,1914 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#070b14">
-<meta name="description" content="AlphaScript Developer's Workshop — free tools to build, test, and refine code.">
-<title>AlphaScript | Developer's Workshop</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#070b14">
+  <meta name="description" content="AlphaScript — your personal coding workspace with developer tools and projects.">
 
-<style>
-:root {
-  --bg:#070b14;
-  --panel:#0e1625;
-  --border:#243650;
-  --cyan:#53e7ff;
-  --blue:#568cff;
-  --violet:#a77bff;
-  --text:#f0f5ff;
-  --muted:#8e9db6;
-}
+  <title>AlphaScript | Developer Workspace</title>
 
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;min-height:100vh;
-  background:
-    radial-gradient(ellipse at 10% 0%,#12284b,transparent 42%),
-    radial-gradient(ellipse at 95% 75%,#251342,transparent 38%),
-    var(--bg);
-  color:var(--text);
-  font-family:system-ui,Arial,sans-serif;
-}
-a{color:var(--cyan);text-decoration:none}
-button,input,textarea{font:inherit}
-button{cursor:pointer}
-button:disabled{opacity:.6;cursor:wait}
-.wrap{width:min(1160px,calc(100% - 30px));margin:auto}
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-.topbar{
-  position:sticky;top:0;z-index:10;
-  background:#070b14ee;border-bottom:1px solid var(--border);
-}
-.topbar-inner{
-  min-height:70px;display:flex;align-items:center;
-  justify-content:space-between;gap:15px;
-}
-.brand{font-weight:950;letter-spacing:2px;font-size:19px;color:white}
-.brand span{color:var(--cyan)}
-.nav{display:flex;gap:20px;font-size:13px}
-.nav a{color:var(--muted)}
-.nav-actions{display:flex;gap:9px;align-items:center}
-.btn,.icon-btn{
-  border:1px solid var(--border);border-radius:12px;
-  background:var(--panel);color:var(--text);
-  padding:11px 15px;font-weight:750;
-}
-.icon-btn{width:43px;height:43px;padding:0}
-.btn-primary{
-  background:linear-gradient(100deg,#168fce,#5268f4 65%,#8554dc);
-  border-color:transparent;color:white;
-}
-.btn:hover,.icon-btn:hover{border-color:var(--cyan)}
-.hero{
-  padding:70px 0 45px;display:grid;
-  grid-template-columns:1.2fr .8fr;align-items:center;gap:35px;
-}
-.eyebrow{
-  color:var(--cyan);font-size:12px;font-weight:900;
-  letter-spacing:3px;text-transform:uppercase;
-}
-h1{font-size:clamp(39px,6vw,68px);line-height:1.05;letter-spacing:-2px;margin:18px 0}
-.gradient-text,h1 span{
-  background:linear-gradient(90deg,var(--cyan),var(--blue),var(--violet));
-  background-clip:text;-webkit-background-clip:text;color:transparent;
-}
-.hero p{color:var(--muted);font-size:17px;line-height:1.8}
-.hero-buttons{display:flex;flex-wrap:wrap;gap:12px;margin-top:25px}
-.preview{
-  border:1px solid var(--border);border-radius:22px;
-  background:#101a2a;padding:20px;overflow:auto;
-}
-.code{
-  background:#080f1c;border:1px solid var(--border);
-  border-radius:12px;padding:17px;color:#c4d4ed;
-  font:13px/1.9 monospace;white-space:pre-wrap;
-}
-.c-cyan{color:var(--cyan)}
-.c-purple{color:#b69bff}
-.c-green{color:#71f5bc}
-.section{padding:45px 0}
-.section-head{margin-bottom:24px}
-.section-head h2{font-size:clamp(27px,4vw,37px)}
-.section-head p{color:var(--muted);line-height:1.7}
-.tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
-.tool-card{
-  text-align:left;border:1px solid var(--border);border-radius:18px;
-  background:var(--panel);color:var(--text);padding:22px;min-height:175px;
-}
-.tool-card:hover{border-color:var(--cyan);transform:translateY(-3px)}
-.tool-icon{color:var(--cyan);font-size:25px;margin-bottom:12px}
-.tool-card h3{margin:0 0 9px}
-.tool-card p{color:var(--muted);font-size:13px;line-height:1.7}
-.workspace{
-  margin-top:20px;border:1px solid var(--border);border-radius:20px;
-  background:var(--panel);padding:20px;
-}
-.workspace h3{margin-top:0}
-.tool-panel{display:none}
-.tool-panel.active{display:block}
-textarea,input{
-  width:100%;border:1px solid var(--border);border-radius:12px;
-  background:#080f1c;color:white;padding:13px;margin:8px 0;
-}
-textarea{min-height:150px;resize:vertical;font:13px/1.6 monospace}
-.output{
-  min-height:75px;overflow:auto;overflow-wrap:anywhere;
-  background:#080f1c;color:#d6e5ff;border:1px solid var(--border);
-  border-radius:12px;padding:13px;white-space:pre-wrap;font:13px/1.6 monospace;
-}
-.output iframe{width:100%;height:250px;border:0;background:white}
-.tool-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.tool-actions{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
-.hidden{display:none!important}
-.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
-.feature{padding:20px;border:1px solid var(--border);border-radius:16px;background:var(--panel)}
-.feature p{color:var(--muted);font-size:13px;line-height:1.7}
-.cta{
-  margin:45px 0 60px;padding:32px;border:1px solid var(--border);
-  border-radius:22px;background:linear-gradient(120deg,#112643,#17142d);
-  text-align:center;
-}
-.cta p{color:var(--muted);line-height:1.7}
-footer{border-top:1px solid var(--border);padding:25px 0;color:var(--muted);font-size:12px}
-.status-message{font-size:12px;color:var(--muted);max-width:220px}
-.profile-avatar{
-  width:34px;height:34px;border-radius:50%;object-fit:cover;
-  vertical-align:middle;margin-right:6px;
-}
-.account-name{font-size:12px;color:var(--muted);max-width:130px;overflow-wrap:anywhere}
-.settings-box{
-  margin:12px 0;padding:20px;border:1px solid var(--border);
-  border-radius:16px;background:var(--panel);
-}
-.settings-box label{display:block;margin:12px 0}
-body.light{
-  background:#f2f6fc;color:#101b2d;
-}
-body.light .topbar{background:#f2f6fcee}
-body.light .brand{color:#101b2d}
-body.light .tool-card,body.light .feature,body.light .workspace,
-body.light .preview,body.light .settings-box{background:#fff;color:#101b2d}
-body.light .btn,body.light .icon-btn{background:#fff;color:#101b2d}
-body.light .nav a,body.light .hero p,body.light .section-head p,
-body.light .tool-card p,body.light .feature p,body.light .cta p{color:#52617a}
-body.light .cta{background:linear-gradient(120deg,#e1f2ff,#eee6ff)}
-@media(max-width:800px){
-  .hero{grid-template-columns:1fr;padding-top:45px}
-  .tools-grid{grid-template-columns:repeat(2,1fr)}
-  .nav{display:none}
-}
-@media(max-width:540px){
-  .brand{font-size:16px}
-  .hero p{font-size:15px}
-  .tools-grid,.feature-grid,.tool-row{grid-template-columns:1fr}
-  .tool-card{min-height:145px}
-  .workspace{padding:14px}
-  .cta{padding:24px 15px}
-  .account-name{display:none}
-}
-</style>
+  <style>
+    :root {
+      --bg: #070b14;
+      --surface: #101827;
+      --surface-2: #172235;
+      --border: #26344a;
+      --text: #edf3ff;
+      --muted: #9aaac1;
+      --primary: #7c5cff;
+      --primary-hover: #6847ed;
+      --success: #35d39a;
+      --danger: #ff6b81;
+      --input: #0b1220;
+      --shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    body.light {
+      --bg: #f3f6fc;
+      --surface: #ffffff;
+      --surface-2: #edf1fa;
+      --border: #d7dfed;
+      --text: #172238;
+      --muted: #617089;
+      --primary: #6847ed;
+      --primary-hover: #5334d4;
+      --success: #07885d;
+      --danger: #d93654;
+      --input: #f8faff;
+      --shadow: 0 12px 32px rgba(30, 50, 90, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .container {
+      width: min(1150px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      min-height: 72px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-icon {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--primary);
+      color: white;
+      font-weight: 900;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: var(--text);
+      background: var(--surface-2);
+      font-weight: 700;
+      transition: 0.2s;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+      border-color: var(--primary);
+    }
+
+    .button.primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    .button.primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .button.danger {
+      color: var(--danger);
+    }
+
+    .button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .hero {
+      padding: 54px 0 34px;
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(25px, 6vw, 58px);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background:
+        radial-gradient(
+          circle at 90% 10%,
+          rgba(124, 92, 255, 0.2),
+          transparent 35%
+        ),
+        var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 6px 11px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--success);
+      background: var(--surface-2);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 18px 0 12px;
+      font-size: clamp(2.1rem, 7vw, 4.1rem);
+      line-height: 1.08;
+      letter-spacing: -2px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(100deg, #a894ff, #59d9ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-description {
+      max-width: 650px;
+      margin: 0 0 25px;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .section {
+      padding: 30px 0;
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      letter-spacing: -0.7px;
+    }
+
+    .section-heading p {
+      margin: 5px 0 0;
+      color: var(--muted);
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .status {
+      padding: 12px 14px;
+      margin-bottom: 18px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      color: var(--muted);
+      overflow-wrap: anywhere;
+    }
+
+    .status.error {
+      color: var(--danger);
+      border-color: var(--danger);
+    }
+
+    .status.success {
+      color: var(--success);
+      border-color: var(--success);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      min-width: 0;
+      padding: 21px;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .card-icon {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      margin-bottom: 14px;
+      border-radius: 12px;
+      background: var(--surface-2);
+      font-size: 1.35rem;
+    }
+
+    .card h3 {
+      margin: 0 0 7px;
+      font-size: 1.08rem;
+    }
+
+    .card p {
+      margin: 0 0 15px;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .tool-card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tool-card .button {
+      margin-top: auto;
+      align-self: flex-start;
+    }
+
+    .panel {
+      margin-top: 18px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      background: var(--surface);
+    }
+
+    .panel h3 {
+      margin-top: 0;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 700;
+      font-size: 0.92rem;
+    }
+
+    .input,
+    textarea,
+    select {
+      width: 100%;
+      min-width: 0;
+      padding: 12px;
+      color: var(--text);
+      background: var(--input);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.14);
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 0.9rem;
+      tab-size: 2;
+    }
+
+    .two-columns {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .output {
+      min-height: 100px;
+      padding: 14px;
+      overflow: auto;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      background: var(--input);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 0.9rem;
+    }
+
+    .preview-frame {
+      width: 100%;
+      min-height: 250px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: white;
+    }
+
+    .profile-summary {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .avatar {
+      display: grid;
+      place-items: center;
+      flex: 0 0 56px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      font-size: 1.3rem;
+      font-weight: 800;
+      overflow: hidden;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-info {
+      min-width: 0;
+    }
+
+    .profile-info h3 {
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .profile-info p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      overflow-wrap: anywhere;
+    }
+
+    .settings-wrap {
+      position: relative;
+    }
+
+    .settings-menu {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      z-index: 30;
+      width: 220px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .settings-menu button {
+      display: block;
+      width: 100%;
+      margin: 4px 0;
+      text-align: left;
+    }
+
+    .footer {
+      margin-top: 45px;
+      padding: 25px 0;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .small {
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 850px) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      .container {
+        width: min(100% - 22px, 1150px);
+      }
+
+      .nav {
+        padding: 10px 0;
+        align-items: flex-start;
+      }
+
+      .brand {
+        font-size: 1.05rem;
+      }
+
+      .brand-icon {
+        width: 36px;
+        height: 36px;
+      }
+
+      .nav-actions {
+        justify-content: flex-end;
+        gap: 6px;
+      }
+
+      .nav-actions .button {
+        padding: 8px 9px;
+        font-size: 0.83rem;
+      }
+
+      .hero {
+        padding-top: 25px;
+      }
+
+      .hero-card {
+        border-radius: 17px;
+      }
+
+      h1 {
+        letter-spacing: -1px;
+      }
+
+      .grid,
+      .two-columns {
+        grid-template-columns: 1fr;
+      }
+
+      .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .card {
+        padding: 17px;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="index.html" aria-label="AlphaScript homepage">
+        <span class="brand-icon">A</span>
+        <span>AlphaScript</span>
+      </a>
 
-<header class="topbar">
-  <div class="wrap topbar-inner">
-    <a class="brand" href="#home">ALPHA<span>SCRIPT</span></a>
+      <div class="nav-actions">
+        <button class="button" id="themeButton" type="button">
+          ☀️ Theme
+        </button>
 
-    <nav class="nav">
-      <a href="#tools">Developer tools</a>
-      <a href="#why">About</a>
-      <a href="#workspace">Workspace</a>
-    </nav>
+        <div class="settings-wrap">
+          <button
+            class="button"
+            id="settingsButton"
+            type="button"
+            aria-expanded="false"
+          >
+            ⚙️ Settings
+          </button>
 
-    <div class="nav-actions">
-      <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">☀</button>
-      <button class="btn" id="profileButton">My profile</button>
-      <button class="btn" id="settingsButton">Settings</button>
-      <button class="btn btn-primary" id="authButton">Checking…</button>
-    </div>
-  </div>
-</header>
+          <div class="settings-menu hidden" id="settingsMenu">
+            <button class="button" id="menuThemeButton" type="button">
+              Change appearance
+            </button>
 
-<main id="home" class="wrap">
+            <button class="button" id="updateProfileButton" type="button">
+              Update profile
+            </button>
 
-  <div id="accountStatus" class="status-message" role="status" aria-live="polite">
-    Checking your account…
-  </div>
-
-  <section id="settingsSection" class="settings-box hidden">
-    <h2>Settings</h2>
-    <p>Manage your AlphaScript preferences.</p>
-
-    <label>
-      <input id="settingsTheme" type="checkbox" style="width:auto">
-      Use light appearance
-    </label>
-
-    <button class="btn" id="closeSettings">Close settings</button>
-  </section>
-
-  <section class="hero">
-    <div>
-      <div class="eyebrow">Your next chapter starts here</div>
-      <h1>
-        Build smarter.<br>
-        Test faster.<br>
-        <span>Go further.</span>
-      </h1>
-      <p id="welcomeText">
-        Your developer workspace for writing, testing, and refining code.
-        Useful tools, one clean workspace, and room to grow.
-      </p>
-
-      <div class="hero-buttons">
-        <a class="btn btn-primary" href="#tools">Explore free tools →</a>
-        <a class="btn" href="#workspace">Try the workspace</a>
-      </div>
-
-      <p>✦ Free core tools · No installation · Works on mobile</p>
-    </div>
-
-    <div class="preview">
-      <div class="eyebrow">welcome.js</div>
-      <pre class="code"><span class="c-purple">const</span> <span class="c-cyan">nextChapter</span> = {
-  idea: <span class="c-green">"something great"</span>,
-  tools: ["build", "test", "learn"],
-  ready: true
-};
-
-if (nextChapter.ready) {
-  console.log("Let's build.");
-}</pre>
-    </div>
-  </section>
-
-  <section id="tools" class="section">
-    <div class="section-head">
-      <div class="eyebrow">The workshop</div>
-      <h2>Tools for your next idea.</h2>
-      <p>Choose a tool to open it right here. No account is required for these browser-based utilities.</p>
-    </div>
-
-    <div class="tools-grid">
-      <button class="tool-card" data-tool="html">
-        <div class="tool-icon">&lt;/&gt;</div>
-        <h3>HTML/CSS Playground</h3>
-        <p>Write HTML and CSS, then preview your page instantly.</p>
-      </button>
-
-      <button class="tool-card" data-tool="js">
-        <div class="tool-icon">JS</div>
-        <h3>JavaScript Playground</h3>
-        <p>Try JavaScript snippets and inspect their output.</p>
-      </button>
-
-      <button class="tool-card" data-tool="json">
-        <div class="tool-icon">{ }</div>
-        <h3>JSON Formatter</h3>
-        <p>Format, validate, and make JSON easier to read.</p>
-      </button>
-
-      <button class="tool-card" data-tool="regex">
-        <div class="tool-icon">.*</div>
-        <h3>Regex Tester</h3>
-        <p>Test regular expressions against sample text.</p>
-      </button>
-
-      <button class="tool-card" data-tool="diff">
-        <div class="tool-icon">⇄</div>
-        <h3>Text Difference Checker</h3>
-        <p>Compare two text versions and spot changes.</p>
-      </button>
-
-      <button class="tool-card" data-tool="format">
-        <div class="tool-icon">≡</div>
-        <h3>Code Indentation Helper</h3>
-        <p>Indent pasted code to make it easier to read.</p>
-      </button>
-    </div>
-
-    <section id="workspace" class="workspace">
-      <h3 id="toolTitle">Choose a tool above</h3>
-      <div id="toolWelcome">
-        <p>Tap any tool card to open the tool here.</p>
-      </div>
-
-      <div class="tool-panel" id="panel-html">
-        <p>Enter HTML and CSS, then run the preview.</p>
-        <label for="htmlCode">HTML</label>
-        <textarea id="htmlCode"><h1>Hello, AlphaScript!</h1>
-<p>Change this HTML and preview your idea.</p></textarea>
-        <label for="cssCode">CSS</label>
-        <textarea id="cssCode">body {
-  font-family: system-ui;
-  padding: 24px;
-  color: #14213d;
-}
-h1 { color: #168fce; }</textarea>
-        <button class="btn btn-primary" id="runHtml">Run preview →</button>
-        <div class="output" style="margin-top:12px">
-          <iframe id="htmlOutput" sandbox="allow-scripts" title="HTML preview"></iframe>
-        </div>
-      </div>
-
-      <div class="tool-panel" id="panel-js">
-        <p>Run a JavaScript snippet. Do not run code you don't trust.</p>
-        <label for="jsCode">JavaScript</label>
-        <textarea id="jsCode">const total = 12 + 30;
-console.log("AlphaScript is ready!");
-console.log("Total:", total);</textarea>
-        <div class="tool-actions">
-          <button class="btn btn-primary" id="runJs">Run JavaScript →</button>
-          <button class="btn" id="clearJs">Clear output</button>
-        </div>
-        <div id="jsOutput" class="output">Your output will appear here.</div>
-      </div>
-
-      <div class="tool-panel" id="panel-json">
-        <p>Paste JSON to format or validate it.</p>
-        <label for="jsonInput">JSON input</label>
-        <textarea id="jsonInput">{"name":"AlphaScript","free":true,"tools":["HTML","JavaScript","JSON"]}</textarea>
-        <div class="tool-actions">
-          <button class="btn btn-primary" id="formatJson">Format JSON →</button>
-          <button class="btn" id="minifyJson">Minify</button>
-        </div>
-        <div id="jsonOutput" class="output">Formatted JSON will appear here.</div>
-        <p id="jsonStatus"></p>
-      </div>
-
-      <div class="tool-panel" id="panel-regex">
-        <p>Enter a regular expression and sample text.</p>
-        <label for="regexPattern">Pattern</label>
-        <input id="regexPattern" value="[A-Z][a-z]+">
-        <label for="regexFlags">Flags</label>
-        <input id="regexFlags" value="g">
-        <label for="regexText">Test text</label>
-        <textarea id="regexText">AlphaScript helps Developers build better tools.</textarea>
-        <button class="btn btn-primary" id="testRegex">Test pattern →</button>
-        <div id="regexOutput" class="output" style="margin-top:12px"></div>
-      </div>
-
-      <div class="tool-panel" id="panel-diff">
-        <p>Compare two versions of text.</p>
-        <div class="tool-row">
-          <div>
-            <label for="diffA">Original text</label>
-            <textarea id="diffA">AlphaScript
-Build tools
-Learn every day</textarea>
-          </div>
-          <div>
-            <label for="diffB">Updated text</label>
-            <textarea id="diffB">AlphaScript
-Build better tools
-Learn every day</textarea>
+            <button class="button danger" id="logoutButton" type="button">
+              Log out
+            </button>
           </div>
         </div>
-        <button class="btn btn-primary" id="compareText">Compare text →</button>
-        <div id="diffOutput" class="output" style="margin-top:12px"></div>
-      </div>
 
-      <div class="tool-panel" id="panel-format">
-        <p>This is a simple indentation helper, not a full code formatter.</p>
-        <label for="formatInput">Code or text</label>
-        <textarea id="formatInput">function hello(){
-console.log("Hello");
-if(true){
-console.log("Ready");
-}
-}</textarea>
-        <div class="tool-actions">
-          <button class="btn btn-primary" id="cleanCode">Indent lines →</button>
-          <button class="btn" id="copyFormatted">Copy result</button>
+        <a class="button" id="loginButton" href="login.html?screen=login">
+          Log in
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-card">
+        <span class="eyebrow">YOUR CODING WORKSPACE</span>
+
+        <h1>
+          Build your ideas.<br>
+          <span class="gradient-text">Write better code.</span>
+        </h1>
+
+        <p class="hero-description">
+          Welcome to AlphaScript, a workspace for developers to experiment
+          with code, use helpful tools, manage projects, and grow their
+          programming skills.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button primary" href="#developer-tools">
+            Explore developer tools
+          </a>
+
+          <a class="button" href="#my-profile">
+            My profile
+          </a>
         </div>
-        <div id="formatOutput" class="output"></div>
       </div>
     </section>
-  </section>
 
-  <section id="why" class="section">
-    <div class="eyebrow">Made for builders</div>
-    <h2>A workspace that grows with you.</h2>
-    <div class="feature-grid">
-      <article class="feature">
-        <h3>⚡ Quick to use</h3>
-        <p>Open a tool and start without installing software.</p>
-      </article>
-      <article class="feature">
-        <h3>🔒 Your code stays yours</h3>
-        <p>The starter tools run in your browser. Never paste passwords or private keys into online tools.</p>
-      </article>
-      <article class="feature">
-        <h3>🚀 More coming</h3>
-        <p>Future plans include saved projects, AI coding assistance, and optional Pro features.</p>
-      </article>
-    </div>
-  </section>
+    <section class="section" id="account-section">
+      <div class="section-heading">
+        <div>
+          <h2>Your account</h2>
+          <p>Your AlphaScript profile and account status.</p>
+        </div>
+      </div>
 
-  <section class="cta">
-    <div class="eyebrow">Your next chapter starts here</div>
-    <h2>Have an idea? <span class="gradient-text">Build it.</span></h2>
-    <p>Explore the tools, experiment with code, and keep moving forward.</p>
-    <a class="btn btn-primary" href="#tools">Open the workshop →</a>
-  </section>
-</main>
+      <div class="status" id="authStatus" role="status" aria-live="polite">
+        Checking your account...
+      </div>
 
-<footer class="wrap">
-  <a class="brand" href="#home">ALPHA<span>SCRIPT</span></a>
-  <p>BUILD WITH PURPOSE · LEARN WITHOUT LIMITS</p>
-  <p>Core tools are free to use.</p>
-</footer>
+      <div class="card" id="my-profile">
+        <div class="profile-summary">
+          <div class="avatar" id="profileAvatar">A</div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-"use strict";
+          <div class="profile-info">
+            <h3 id="profileName">AlphaScript Developer</h3>
+            <p id="profileUsername">Sign in to load your profile.</p>
+            <p id="profileCountry"></p>
+          </div>
+        </div>
 
-/*
-  AlphaScript session setup.
-  The publishable key is designed for browser use.
-  Keep database Row Level Security enabled.
-*/
-const SUPABASE_URL = "https://qaivqscssdtsnthdiqtu.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_TjT6PMScm58zNVJiug-kzQ_6oIaJNU9";
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:18px">
+          <a
+            class="button primary"
+            id="profileAction"
+            href="login.html?screen=login&next=profile.html"
+          >
+            Sign in
+          </a>
 
-const $ = id => document.getElementById(id);
+          <button class="button hidden" id="refreshProfileButton" type="button">
+            Refresh profile
+          </button>
+        </div>
+      </div>
+    </section>
 
-let supabaseClient = null;
-let currentUser = null;
-let currentProfile = null;
+    <section class="section" id="developer-tools">
+      <div class="section-heading">
+        <div>
+          <h2>Developer tools</h2>
+          <p>Simple tools to help you write, test, and organize code.</p>
+        </div>
+      </div>
 
-const loginUrl = "login.html?screen=login&next=index.html";
-const profileUrl = "profile.html";
+      <div class="grid">
+        <article class="card tool-card">
+          <div class="card-icon">🌐</div>
+          <h3>HTML & CSS Playground</h3>
+          <p>Write HTML and CSS and preview the result in your browser.</p>
+          <button class="button primary" type="button" data-open-tool="html">
+            Open playground
+          </button>
+        </article>
 
-function goToLogin() {
-  window.location.replace(loginUrl);
+        <article class="card tool-card">
+          <div class="card-icon">⚡</div>
+          <h3>JavaScript Playground</h3>
+          <p>Run JavaScript in an isolated preview and view its output.</p>
+          <button class="button primary" type="button" data-open-tool="javascript">
+            Open playground
+          </button>
+        </article>
+
+        <article class="card tool-card">
+          <div class="card-icon">{ }</div>
+          <h3>JSON Formatter</h3>
+          <p>Format JSON data and check whether it is valid.</p>
+          <button class="button primary" type="button" data-open-tool="json">
+            Open formatter
+          </button>
+        </article>
+
+        <article class="card tool-card">
+          <div class="card-icon">🔎</div>
+          <h3>Regex Tester</h3>
+          <p>Test a regular expression against a sample of text.</p>
+          <button class="button primary" type="button" data-open-tool="regex">
+            Open tester
+          </button>
+        </article>
+
+        <article class="card tool-card">
+          <div class="card-icon">⇄</div>
+          <h3>Text Difference Checker</h3>
+          <p>Compare two texts and identify lines that differ.</p>
+          <button class="button primary" type="button" data-open-tool="diff">
+            Compare text
+          </button>
+        </article>
+
+        <article class="card tool-card">
+          <div class="card-icon">↹</div>
+          <h3>Indentation Helper</h3>
+          <p>Adjust indentation to make pasted code easier to read.</p>
+          <button class="button primary" type="button" data-open-tool="indent">
+            Open helper
+          </button>
+        </article>
+      </div>
+
+      <!-- HTML/CSS playground -->
+      <div class="panel hidden" id="tool-html">
+        <h3>HTML & CSS Playground</h3>
+
+        <div class="field">
+          <label for="htmlCode">HTML</label>
+          <textarea id="htmlCode" spellcheck="false"><h1>Hello, AlphaScript!</h1>
+<p>Start building something great.</p>
+<button>My first button</button></textarea>
+        </div>
+
+        <div class="field">
+          <label for="cssCode">CSS</label>
+          <textarea id="cssCode" spellcheck="false">body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  color: #172238;
 }
 
-function goToProfile() {
-  window.location.replace(profileUrl);
+h1 {
+  color: #6847ed;
 }
 
-function profileIsComplete(profile) {
-  if (!profile) return false;
+button {
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: #6847ed;
+  color: white;
+}</textarea>
+        </div>
 
-  // These are the core profile fields used by the current profile setup.
-  return Boolean(
-    String(profile.username || "").trim() &&
-    String(profile.full_name || "").trim()
-  );
-}
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+          <button class="button primary" id="runHtmlButton" type="button">
+            Run preview
+          </button>
+          <button class="button" type="button" data-close-tool>
+            Close
+          </button>
+        </div>
 
-async function initializeAccount() {
-  $("accountStatus").textContent = "Checking your account…";
+        <iframe
+          class="preview-frame"
+          id="htmlPreview"
+          title="HTML and CSS preview"
+          sandbox=""
+          referrerpolicy="no-referrer"
+        ></iframe>
+      </div>
 
-  if (!window.supabase || !window.supabase.createClient) {
-    $("accountStatus").textContent =
-      "Unable to load the account service. Check your internet connection and refresh.";
-    return;
-  }
+      <!-- JavaScript playground -->
+      <div class="panel hidden" id="tool-javascript">
+        <h3>JavaScript Playground</h3>
 
-  try {
-    supabaseClient = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_PUBLISHABLE_KEY
-    );
+        <p class="muted small">
+          Code runs in a sandboxed iframe. Do not paste untrusted code into
+          any programming environment.
+        </p>
 
-    const { data, error } = await supabaseClient.auth.getSession();
+        <div class="field">
+          <label for="javascriptCode">JavaScript code</label>
+          <textarea id="javascriptCode" spellcheck="false">console.log("Hello, AlphaScript!");
+console.log(2 + 3);</textarea>
+        </div>
 
-    if (error) throw error;
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+          <button class="button primary" id="runJavascriptButton" type="button">
+            Run JavaScript
+          </button>
+          <button class="button" type="button" data-close-tool>
+            Close
+          </button>
+        </div>
 
-    currentUser = data.session ? data.session.user : null;
+        <h4>Output</h4>
+        <div class="output" id="javascriptOutput">Your output will appear here.</div>
 
-    // No active session: send the visitor to login.
-    if (!currentUser) {
-      goToLogin();
-      return;
+        <iframe
+          class="hidden"
+          id="javascriptRunner"
+          title="JavaScript execution sandbox"
+          sandbox="allow-scripts"
+        ></iframe>
+      </div>
+
+      <!-- JSON formatter -->
+      <div class="panel hidden" id="tool-json">
+        <h3>JSON Formatter</h3>
+
+        <div class="field">
+          <label for="jsonInput">JSON input</label>
+          <textarea id="jsonInput" spellcheck="false">{"name":"AlphaScript","active":true,"tools":["HTML","CSS","JavaScript"]}</textarea>
+        </div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+          <button class="button primary" id="formatJsonButton" type="button">
+            Format JSON
+          </button>
+          <button class="button" id="minifyJsonButton" type="button">
+            Minify JSON
+          </button>
+          <button class="button" type="button" data-close-tool>
+            Close
+          </button>
+        </div>
+
+        <div class="output" id="jsonOutput" aria-live="polite"></div>
+      </div>
+
+      <!-- Regex tester -->
+      <div class="panel hidden" id="tool-regex">
+        <h3>Regex Tester</h3>
+
+        <div class="field">
+          <label for="regexPattern">Regular expression pattern</label>
+          <input
+            class="input"
+            id="regexPattern"
+            type="text"
+            value="[A-Za-z]+"
+            placeholder="Enter a pattern"
+          >
+        </div>
+
+        <div class="field">
+          <label for="regexFlags">Flags</label>
+          <input
+            class="input"
+            id="regexFlags"
+            type="text"
+            value="g"
+            placeholder="For example: gi"
+          >
+        </div>
+
+        <div class="field">
+          <label for="regexText">Text to test</label>
+          <textarea id="regexText">AlphaScript makes coding easier.
+JavaScript, Python, HTML, and CSS.</textarea>
+        </div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+          <button class="button primary" id="runRegexButton" type="button">
+            Test expression
+          </button>
+   
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+          <button class="button primary" id="runRegexButton" type="button">
+            Test expression
+          </button>
+
+          <button class="button" type="button" data-close-tool>
+            Close
+          </button>
+        </div>
+
+        <div class="output" id="regexOutput" aria-live="polite"></div>
+      </div>
+
+      <!-- Text Difference Checker -->
+      <div class="panel hidden" id="tool-diff">
+        <h3>Text Difference Checker</h3>
+
+        <div class="two-columns">
+          <div class="field">
+            <label for="diffTextA">Original text</label>
+            <textarea id="diffTextA" placeholder="Paste the original text here."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="diffTextB">New text</label>
+            <textarea id="diffTextB" placeholder="Paste the new text here."></textarea>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+          <button class="button primary" id="runDiffButton" type="button">
+            Compare
+          </button>
+
+          <button class="button" type="button" data-close-tool>
+            Close
+          </button>
+        </div>
+
+        <div class="output" id="diffOutput" aria-live="polite"></div>
+      </div>
+
+      <!-- Indentation Helper -->
+      <div class="panel hidden" id="tool-indent">
+        <h3>Indentation Helper</h3>
+
+        <div class="field">
+          <label for="indentInput">Code</label>
+          <textarea
+            id="indentInput"
+            spellcheck="false"
+            placeholder="Paste your code here."
+          ></textarea>
+        </div>
+
+        <div class="field">
+          <label for="indentSpaces">Indentation size</label>
+          <select id="indentSpaces">
+            <option value="2">2 spaces</option>
+            <option value="4" selected>4 spaces</option>
+            <option value="8">8 spaces</option>
+          </select>
+        </div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+          <button class="button primary" id="runIndentButton" type="button">
+            Normalize indentation
+          </button>
+
+          <button class="button" id="copyIndentButton" type="button">
+            Copy result
+          </button>
+
+          <button class="button" type="button" data-close-tool>
+            Close
+          </button>
+        </div>
+
+        <div class="output" id="indentOutput" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="section" id="projects">
+      <div class="section-heading">
+        <div>
+          <h2>My projects</h2>
+          <p>Your saved projects will appear here when project storage is configured.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Project workspace</h3>
+
+        <p class="muted" id="projectsMessage">
+          Sign in to manage your projects. Project saving requires the
+          corresponding Supabase table and security policies.
+        </p>
+
+        <button class="button primary" id="loadProjectsButton" type="button">
+          Refresh projects
+        </button>
+
+        <div class="grid" id="projectsList" style="margin-top:18px"></div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>
+        © <span id="currentYear"></span> AlphaScript. Built for developers.
+      </p>
+      <p>Learn. Build. Improve.</p>
+    </footer>
+  </main>
+
+  <script>
+    "use strict";
+
+    /*
+      SUPABASE CONFIGURATION
+    */
+
+    const SUPABASE_URL =
+      "https://qaivqscssdtsnthdiqtu.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_TjT6PMScm58zNVJiug-kzQ_6oIaJNU9";
+
+    const LOGIN_PATH = "login.html";
+    const PROFILE_PATH = "profile.html";
+
+    const supabaseClient =
+      window.supabase && window.supabase.createClient
+        ? window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_PUBLISHABLE_KEY,
+            {
+              auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true
+              }
+            }
+          )
+        : null;
+
+    const $ = (id) => document.getElementById(id);
+
+    let currentUser = null;
+    let profileComplete = false;
+    let profileLoadInProgress = false;
+
+    /*
+      NAVIGATION
+    */
+
+    function goToLogin(next = "index.html") {
+      const allowedPages = ["index.html", "profile.html"];
+
+      const safeNext = allowedPages.includes(next)
+        ? next
+        : "index.html";
+
+      window.location.replace(
+        LOGIN_PATH +
+        "?screen=login&next=" +
+        encodeURIComponent(safeNext)
+      );
     }
 
-    // Read only the existing core fields needed to decide whether setup is done.
-    const { data: profile, error: profileError } = await supabaseClient
-      .from("profiles")
-      .select("username, full_name, avatar_url")
-      .eq("id", currentUser.id)
-      .maybeSingle();
+    function goToProfile() {
+      window.location.href = PROFILE_PATH;
+    }
 
-    if (profileError) {
-      console.error("Could not load profile:", profileError);
-      $("accountStatus").textContent =
-        "You're signed in, but your profile could not be loaded. Please refresh or open My profile.";
-      currentProfile = null;
-    } else {
-      currentProfile = profile;
+    function showStatus(message, type = "") {
+      const element = $("authStatus");
 
-      // Signed in but without a completed profile: finish setup first.
-      if (!profileIsComplete(profile)) {
-        goToProfile();
+      element.textContent = message;
+      element.className = "status" + (type ? " " + type : "");
+    }
+
+    /*
+      THEME SETTINGS
+    */
+
+    function applyTheme(theme) {
+      document.body.classList.toggle("light", theme === "light");
+
+      $("themeButton").textContent =
+        theme === "light" ? "🌙 Theme" : "☀️ Theme";
+    }
+
+    function toggleTheme() {
+      const newTheme =
+        document.body.classList.contains("light")
+          ? "dark"
+          : "light";
+
+      try {
+        localStorage.setItem("alphascript-theme", newTheme);
+      } catch (error) {
+        console.warn("Theme preference could not be saved.");
+      }
+
+      applyTheme(newTheme);
+    }
+
+    try {
+      applyTheme(localStorage.getItem("alphascript-theme") || "dark");
+    } catch (error) {
+      applyTheme("dark");
+    }
+
+    $("themeButton").addEventListener("click", toggleTheme);
+    $("menuThemeButton").addEventListener("click", toggleTheme);
+
+    /*
+      SETTINGS MENU
+    */
+
+    $("settingsButton").addEventListener("click", () => {
+      const menu = $("settingsMenu");
+      const isHidden = menu.classList.contains("hidden");
+
+      menu.classList.toggle("hidden");
+
+      $("settingsButton").setAttribute(
+        "aria-expanded",
+        String(isHidden)
+      );
+    });
+
+    document.addEventListener("click", (event) => {
+      const wrap = document.querySelector(".settings-wrap");
+
+      if (!wrap.contains(event.target)) {
+        $("settingsMenu").classList.add("hidden");
+
+        $("settingsButton").setAttribute(
+          "aria-expanded",
+          "false"
+        );
+      }
+    });
+
+    $("updateProfileButton").addEventListener("click", () => {
+      if (!currentUser) {
+        goToLogin("profile.html");
         return;
       }
 
-      const displayName =
+      goToProfile();
+    });
+
+    /*
+      PROFILE DISPLAY
+    */
+
+    function renderProfile(profile) {
+      const name =
         profile.full_name ||
         profile.username ||
-        currentUser.email ||
         "Developer";
 
-      $("welcomeText").textContent =
-        "Welcome back, " + displayName +
-        "! Your developer workspace is ready. Choose a tool and keep building.";
+      $("profileName").textContent = name;
 
-      $("accountStatus").textContent =
-        "Signed in as " + displayName;
+      $("profileUsername").textContent = profile.username
+        ? "@" + profile.username
+        : currentUser.email || "Signed-in developer";
+
+      $("profileCountry").textContent = profile.country || "";
+
+      const avatar = $("profileAvatar");
 
       if (profile.avatar_url) {
-        $("profileButton").innerHTML =
-          '<img class="profile-avatar" src="' +
-          escapeAttribute(profile.avatar_url) +
-          '" alt=""> Profile';
+        const image = document.createElement("img");
+
+        image.src = profile.avatar_url;
+        image.alt = "Profile avatar";
+
+        image.onerror = () => {
+          avatar.replaceChildren(
+            document.createTextNode(name.charAt(0).toUpperCase())
+          );
+        };
+
+        avatar.replaceChildren(image);
+      } else {
+        avatar.textContent = name.charAt(0).toUpperCase();
       }
     }
 
-    $("authButton").textContent = "Log out";
-    $("authButton").classList.remove("btn-primary");
-    $("profileButton").classList.remove("hidden");
-    $("settingsButton").classList.remove("hidden");
+    /*
+      AUTHENTICATION AND PROFILE CHECK
+    */
 
-  } catch (error) {
-    console.error("Account initialization failed:", error);
-    $("accountStatus").textContent =
-      "We couldn't verify your session. Please refresh the page.";
-  }
-}
+    async function loadAccount() {
+      if (!supabaseClient) {
+        showStatus(
+          "Supabase could not load. Check your internet connection and the Supabase JavaScript library.",
+          "error"
+        );
 
-function escapeAttribute(value) {
-  return String(value).replace(/[&<>"']/g, character => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  })[character]);
-}
+        return;
+      }
 
-$("profileButton").addEventListener("click", () => {
-  if (currentUser) {
-    window.location.href = profileUrl;
-  } else {
-    goToLogin();
-  }
-});
+      if (profileLoadInProgress) {
+        return;
+      }
 
-$("authButton").addEventListener("click", async () => {
-  if (!supabaseClient || !currentUser) {
-    goToLogin();
-    return;
-  }
+      profileLoadInProgress = true;
 
-  $("authButton").disabled = true;
-  $("authButton").textContent = "Logging out…";
+      try {
+        const {
+          data: { session },
+          error: sessionError
+        } = await supabaseClient.auth.getSession();
 
-  const { error } = await supabaseClient.auth.signOut();
+        if (sessionError) {
+          throw sessionError;
+        }
 
-  if (error) {
-    console.error("Logout failed:", error);
-    $("accountStatus").textContent =
-      "Unable to log out. Please try again.";
-    $("authButton").disabled = false;
-    $("authButton").textContent = "Log out";
-    return;
-  }
+        if (!session || !session.user) {
+          currentUser = null;
 
-  goToLogin();
-});
+          showStatus(
+            "Please log in to access your AlphaScript workspace."
+          );
 
-$("settingsButton").addEventListener("click", () => {
-  $("settingsSection").classList.toggle("hidden");
-  $("settingsSection").scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
-});
+          goToLogin("index.html");
+          return;
+        }
 
-$("closeSettings").addEventListener("click", () => {
-  $("settingsSection").classList.add("hidden");
-});
+        currentUser = session.user;
 
-$("themeToggle").addEventListener("click", toggleTheme);
-$("settingsTheme").addEventListener("change", event => {
-  setTheme(event.target.checked);
-});
+        const {
+          data: profile,
+          error: profileError
+        } = await supabaseClient
+          .from("profiles")
+          .select(
+            "id, username, full_name, country, avatar_url, skills, hobbies, learning_goals"
+          )
+          .eq("id", currentUser.id)
+          .maybeSingle();
 
-function setTheme(useLight) {
-  document.body.classList.toggle("light", useLight);
-  $("themeToggle").textContent = useLight ? "☾" : "☀";
-  $("settingsTheme").checked = useLight;
+        if (profileError) {
+          console.error("Profile loading error:", profileError);
 
-  try {    localStorage.setItem(
-      "alphascript-theme",
-      useLight ? "light" : "dark"
-    );
-  } catch (_) {}
-}
+          showStatus(
+            "You are signed in, but your profile could not be loaded. Check your profiles table and Row Level Security policies.",
+            "error"
+          );
 
-function toggleTheme() {
-  setTheme(!document.body.classList.contains("light"));
-}
+          $("profileName").textContent =
+            currentUser.email || "Signed-in developer";
 
-try {
-  setTheme(localStorage.getItem("alphascript-theme") === "light");
-} catch (_) {}
+          $("profileUsername").textContent =
+            "Profile information is unavailable.";
 
-// Tool controls
-const toolNames = {
-  html: "HTML/CSS Playground",
-  js: "JavaScript Playground",
-  json: "JSON Formatter",
-  regex: "Regex Tester",
-  diff: "Text Difference Checker",
-  format: "Code Indentation Helper"
-};
+          $("profileAction").textContent = "Open profile";
+          $("profileAction").href = PROFILE_PATH;
 
-function openTool(name) {
-  document.querySelectorAll(".tool-panel").forEach(panel => {
-    panel.classList.remove("active");
-  });
+          $("loginButton").classList.add("hidden");
+          $("logoutButton").classList.remove("hidden");
 
-  $("toolWelcome").classList.add("hidden");
-  $("toolTitle").textContent = toolNames[name];
-  $("panel-" + name).classList.add("active");
+          return;
+        }
 
-  $("workspace").scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
-}
+        if (!profile) {
+          showStatus("Your profile has not been created yet.");
 
-document.querySelectorAll("[data-tool]").forEach(card => {
-  card.addEventListener("click", () => openTool(card.dataset.tool));
-});
+          window.location.replace(PROFILE_PATH);
+          return;
+        }
 
-$("runHtml").addEventListener("click", () => {
-  const html = $("htmlCode").value;
-  const css = $("cssCode").value.replace(/<\/style/gi, "<\\/style");
+        const hasText = (value) =>
+          typeof value === "string" &&
+          value.trim().length > 0;
 
-  $("htmlOutput").srcdoc =
-    "<!doctype html><html><head><meta charset='utf-8'><style>" +
-    css +
-    "</style></head><body>" +
-    html +
-    "</body></html>";
-});
+        const hasItems = (value) =>
+          Array.isArray(value)
+            ? value.some(
+                (item) => String(item).trim().length > 0
+              )
+            : hasText(value);
 
-$("runJs").addEventListener("click", () => {
-  const code = $("jsCode").value;
-  const frame = document.createElement("iframe");
+        profileComplete =
+          hasText(profile.username) &&
+          hasText(profile.full_name) &&
+          hasText(profile.country) &&
+          hasItems(profile.skills) &&
+          hasItems(profile.hobbies) &&
+          hasItems(profile.learning_goals);
 
-  frame.sandbox = "allow-scripts";
-  frame.className = "hidden";
-  frame.title = "JavaScript sandbox";
+        if (!profileComplete) {
+          showStatus(
+            "Please complete your profile before continuing."
+          );
 
-  const safeCode = JSON.stringify(code);
+          window.location.replace(PROFILE_PATH);
+          return;
+        }
 
-  frame.srcdoc =
-    "<!doctype html><script>" +
-    "const send=(...a)=>parent.postMessage({" +
-    "alphaScriptOutput:a.map(x=>{" +
-    "try{return typeof x==='string'?x:JSON.stringify(x)}" +
-    "catch(e){return String(x)}}" +
-    ").join(' ')" +
-    "},'*');" +
-    "console.log=send;console.info=send;console.warn=send;console.error=send;" +
-    "try{(new Function(" + safeCode + "))()}" +
-    "catch(e){send('Error: '+e.message)}" +
-    "<\/script>";
+        renderProfile(profile);
 
-  document.body.appendChild(frame);
+        $("loginButton").classList.add("hidden");
+        $("logoutButton").classList.remove("hidden");
+        $("refreshProfileButton").classList.remove("hidden");
 
-  const output = $("jsOutput");
-  output.textContent = "Running…";
+        $("profileAction").textContent = "Update profile";
+        $("profileAction").href = PROFILE_PATH;
 
-  const handler = event => {
-    if (
-      event.source === frame.contentWindow &&
-      event.data &&
-      Object.prototype.hasOwnProperty.call(event.data, "alphaScriptOutput")
-    ) {
-      output.textContent +=
-        (output.textContent === "Running…" ? "" : "\n") +
-        event.data.alphaScriptOutput;
+        showStatus(
+          "You are signed in. Your profile loaded successfully.",
+          "success"
+        );
+
+        await loadProjects();
+
+      } catch (error) {
+        console.error("Account initialization error:", error);
+
+        showStatus(
+          "We couldn't check your account. Refresh the page and try again.",
+          "error"
+        );
+
+      } finally {
+        profileLoadInProgress = false;
+      }
     }
+
+    /*
+      LOG OUT
+    */
+
+    $("logoutButton").addEventListener("click", async () => {
+      if (!supabaseClient) {
+        goToLogin("index.html");
+        return;
+      }
+
+      $("logoutButton").disabled = true;
+
+      try {
+        const { error } = await supabaseClient.auth.signOut();
+
+        if (error) {
+          throw error;
+        }
+
+        window.location.replace(
+          LOGIN_PATH + "?screen=login"
+        );
+
+      } catch (error) {
+        console.error("Logout error:", error);
+
+        showStatus(
+          "Unable to log out. Check your connection and try again.",
+          "error"
+        );
+
+      } finally {
+        $("logoutButton").disabled = false;
+      }
+    });
+
+    $("refreshProfileButton").addEventListener("click", () => {
+      window.location.reload();
+    });
+
+    /*
+      DEVELOPER TOOL NAVIGATION
+    */
+
+    const toolPanels = [
+      "html",
+      "javascript",
+      "json",
+      "regex",
+      "diff",
+      "indent"
+    ];
+
+    function openTool(toolName) {
+      toolPanels.forEach((name) => {
+        $("tool-" + name).classList.toggle(
+          "hidden",
+          name !== toolName
+        );
+      });
+
+      $("tool-" + toolName).scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+
+    document.querySelectorAll("[data-open-tool]").forEach((button) => {
+      button.addEventListener("click", () => {
+        openTool(button.dataset.openTool);
+      });
+    });
+
+    document.querySelectorAll("[data-close-tool]").forEach((button) => {
+      button.addEventListener("click", () => {
+        toolPanels.forEach((name) => {
+          $("tool-" + name).classList.add("hidden");
+        });
+
+        $("developer-tools").scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      });
+    });
+
+    /*
+      HTML AND CSS PLAYGROUND
+    */
+
+    $("runHtmlButton").addEventListener("click", () => {
+      const html = $("htmlCode").value;
+      const css = $("cssCode").value;
+
+      const safeDocument = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>${css.replace(/<\/style/gi, "<\\/style")}</style>
+</head>
+<body>${html.replace(/<\/body/gi, "<\\/body")}</body>
+</html>`;
+
+      $("htmlPreview").srcdoc = safeDocument;
+    });
+
+    $("runHtmlButton").click();
+
+    /*
+      JAVASCRIPT PLAYGROUND
+    */
+
+    const javascriptRunner = $("javascriptRunner");
+
+    window.addEventListener("message", (event) => {
+      if (event.source !== javascriptRunner.contentWindow) {
+        return;
+      }
+
+      const data = event.data;
+
+      if (!data || data.type !== "alphascript-output") {
+        return;
+      }
+
+      const output = $("javascriptOutput");
+
+      if (data.level === "error") {
+        output.textContent += "ERROR: " + data.message + "\n";
+      } else {
+        output.textContent += data.message + "\n";
+      }
+    });
+
+    $("runJavascriptButton").addEventListener("click", () => {
+      const source = $("javascriptCode").value;
+
+      $("javascriptOutput").textContent = "";
+
+      const runnerDocument = `<!DOCTYPE html>
+<html>
+<body>
+<script>
+(function () {
+  function send(level, args) {
+    const message = args.map(function (item) {
+      try {
+        if (typeof item === "string") return item;
+        return JSON.stringify(item);
+      } catch (error) {
+        return String(item);
+      }
+    }).join(" ");
+
+    parent.postMessage({
+      type: "alphascript-output",
+      level: level,
+      message: message
+    }, "*");
+  }
+
+  console.log = function () {
+    send("log", Array.from(arguments));
   };
 
-  window.addEventListener("message", handler);
+  console.info = console.log;
+  console.warn = console.log;
 
-  setTimeout(() => {
-    window.removeEventListener("message", handler);
-    frame.remove();
+  console.error = function () {
+    send("error", Array.from(arguments));
+  };
 
-    if (output.textContent === "Running…") {
-      output.textContent = "Finished. No console output.";
-    }
-  }, 1000);
-});
-
-$("clearJs").addEventListener("click", () => {
-  $("jsOutput").textContent = "Your output will appear here.";
-});
-
-function parseJson(text) {
   try {
-    return { ok: true, value: JSON.parse(text) };
+    new Function(${JSON.stringify(source)})();
   } catch (error) {
-    return { ok: false, error: error.message };
+    send("error", [
+      error && error.message ? error.message : String(error)
+    ]);
   }
-}
+})();
+<\/script>
+</body>
+</html>`;
 
-$("formatJson").addEventListener("click", () => {
-  const result = parseJson($("jsonInput").value);
+      javascriptRunner.srcdoc = runnerDocument;
+    });
 
-  $("jsonOutput").textContent = result.ok
-    ? JSON.stringify(result.value, null, 2)
-    : "Invalid JSON: " + result.error;
+    /*
+      JSON FORMATTER
+    */
 
-  $("jsonStatus").textContent = result.ok
-    ? "Valid JSON ✓"
-    : "Please correct the JSON syntax.";
-});
+    $("formatJsonButton").addEventListener("click", () => {
+      try {
+        const parsed = JSON.parse($("jsonInput").value);
 
-$("minifyJson").addEventListener("click", () => {
-  const result = parseJson($("jsonInput").value);
+        $("jsonOutput").textContent =
+          JSON.stringify(parsed, null, 2);
 
-  $("jsonOutput").textContent = result.ok
-    ? JSON.stringify(result.value)
-    : "Invalid JSON: " + result.error;
+      } catch (error) {
+        $("jsonOutput").textContent =
+          "Invalid JSON: " + error.message;
+      }
+    });
 
-  $("jsonStatus").textContent = result.ok
-    ? "Minified successfully ✓"
-    : "Please correct the JSON syntax.";
-});
+    $("minifyJsonButton").addEventListener("click", () => {
+      try {
+        const parsed = JSON.parse($("jsonInput").value);
 
-$("testRegex").addEventListener("click", () => {
-  try {
-    const pattern = $("regexPattern").value;
-    const flags = $("regexFlags").value;
-    const text = $("regexText").value;
+        $("jsonOutput").textContent =
+          JSON.stringify(parsed);
 
-    const regex = new RegExp(pattern, flags);
-    const globalRegex = new RegExp(
-      regex.source,
-      regex.flags.includes("g") ? regex.flags : regex.flags + "g"
-    );
+      } catch (error) {
+        $("jsonOutput").textContent =
+          "Invalid JSON: " + error.message;
+      }
+    });
 
-    const matches = [...text.matchAll(globalRegex)];
+    /*
+      REGEX TESTER
+    */
 
-    $("regexOutput").textContent = matches.length
-      ? matches.map((match, index) =>
-          (index + 1) + ". " + JSON.stringify(match[0]) +
-          " — index " + match.index
-        ).join("\n")
-      : "No matches found.";
-  } catch (error) {
-    $("regexOutput").textContent = "Regex error: " + error.message;
-  }
-});
+    $("runRegexButton").addEventListener("click", () => {
+      const output = $("regexOutput");
 
-$("compareText").addEventListener("click", () => {
-  const a = $("diffA").value.split("\n");
-  const b = $("diffB").value.split("\n");
-  const length = Math.max(a.length, b.length);
-  const output = [];
+      try {
+        const pattern = $("regexPattern").value;
+        const flags = $("regexFlags").value;
+        const text = $("regexText").value;
 
-  for (let i = 0; i < length; i++) {
-    if (a[i] === b[i]) {
-      if (a[i] !== undefined) output.push("  " + a[i]);
-    } else {
-      if (a[i] !== undefined) output.push("− " + a[i]);
-      if (b[i] !== undefined) output.push("+ " + b[i]);
+        const expression = new RegExp(pattern, flags);
+        const matches = text.match(expression);
+
+        if (!matches) {
+          output.textContent = "No matches found.";
+          return;
+        }
+
+        output.textContent =
+          "Matches found: " + matches.length + "\n\n" +
+          matches
+            .map((match, index) => (index + 1) + ". " + match)
+            .join("\n");
+
+      } catch (error) {
+        output.textContent =
+          "Invalid regular expression: " + error.message;
+      }
+    });
+
+    /*
+      TEXT DIFFERENCE CHECKER
+    */
+
+    $("runDiffButton").addEventListener("click", () => {
+      const original = $("diffTextA").value.split("\n");
+      const updated = $("diffTextB").value.split("\n");
+
+      const output = [];
+      const maxLines = Math.max(
+        original.length,
+        updated.length
+      );
+
+      for (let i = 0; i < maxLines; i++) {
+        const oldLine = original[i];
+        const newLine = updated[i];
+
+        if (oldLine === newLine) {
+          if (oldLine !== undefined) {
+            output.push("  " + oldLine);
+          }
+        } else {
+          if (oldLine !== undefined) {
+            output.push("- " + oldLine);
+          }
+
+          if (newLine !== undefined) {
+            output.push("+ " + newLine);
+          }
+        }
+      }
+
+      $("diffOutput").textContent = output.join("\n");
+    });
+
+    /*
+      INDENTATION HELPER
+    */
+
+    $("runIndentButton").addEventListener("click", () => {
+      const code = $("indentInput").value;
+      const spaces = Number($("indentSpaces").value);
+
+      const normalized = code
+        .replace(/\t/g, " ".repeat(spaces))
+        .split("\n")
+        .map((line) => {
+          const leading = line.match(/^ */)[0].length;
+          const level = Math.round(leading / spaces);
+
+          return " ".repeat(level * spaces) + line.trimStart();
+        })
+        .join("\n");
+
+      $("indentOutput").textContent = normalized;
+    });
+
+    $("copyIndentButton").addEventListener("click", async () => {
+      const text = $("indentOutput").textContent;
+
+      if (!text) {
+        $("indentOutput").textContent =
+          "Run the indentation helper first.";
+
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(text);
+
+        $("copyIndentButton").textContent = "Copied!";
+
+        setTimeout(() => {
+          $("copyIndentButton").textContent = "Copy result";
+        }, 1500);
+
+      } catch (error) {
+        $("indentOutput").textContent =
+          text +
+          "\n\nClipboard access failed. Select and copy the text manually.";
+      }
+    });
+
+    /*
+      PROJECT LOADING
+    */
+
+    async function loadProjects() {
+      const list = $("projectsList");
+      const message = $("projectsMessage");
+
+      list.replaceChildren();
+
+      if (!currentUser || !supabaseClient) {
+        message.textContent =
+          "Sign in to access your projects.";
+
+        return;
+      }
+
+      message.textContent = "Loading your projects...";
+
+      try {
+        const { data, error } = await supabaseClient
+          .from("tool_projects")
+          .select("id, name, description, created_at")
+          .eq("user_id", currentUser.id)
+          .order("created_at", { ascending: false })
+          .limit(20);
+
+        if (error) {
+          throw error;
+        }
+        if (!data || data.length ===           0) {
+          projectsList.innerHTML = `
+            <div class="empty-state">
+              <h3>No projects yet</h3>
+              <p>Your projects will appear here when you add them.</p>
+            </div>
+          `;
+          return;
+        }
+
+        projectsList.innerHTML = data.map(project => `
+          <article class="project-card">
+            <h3>${escapeHTML(project.name || "Untitled Project")}</h3>
+            <p>${escapeHTML(project.description || "No description provided.")}</p>
+            <small>
+              Created:
+              ${project.created_at
+                ? new Date(project.created_at).toLocaleDateString()
+                : "Unknown date"}
+            </small>
+          </article>
+        `).join("");
+
+      } catch (error) {
+        console.error("Error loading projects:", error);
+
+        projectsList.innerHTML = `
+                   <div class="empty-state">
+            <h3>Unable to load projects</h3>
+            <p>Please refresh the page and try again.</p>
+          </div>
+        `;
+      }
     }
-  }
 
-  $("diffOutput").textContent =
-    output.join("\n") || "No differences found.";
-});
-
-$("cleanCode").addEventListener("click", () => {
-  let level = 0;
-
-  const lines = $("formatInput").value.split("\n");
-
-  const result = lines.map(line => {
-    const text = line.trim();
-    if (!text) return "";
-
-    if (/^[}\])]/.test(text)) {
-      level = Math.max(0, level - 1);
+    // Escape HTML to help prevent unsafe content from being inserted.
+    function escapeHTML(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
     }
 
-    const output = "  ".repeat(level) + text;
-    const opens = (text.match(/[{[(]/g) || []).length;
-    const closes = (text.match(/[}\])]/g) || []).length;
+    // Load the signed-in user's profile information.
+    async function loadProfile() {
+      if (!currentUser) return;
 
-    level = Math.max(0, level + opens - closes);
-    return output;
-  });
+      try {
+        const { data: profile, error } = await supabase
+          .from("profiles")
+          .select("id, username, full_name, country, avatar_url")
+          .eq("id", currentUser.id)
+          .maybeSingle();
 
-  $("formatOutput").textContent = result.join("\n");
-});
+        if (error) throw error;
 
-$("copyFormatted").addEventListener("click", async () => {
-  const result = $("formatOutput").textContent;
+        if (profile) {
+          const displayName =
+            profile.full_name ||
+            profile.username ||
+            currentUser.email ||
+            "Developer";
 
-  if (!result) {
-    $("formatOutput").textContent = "Run Indent lines first.";
-    return;
-  }
+          const nameElement = document.getElementById("welcomeName");
 
-  try {
-    await navigator.clipboard.writeText(result);
-    $("copyFormatted").textContent = "Copied ✓";
+          if (nameElement) {
+            nameElement.textContent = displayName;
+          }
 
-    setTimeout(() => {
-      $("copyFormatted").textContent = "Copy result";
-    }, 1500);
-  } catch (_) {
-    $("formatOutput").textContent =
-      result + "\n\nSelect the result manually to copy it.";
-  }
-});
+          const avatarElement = document.getElementById("userAvatar");
 
-// Check the session before treating the page as ready.
-initializeAccount();
-</script>
+          if (avatarElement) {
+            if (profile.avatar_url) {
+              avatarElement.src = profile.avatar_url;
+              avatarElement.alt = `${displayName}'s profile picture`;
+              avatarElement.hidden = false;
+            } else {
+              avatarElement.hidden = true;
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Error loading profile:", error);
+      }
+    }
 
+    // Log out the current user.
+    async function logout() {
+      if (!confirm("Are you sure you want to log out?")) return;
+
+      try {
+        const { error } = await supabase.auth.signOut();
+
+        if (error) throw error;
+
+        window.location.replace("login.html");
+      } catch (error) {
+        console.error("Logout error:", error);
+        alert("Unable to log out. Please try again.");
+      }
+    }
+
+    document.querySelectorAll("[data-logout]").forEach(button => {
+      button.addEventListener("click", logout);
+    });
+
+    // Open the profile page.
+    const profileButton = document.getElementById("profileButton");
+
+    if (profileButton) {
+      profileButton.addEventListener("click", () => {
+        window.location.href = "profile.html";
+      });
+    }
+
+    // Settings panel.
+    const settingsButton = document.getElementById("settingsButton");
+    const settingsPanel = document.getElementById("settingsPanel");
+    const closeSettingsButton =
+      document.getElementById("closeSettingsButton");
+
+    if (settingsButton && settingsPanel) {
+      settingsButton.addEventListener("click", () => {
+        settingsPanel.hidden = false;
+      });
+    }
+
+    if (closeSettingsButton && settingsPanel) {
+      closeSettingsButton.addEventListener("click", () => {
+        settingsPanel.hidden = true;
+      });
+    }
+
+    if (settingsPanel) {
+      settingsPanel.addEventListener("click", event => {
+        if (event.target === settingsPanel) {
+          settingsPanel.hidden = true;
+        }
+      });
+    }
+
+    // Theme settings.
+    const themeSelect = document.getElementById("themeSelect");
+
+    function applyTheme(theme) {
+      document.documentElement.dataset.theme = theme;
+      localStorage.setItem("alphascript-theme", theme);
+
+      if (themeSelect) {
+        themeSelect.value = theme;
+      }
+    }
+
+    applyTheme(localStorage.getItem("alphascript-theme") || "dark");
+
+    if (themeSelect) {
+      themeSelect.addEventListener("change", () => {
+        applyTheme(themeSelect.value);
+      });
+    }
+
+    // Mobile navigation.
+    const menuButton = document.getElementById("menuButton");
+    const navigation = document.getElementById("mainNavigation");
+
+    if (menuButton && navigation) {
+      menuButton.addEventListener("click", () => {
+        const expanded =
+          menuButton.getAttribute("aria-expanded") === "true";
+
+        menuButton.setAttribute("aria-expanded", String(!expanded));
+        navigation.classList.toggle("open", !expanded);
+      });
+    }
+
+    // Initialize and protect the homepage.
+    async function initializeHomepage() {
+      try {
+        const { data, error } = await supabase.auth.getSession();
+
+        if (error) throw error;
+
+        currentUser = data.session?.user || null;
+
+        if (!currentUser) {
+          window.location.replace("login.html");
+          return;
+        }
+
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select(
+            "id, username, full_name, country, skills, hobbies, learning_goals"
+          )
+          .eq("id", currentUser.id)
+          .maybeSingle();
+
+        if (profileError) throw profileError;
+
+        const hasValue = value => {
+          if (Array.isArray(value)) return value.length > 0;
+          return typeof value === "string" && value.trim().length > 0;
+        };
+
+        const profileComplete =
+          profile &&
+          hasValue(profile.username) &&
+          hasValue(profile.full_name) &&
+          hasValue(profile.country) &&
+          hasValue(profile.skills) &&
+          hasValue(profile.hobbies) &&
+          hasValue(profile.learning_goals);
+
+        if (!profileComplete) {
+          window.location.replace("profile.html");
+          return;
+        }
+
+        await loadProfile();
+        await loadProjects();
+
+      } catch (error) {
+        console.error("Homepage initialization error:", error);
+
+        document.body.insertAdjacentHTML(
+          "afterbegin",
+          `
+            <div role="alert" class="error-banner">
+              We couldn't load your account information.
+              Please refresh the page or sign in again.
+              <button type="button" id="retryButton">Retry</button>
+            </div>
+          `
+        );
+
+        document.getElementById("retryButton")?.addEventListener(
+          "click",
+          () => window.location.reload()
+        );
+      }
+    }
+
+    // Respond to sign-out events.
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT" || !session) {
+        window.location.replace("login.html");
+      }
+    });
+
+    // Start the homepage.
+    initializeHomepage();
+  </script>
 </body>
 </html>
+       
