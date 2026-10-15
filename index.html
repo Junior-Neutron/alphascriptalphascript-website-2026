@@ -9,390 +9,163 @@
 
 <style>
 :root {
-  --bg: #070b14;
-  --panel: #0e1625;
-  --border: #243650;
-  --cyan: #53e7ff;
-  --blue: #568cff;
-  --violet: #a77bff;
-  --text: #f0f5ff;
-  --muted: #8e9db6;
+  --bg:#070b14;
+  --panel:#0e1625;
+  --border:#243650;
+  --cyan:#53e7ff;
+  --blue:#568cff;
+  --violet:#a77bff;
+  --text:#f0f5ff;
+  --muted:#8e9db6;
 }
 
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;min-height:100vh;
   background:
-    radial-gradient(ellipse at 10% 0%, #12284b, transparent 42%),
-    radial-gradient(ellipse at 95% 75%, #251342, transparent 38%),
+    radial-gradient(ellipse at 10% 0%,#12284b,transparent 42%),
+    radial-gradient(ellipse at 95% 75%,#251342,transparent 38%),
     var(--bg);
-  color: var(--text);
-  font-family: system-ui, Arial, sans-serif;
+  color:var(--text);
+  font-family:system-ui,Arial,sans-serif;
 }
+a{color:var(--cyan);text-decoration:none}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.6;cursor:wait}
+.wrap{width:min(1160px,calc(100% - 30px));margin:auto}
 
-a {
-  color: var(--cyan);
-  text-decoration: none;
+.topbar{
+  position:sticky;top:0;z-index:10;
+  background:#070b14ee;border-bottom:1px solid var(--border);
 }
-
-button, input, textarea {
-  font: inherit;
+.topbar-inner{
+  min-height:70px;display:flex;align-items:center;
+  justify-content:space-between;gap:15px;
 }
-
-button {
-  cursor: pointer;
+.brand{font-weight:950;letter-spacing:2px;font-size:19px;color:white}
+.brand span{color:var(--cyan)}
+.nav{display:flex;gap:20px;font-size:13px}
+.nav a{color:var(--muted)}
+.nav-actions{display:flex;gap:9px;align-items:center}
+.btn,.icon-btn{
+  border:1px solid var(--border);border-radius:12px;
+  background:var(--panel);color:var(--text);
+  padding:11px 15px;font-weight:750;
 }
-
-.wrap {
-  width: min(1160px, calc(100% - 30px));
-  margin: auto;
+.icon-btn{width:43px;height:43px;padding:0}
+.btn-primary{
+  background:linear-gradient(100deg,#168fce,#5268f4 65%,#8554dc);
+  border-color:transparent;color:white;
 }
-
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: #070b14ee;
-  border-bottom: 1px solid var(--border);
+.btn:hover,.icon-btn:hover{border-color:var(--cyan)}
+.hero{
+  padding:70px 0 45px;display:grid;
+  grid-template-columns:1.2fr .8fr;align-items:center;gap:35px;
 }
-
-.topbar-inner {
-  min-height: 70px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
+.eyebrow{
+  color:var(--cyan);font-size:12px;font-weight:900;
+  letter-spacing:3px;text-transform:uppercase;
 }
-
-.brand {
-  font-weight: 950;
-  letter-spacing: 2px;
-  font-size: 19px;
-  color: white;
+h1{font-size:clamp(39px,6vw,68px);line-height:1.05;letter-spacing:-2px;margin:18px 0}
+.gradient-text,h1 span{
+  background:linear-gradient(90deg,var(--cyan),var(--blue),var(--violet));
+  background-clip:text;-webkit-background-clip:text;color:transparent;
 }
-
-.brand span {
-  color: var(--cyan);
+.hero p{color:var(--muted);font-size:17px;line-height:1.8}
+.hero-buttons{display:flex;flex-wrap:wrap;gap:12px;margin-top:25px}
+.preview{
+  border:1px solid var(--border);border-radius:22px;
+  background:#101a2a;padding:20px;overflow:auto;
 }
-
-.nav {
-  display: flex;
-  gap: 20px;
-  font-size: 13px;
+.code{
+  background:#080f1c;border:1px solid var(--border);
+  border-radius:12px;padding:17px;color:#c4d4ed;
+  font:13px/1.9 monospace;white-space:pre-wrap;
 }
-
-.nav a {
-  color: var(--muted);
+.c-cyan{color:var(--cyan)}
+.c-purple{color:#b69bff}
+.c-green{color:#71f5bc}
+.section{padding:45px 0}
+.section-head{margin-bottom:24px}
+.section-head h2{font-size:clamp(27px,4vw,37px)}
+.section-head p{color:var(--muted);line-height:1.7}
+.tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.tool-card{
+  text-align:left;border:1px solid var(--border);border-radius:18px;
+  background:var(--panel);color:var(--text);padding:22px;min-height:175px;
 }
-
-.nav-actions {
-  display: flex;
-  gap: 9px;
-  align-items: center;
+.tool-card:hover{border-color:var(--cyan);transform:translateY(-3px)}
+.tool-icon{color:var(--cyan);font-size:25px;margin-bottom:12px}
+.tool-card h3{margin:0 0 9px}
+.tool-card p{color:var(--muted);font-size:13px;line-height:1.7}
+.workspace{
+  margin-top:20px;border:1px solid var(--border);border-radius:20px;
+  background:var(--panel);padding:20px;
 }
-
-.btn, .icon-btn {
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--panel);
-  color: var(--text);
-  padding: 11px 15px;
-  font-weight: 750;
+.workspace h3{margin-top:0}
+.tool-panel{display:none}
+.tool-panel.active{display:block}
+textarea,input{
+  width:100%;border:1px solid var(--border);border-radius:12px;
+  background:#080f1c;color:white;padding:13px;margin:8px 0;
 }
-
-.icon-btn {
-  width: 43px;
-  height: 43px;
-  padding: 0;
+textarea{min-height:150px;resize:vertical;font:13px/1.6 monospace}
+.output{
+  min-height:75px;overflow:auto;overflow-wrap:anywhere;
+  background:#080f1c;color:#d6e5ff;border:1px solid var(--border);
+  border-radius:12px;padding:13px;white-space:pre-wrap;font:13px/1.6 monospace;
 }
-
-.btn-primary {
-  background: linear-gradient(100deg, #168fce, #5268f4 65%, #8554dc);
-  border-color: transparent;
-  color: white;
+.output iframe{width:100%;height:250px;border:0;background:white}
+.tool-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tool-actions{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.hidden{display:none!important}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.feature{padding:20px;border:1px solid var(--border);border-radius:16px;background:var(--panel)}
+.feature p{color:var(--muted);font-size:13px;line-height:1.7}
+.cta{
+  margin:45px 0 60px;padding:32px;border:1px solid var(--border);
+  border-radius:22px;background:linear-gradient(120deg,#112643,#17142d);
+  text-align:center;
 }
-
-.hero {
-  padding: 70px 0 45px;
-  display: grid;
-  grid-template-columns: 1.2fr .8fr;
-  align-items: center;
-  gap: 35px;
+.cta p{color:var(--muted);line-height:1.7}
+footer{border-top:1px solid var(--border);padding:25px 0;color:var(--muted);font-size:12px}
+.status-message{font-size:12px;color:var(--muted);max-width:220px}
+.profile-avatar{
+  width:34px;height:34px;border-radius:50%;object-fit:cover;
+  vertical-align:middle;margin-right:6px;
 }
-
-.eyebrow {
-  color: var(--cyan);
-  font-size: 12px;
-  font-weight: 900;
-  letter-spacing: 3px;
-  text-transform: uppercase;
+.account-name{font-size:12px;color:var(--muted);max-width:130px;overflow-wrap:anywhere}
+.settings-box{
+  margin:12px 0;padding:20px;border:1px solid var(--border);
+  border-radius:16px;background:var(--panel);
 }
-
-h1 {
-  font-size: clamp(39px, 6vw, 68px);
-  line-height: 1.05;
-  letter-spacing: -2px;
-  margin: 18px 0;
+.settings-box label{display:block;margin:12px 0}
+body.light{
+  background:#f2f6fc;color:#101b2d;
 }
-
-.gradient-text, h1 span {
-  background: linear-gradient(90deg, var(--cyan), var(--blue), var(--violet));
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
+body.light .topbar{background:#f2f6fcee}
+body.light .brand{color:#101b2d}
+body.light .tool-card,body.light .feature,body.light .workspace,
+body.light .preview,body.light .settings-box{background:#fff;color:#101b2d}
+body.light .btn,body.light .icon-btn{background:#fff;color:#101b2d}
+body.light .nav a,body.light .hero p,body.light .section-head p,
+body.light .tool-card p,body.light .feature p,body.light .cta p{color:#52617a}
+body.light .cta{background:linear-gradient(120deg,#e1f2ff,#eee6ff)}
+@media(max-width:800px){
+  .hero{grid-template-columns:1fr;padding-top:45px}
+  .tools-grid{grid-template-columns:repeat(2,1fr)}
+  .nav{display:none}
 }
-
-.hero p {
-  color: var(--muted);
-  font-size: 17px;
-  line-height: 1.8;
-}
-
-.hero-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 25px;
-}
-
-.preview {
-  border: 1px solid var(--border);
-  border-radius: 22px;
-  background: #101a2a;
-  padding: 20px;
-  overflow: auto;
-}
-
-.code {
-  background: #080f1c;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 17px;
-  color: #c4d4ed;
-  font: 13px/1.9 monospace;
-  white-space: pre-wrap;
-}
-
-.c-cyan { color: var(--cyan); }
-.c-purple { color: #b69bff; }
-.c-green { color: #71f5bc; }
-
-.section {
-  padding: 45px 0;
-}
-
-.section-head {
-  margin-bottom: 24px;
-}
-
-.section-head h2 {
-  font-size: clamp(27px, 4vw, 37px);
-}
-
-.section-head p {
-  color: var(--muted);
-  line-height: 1.7;
-}
-
-.tools-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-}
-
-.tool-card {
-  text-align: left;
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  background: var(--panel);
-  color: var(--text);
-  padding: 22px;
-  min-height: 175px;
-}
-
-.tool-card:hover {
-  border-color: var(--cyan);
-  transform: translateY(-3px);
-}
-
-.tool-icon {
-  color: var(--cyan);
-  font-size: 25px;
-  margin-bottom: 12px;
-}
-
-.tool-card h3 {
-  margin: 0 0 9px;
-}
-
-.tool-card p {
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.7;
-}
-
-.workspace {
-  margin-top: 20px;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  background: var(--panel);
-  padding: 20px;
-}
-
-.workspace h3 {
-  margin-top: 0;
-}
-
-.tool-panel {
-  display: none;
-}
-
-.tool-panel.active {
-  display: block;
-}
-
-textarea, input {
-  width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: #080f1c;
-  color: white;
-  padding: 13px;
-  margin: 8px 0;
-}
-
-textarea {
-  min-height: 150px;
-  resize: vertical;
-  font: 13px/1.6 monospace;
-}
-
-.output {
-  min-height: 75px;
-  overflow: auto;
-  overflow-wrap: anywhere;
-  background: #080f1c;
-  color: #d6e5ff;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 13px;
-  white-space: pre-wrap;
-  font: 13px/1.6 monospace;
-}
-
-.output iframe {
-  width: 100%;
-  height: 250px;
-  border: 0;
-  background: white;
-}
-
-.tool-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.tool-actions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin: 12px 0;
-}
-
-.hidden {
-  display: none !important;
-}
-
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-}
-
-.feature {
-  padding: 20px;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: var(--panel);
-}
-
-.feature p {
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.7;
-}
-
-.cta {
-  margin: 45px 0 60px;
-  padding: 32px;
-  border: 1px solid var(--border);
-  border-radius: 22px;
-  background: linear-gradient(120deg, #112643, #17142d);
-  text-align: center;
-}
-
-.cta p {
-  color: var(--muted);
-  line-height: 1.7;
-}
-
-footer {
-  border-top: 1px solid var(--border);
-  padding: 25px 0;
-  color: var(--muted);
-  font-size: 12px;
-}
-
-@media (max-width: 800px) {
-  .hero {
-    grid-template-columns: 1fr;
-    padding-top: 45px;
-  }
-
-  .tools-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .nav {
-    display: none;
-  }
-}
-
-@media (max-width: 540px) {
-  .brand {
-    font-size: 16px;
-  }
-
-  .hero p {
-    font-size: 15px;
-  }
-
-  .tools-grid,
-  .feature-grid,
-  .tool-row {
-    grid-template-columns: 1fr;
-  }
-
-  .tool-card {
-    min-height: 145px;
-  }
-
-  .workspace {
-    padding: 14px;
-  }
-
-  .cta {
-    padding: 24px 15px;
-  }
+@media(max-width:540px){
+  .brand{font-size:16px}
+  .hero p{font-size:15px}
+  .tools-grid,.feature-grid,.tool-row{grid-template-columns:1fr}
+  .tool-card{min-height:145px}
+  .workspace{padding:14px}
+  .cta{padding:24px 15px}
+  .account-name{display:none}
 }
 </style>
 </head>
@@ -411,27 +184,42 @@ footer {
 
     <div class="nav-actions">
       <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">☀</button>
-      <a class="btn btn-primary" href="login.html">Sign in ↗</a>
+      <button class="btn" id="profileButton">My profile</button>
+      <button class="btn" id="settingsButton">Settings</button>
+      <button class="btn btn-primary" id="authButton">Checking…</button>
     </div>
   </div>
 </header>
 
 <main id="home" class="wrap">
 
+  <div id="accountStatus" class="status-message" role="status" aria-live="polite">
+    Checking your account…
+  </div>
+
+  <section id="settingsSection" class="settings-box hidden">
+    <h2>Settings</h2>
+    <p>Manage your AlphaScript preferences.</p>
+
+    <label>
+      <input id="settingsTheme" type="checkbox" style="width:auto">
+      Use light appearance
+    </label>
+
+    <button class="btn" id="closeSettings">Close settings</button>
+  </section>
+
   <section class="hero">
     <div>
       <div class="eyebrow">Your next chapter starts here</div>
-
       <h1>
         Build smarter.<br>
         Test faster.<br>
         <span>Go further.</span>
       </h1>
-
-      <p>
-        Your developer workspace for writing, testing, and
-        refining code. Useful tools, one clean workspace,
-        and room to grow.
+      <p id="welcomeText">
+        Your developer workspace for writing, testing, and refining code.
+        Useful tools, one clean workspace, and room to grow.
       </p>
 
       <div class="hero-buttons">
@@ -444,7 +232,6 @@ footer {
 
     <div class="preview">
       <div class="eyebrow">welcome.js</div>
-
       <pre class="code"><span class="c-purple">const</span> <span class="c-cyan">nextChapter</span> = {
   idea: <span class="c-green">"something great"</span>,
   tools: ["build", "test", "learn"],
@@ -465,7 +252,6 @@ if (nextChapter.ready) {
     </div>
 
     <div class="tools-grid">
-
       <button class="tool-card" data-tool="html">
         <div class="tool-icon">&lt;/&gt;</div>
         <h3>HTML/CSS Playground</h3>
@@ -501,12 +287,10 @@ if (nextChapter.ready) {
         <h3>Code Indentation Helper</h3>
         <p>Indent pasted code to make it easier to read.</p>
       </button>
-
     </div>
 
     <section id="workspace" class="workspace">
       <h3 id="toolTitle">Choose a tool above</h3>
-
       <div id="toolWelcome">
         <p>Tap any tool card to open the tool here.</p>
       </div>
@@ -516,7 +300,6 @@ if (nextChapter.ready) {
         <label for="htmlCode">HTML</label>
         <textarea id="htmlCode"><h1>Hello, AlphaScript!</h1>
 <p>Change this HTML and preview your idea.</p></textarea>
-
         <label for="cssCode">CSS</label>
         <textarea id="cssCode">body {
   font-family: system-ui;
@@ -524,7 +307,6 @@ if (nextChapter.ready) {
   color: #14213d;
 }
 h1 { color: #168fce; }</textarea>
-
         <button class="btn btn-primary" id="runHtml">Run preview →</button>
         <div class="output" style="margin-top:12px">
           <iframe id="htmlOutput" sandbox="allow-scripts" title="HTML preview"></iframe>
@@ -537,12 +319,10 @@ h1 { color: #168fce; }</textarea>
         <textarea id="jsCode">const total = 12 + 30;
 console.log("AlphaScript is ready!");
 console.log("Total:", total);</textarea>
-
         <div class="tool-actions">
           <button class="btn btn-primary" id="runJs">Run JavaScript →</button>
           <button class="btn" id="clearJs">Clear output</button>
         </div>
-
         <div id="jsOutput" class="output">Your output will appear here.</div>
       </div>
 
@@ -550,35 +330,28 @@ console.log("Total:", total);</textarea>
         <p>Paste JSON to format or validate it.</p>
         <label for="jsonInput">JSON input</label>
         <textarea id="jsonInput">{"name":"AlphaScript","free":true,"tools":["HTML","JavaScript","JSON"]}</textarea>
-
         <div class="tool-actions">
           <button class="btn btn-primary" id="formatJson">Format JSON →</button>
           <button class="btn" id="minifyJson">Minify</button>
         </div>
-
         <div id="jsonOutput" class="output">Formatted JSON will appear here.</div>
         <p id="jsonStatus"></p>
       </div>
 
       <div class="tool-panel" id="panel-regex">
         <p>Enter a regular expression and sample text.</p>
-
         <label for="regexPattern">Pattern</label>
         <input id="regexPattern" value="[A-Z][a-z]+">
-
         <label for="regexFlags">Flags</label>
         <input id="regexFlags" value="g">
-
         <label for="regexText">Test text</label>
         <textarea id="regexText">AlphaScript helps Developers build better tools.</textarea>
-
         <button class="btn btn-primary" id="testRegex">Test pattern →</button>
         <div id="regexOutput" class="output" style="margin-top:12px"></div>
       </div>
 
       <div class="tool-panel" id="panel-diff">
         <p>Compare two versions of text.</p>
-
         <div class="tool-row">
           <div>
             <label for="diffA">Original text</label>
@@ -586,7 +359,6 @@ console.log("Total:", total);</textarea>
 Build tools
 Learn every day</textarea>
           </div>
-
           <div>
             <label for="diffB">Updated text</label>
             <textarea id="diffB">AlphaScript
@@ -594,14 +366,12 @@ Build better tools
 Learn every day</textarea>
           </div>
         </div>
-
         <button class="btn btn-primary" id="compareText">Compare text →</button>
         <div id="diffOutput" class="output" style="margin-top:12px"></div>
       </div>
 
       <div class="tool-panel" id="panel-format">
         <p>This is a simple indentation helper, not a full code formatter.</p>
-
         <label for="formatInput">Code or text</label>
         <textarea id="formatInput">function hello(){
 console.log("Hello");
@@ -609,33 +379,27 @@ if(true){
 console.log("Ready");
 }
 }</textarea>
-
         <div class="tool-actions">
           <button class="btn btn-primary" id="cleanCode">Indent lines →</button>
           <button class="btn" id="copyFormatted">Copy result</button>
         </div>
-
         <div id="formatOutput" class="output"></div>
       </div>
-
     </section>
   </section>
 
   <section id="why" class="section">
     <div class="eyebrow">Made for builders</div>
     <h2>A workspace that grows with you.</h2>
-
     <div class="feature-grid">
       <article class="feature">
         <h3>⚡ Quick to use</h3>
         <p>Open a tool and start without installing software.</p>
       </article>
-
       <article class="feature">
         <h3>🔒 Your code stays yours</h3>
         <p>The starter tools run in your browser. Never paste passwords or private keys into online tools.</p>
       </article>
-
       <article class="feature">
         <h3>🚀 More coming</h3>
         <p>Future plans include saved projects, AI coding assistance, and optional Pro features.</p>
@@ -649,7 +413,6 @@ console.log("Ready");
     <p>Explore the tools, experiment with code, and keep moving forward.</p>
     <a class="btn btn-primary" href="#tools">Open the workshop →</a>
   </section>
-
 </main>
 
 <footer class="wrap">
@@ -658,11 +421,205 @@ console.log("Ready");
   <p>Core tools are free to use.</p>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 "use strict";
 
+/*
+  AlphaScript session setup.
+  The publishable key is designed for browser use.
+  Keep database Row Level Security enabled.
+*/
+const SUPABASE_URL = "https://qaivqscssdtsnthdiqtu.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_TjT6PMScm58zNVJiug-kzQ_6oIaJNU9";
+
 const $ = id => document.getElementById(id);
 
+let supabaseClient = null;
+let currentUser = null;
+let currentProfile = null;
+
+const loginUrl = "login.html?screen=login&next=index.html";
+const profileUrl = "profile.html";
+
+function goToLogin() {
+  window.location.replace(loginUrl);
+}
+
+function goToProfile() {
+  window.location.replace(profileUrl);
+}
+
+function profileIsComplete(profile) {
+  if (!profile) return false;
+
+  // These are the core profile fields used by the current profile setup.
+  return Boolean(
+    String(profile.username || "").trim() &&
+    String(profile.full_name || "").trim()
+  );
+}
+
+async function initializeAccount() {
+  $("accountStatus").textContent = "Checking your account…";
+
+  if (!window.supabase || !window.supabase.createClient) {
+    $("accountStatus").textContent =
+      "Unable to load the account service. Check your internet connection and refresh.";
+    return;
+  }
+
+  try {
+    supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+    const { data, error } = await supabaseClient.auth.getSession();
+
+    if (error) throw error;
+
+    currentUser = data.session ? data.session.user : null;
+
+    // No active session: send the visitor to login.
+    if (!currentUser) {
+      goToLogin();
+      return;
+    }
+
+    // Read only the existing core fields needed to decide whether setup is done.
+    const { data: profile, error: profileError } = await supabaseClient
+      .from("profiles")
+      .select("username, full_name, avatar_url")
+      .eq("id", currentUser.id)
+      .maybeSingle();
+
+    if (profileError) {
+      console.error("Could not load profile:", profileError);
+      $("accountStatus").textContent =
+        "You're signed in, but your profile could not be loaded. Please refresh or open My profile.";
+      currentProfile = null;
+    } else {
+      currentProfile = profile;
+
+      // Signed in but without a completed profile: finish setup first.
+      if (!profileIsComplete(profile)) {
+        goToProfile();
+        return;
+      }
+
+      const displayName =
+        profile.full_name ||
+        profile.username ||
+        currentUser.email ||
+        "Developer";
+
+      $("welcomeText").textContent =
+        "Welcome back, " + displayName +
+        "! Your developer workspace is ready. Choose a tool and keep building.";
+
+      $("accountStatus").textContent =
+        "Signed in as " + displayName;
+
+      if (profile.avatar_url) {
+        $("profileButton").innerHTML =
+          '<img class="profile-avatar" src="' +
+          escapeAttribute(profile.avatar_url) +
+          '" alt=""> Profile';
+      }
+    }
+
+    $("authButton").textContent = "Log out";
+    $("authButton").classList.remove("btn-primary");
+    $("profileButton").classList.remove("hidden");
+    $("settingsButton").classList.remove("hidden");
+
+  } catch (error) {
+    console.error("Account initialization failed:", error);
+    $("accountStatus").textContent =
+      "We couldn't verify your session. Please refresh the page.";
+  }
+}
+
+function escapeAttribute(value) {
+  return String(value).replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[character]);
+}
+
+$("profileButton").addEventListener("click", () => {
+  if (currentUser) {
+    window.location.href = profileUrl;
+  } else {
+    goToLogin();
+  }
+});
+
+$("authButton").addEventListener("click", async () => {
+  if (!supabaseClient || !currentUser) {
+    goToLogin();
+    return;
+  }
+
+  $("authButton").disabled = true;
+  $("authButton").textContent = "Logging out…";
+
+  const { error } = await supabaseClient.auth.signOut();
+
+  if (error) {
+    console.error("Logout failed:", error);
+    $("accountStatus").textContent =
+      "Unable to log out. Please try again.";
+    $("authButton").disabled = false;
+    $("authButton").textContent = "Log out";
+    return;
+  }
+
+  goToLogin();
+});
+
+$("settingsButton").addEventListener("click", () => {
+  $("settingsSection").classList.toggle("hidden");
+  $("settingsSection").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+});
+
+$("closeSettings").addEventListener("click", () => {
+  $("settingsSection").classList.add("hidden");
+});
+
+$("themeToggle").addEventListener("click", toggleTheme);
+$("settingsTheme").addEventListener("change", event => {
+  setTheme(event.target.checked);
+});
+
+function setTheme(useLight) {
+  document.body.classList.toggle("light", useLight);
+  $("themeToggle").textContent = useLight ? "☾" : "☀";
+  $("settingsTheme").checked = useLight;
+
+  try {    localStorage.setItem(
+      "alphascript-theme",
+      useLight ? "light" : "dark"
+    );
+  } catch (_) {}
+}
+
+function toggleTheme() {
+  setTheme(!document.body.classList.contains("light"));
+}
+
+try {
+  setTheme(localStorage.getItem("alphascript-theme") === "light");
+} catch (_) {}
+
+// Tool controls
 const toolNames = {
   html: "HTML/CSS Playground",
   js: "JavaScript Playground",
@@ -721,10 +678,7 @@ $("runJs").addEventListener("click", () => {
     "catch(e){return String(x)}}" +
     ").join(' ')" +
     "},'*');" +
-    "console.log=send;" +
-    "console.info=send;" +
-    "console.warn=send;" +
-    "console.error=send;" +
+    "console.log=send;console.info=send;console.warn=send;console.error=send;" +
     "try{(new Function(" + safeCode + "))()}" +
     "catch(e){send('Error: '+e.message)}" +
     "<\/script>";
@@ -738,7 +692,7 @@ $("runJs").addEventListener("click", () => {
     if (
       event.source === frame.contentWindow &&
       event.data &&
-      "alphaScriptOutput" in event.data
+      Object.prototype.hasOwnProperty.call(event.data, "alphaScriptOutput")
     ) {
       output.textContent +=
         (output.textContent === "Running…" ? "" : "\n") +
@@ -755,7 +709,7 @@ $("runJs").addEventListener("click", () => {
     if (output.textContent === "Running…") {
       output.textContent = "Finished. No console output.";
     }
-  }, 700);
+  }, 1000);
 });
 
 $("clearJs").addEventListener("click", () => {
@@ -814,7 +768,6 @@ $("testRegex").addEventListener("click", () => {
           " — index " + match.index
         ).join("\n")
       : "No matches found.";
-
   } catch (error) {
     $("regexOutput").textContent = "Regex error: " + error.message;
   }
@@ -846,7 +799,6 @@ $("cleanCode").addEventListener("click", () => {
 
   const result = lines.map(line => {
     const text = line.trim();
-
     if (!text) return "";
 
     if (/^[}\])]/.test(text)) {
@@ -854,12 +806,10 @@ $("cleanCode").addEventListener("click", () => {
     }
 
     const output = "  ".repeat(level) + text;
-
     const opens = (text.match(/[{[(]/g) || []).length;
     const closes = (text.match(/[}\])]/g) || []).length;
 
     level = Math.max(0, level + opens - closes);
-
     return output;
   });
 
@@ -867,36 +817,28 @@ $("cleanCode").addEventListener("click", () => {
 });
 
 $("copyFormatted").addEventListener("click", async () => {
-  try {
-    await navigator.clipboard.writeText(
-      $("formatOutput").textContent
-    );
+  const result = $("formatOutput").textContent;
 
+  if (!result) {
+    $("formatOutput").textContent = "Run Indent lines first.";
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(result);
     $("copyFormatted").textContent = "Copied ✓";
 
     setTimeout(() => {
       $("copyFormatted").textContent = "Copy result";
     }, 1500);
-
-  } catch (error) {
-    $("formatOutput").textContent +=
-      "\n\nSelect    "\n\nSelect the result manually to copy it.";
+  } catch (_) {
+    $("formatOutput").textContent =
+      result + "\n\nSelect the result manually to copy it.";
   }
 });
 
-$("themeToggle").addEventListener("click", () => {
-  document.body.classList.toggle("light");
-
-  if (document.body.classList.contains("light")) {
-    document.body.style.background = "#f2f6fc";
-    document.body.style.color = "#101b2d";
-    $("themeToggle").textContent = "☾";
-  } else {
-    document.body.style.background = "";
-    document.body.style.color = "";
-    $("themeToggle").textContent = "☀";
-  }
-});
+// Check the session before treating the page as ready.
+initializeAccount();
 </script>
 
 </body>
