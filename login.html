@@ -638,3 +638,603 @@ body.light .btn{
             autocomplete="current-password"
             required
           >
+
+          <button
+            class="password-toggle"
+            type="button"
+            data-password="loginPassword"
+          >SHOW</button>
+        </div>
+      </div>
+
+      <div class="form-options">
+        <label class="remember">
+          <input type="checkbox" id="rememberMe" checked>
+          Remember me
+        </label>
+
+        <a href="#" class="text-link" id="forgotLink">
+          Forgot password?
+        </a>
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        id="loginButton"
+      >Sign in →</button>
+
+      <div class="divider">OR</div>
+
+      <p class="switch-text">
+        Don't have an account?
+        <a href="#" class="text-link" id="showSignup">Create one</a>
+      </p>
+    </form>
+
+    <!-- SIGN-UP FORM -->
+
+    <form id="signupScreen" class="hidden" novalidate>
+      <h2>Create your account</h2>
+
+      <p class="panel-description">
+        Join AlphaScript and start building your developer identity.
+      </p>
+
+      <div class="form-group">
+        <label for="signupUsername">Username</label>
+
+        <input
+          class="field"
+          type="text"
+          id="signupUsername"
+          name="username"
+          placeholder="e.g. Junior_Neutron"
+          autocomplete="username"
+          minlength="3"
+          maxlength="24"
+          pattern="[A-Za-z0-9_]{3,24}"
+          required
+        >
+
+        <p class="subtitle" style="font-size:11px;margin-top:7px">
+          Use 3–24 letters, numbers or underscores.
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label for="signupEmail">Email address</label>
+
+        <input
+          class="field"
+          type="email"
+          id="signupEmail"
+          name="email"
+          placeholder="you@example.com"
+          autocomplete="email"
+          maxlength="254"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="signupPassword">Password</label>
+
+        <div class="input-wrap">
+          <input
+            class="field password-field"
+            type="password"
+            id="signupPassword"
+            name="password"
+            placeholder="Create a strong password"
+            autocomplete="new-password"
+            minlength="8"
+            required
+          >
+
+          <button
+            class="password-toggle"
+            type="button"
+            data-password="signupPassword"
+          >SHOW</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm password</label>
+
+        <div class="input-wrap">
+          <input
+            class="field password-field"
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            placeholder="Enter your password again"
+            autocomplete="new-password"
+            minlength="8"
+            required
+          >
+
+          <button
+            class="password-toggle"
+            type="button"
+            data-password="confirmPassword"
+          >SHOW</button>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        id="signupButton"
+      >Create account →</button>
+
+      <p class="switch-text">
+        Already have an account?
+        <a href="#" class="text-link" id="showLogin">Sign in</a>
+      </p>
+    </form>
+
+    <!-- FORGOT PASSWORD FORM -->
+
+    <form id="forgotScreen" class="hidden" novalidate>
+      <h2>Reset your password</h2>
+
+      <p class="panel-description">
+        Enter the email address associated with your account.
+        We'll send you a password-reset link.
+      </p>
+
+      <div class="form-group">
+        <label for="forgotEmail">Email address</label>
+
+        <input
+          class="field"
+          type="email"
+          id="forgotEmail"
+          name="email"
+          placeholder="you@example.com"
+          autocomplete="email"
+          maxlength="254"
+          required
+        >
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        id="forgotButton"
+      >Send reset link →</button>
+
+      <p class="switch-text">
+        Remember your password?
+        <a href="#" class="text-link" id="backToLogin">Back to login</a>
+      </p>
+    </form>
+
+    <!-- NEW PASSWORD FORM -->
+
+    <form id="resetScreen" class="hidden" novalidate>
+      <h2>Choose a new password</h2>
+
+      <p class="panel-description">
+        Enter a new password for your AlphaScript account.
+      </p>
+
+      <div class="form-group">
+        <label for="newPassword">New password</label>
+
+        <div class="input-wrap">
+          <input
+            class="field password-field"
+            type="password"
+            id="newPassword"
+            name="newPassword"
+            placeholder="Create a new password"
+            autocomplete="new-password"
+            minlength="8"
+            required
+          >
+
+          <button
+            class="password-toggle"
+            type="button"
+            data-password="newPassword"
+          >SHOW</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmNewPassword">Confirm new password</label>
+
+        <div class="input-wrap">
+          <input
+            class="field password-field"
+            type="password"
+            id="confirmNewPassword"
+            name="confirmNewPassword"
+            placeholder="Enter the new password again"
+            autocomplete="new-password"
+            minlength="8"
+            required
+          >
+
+          <button
+            class="password-toggle"
+            type="button"
+            data-password="confirmNewPassword"
+          >SHOW</button>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        id="resetButton"
+      >Update password →</button>
+    </form>
+
+    <div id="notice" class="notice" role="status" aria-live="polite"></div>
+
+  </section>
+
+  <footer class="footer">
+    BUILD WITH PURPOSE · LEARN WITHOUT LIMITS
+  </footer>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+"use strict";
+
+/* Supabase configuration */
+
+const SUPABASE_URL =
+  "https://qaivqscssdtsnthdiqtu.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_TjT6PMScm58zNVJiugk-zQ_6oIaJNU9";
+
+/* Use the profile page in the same GitHub Pages repository. */
+
+const PROFILE_URL =
+  new URL("profile.html", window.location.href).href;
+
+const LOGIN_PATH =
+  window.location.href.split("#")[0].split("?")[0];
+
+const RESET_CALLBACK_URL =
+  LOGIN_PATH + "?mode=reset";
+
+let supabaseClient = null;
+let currentScreen = "login";
+let isBusy = false;
+let recoveryMode = false;
+
+const $ = id => document.getElementById(id);
+
+const loginScreen = $("loginScreen");
+const signupScreen = $("signupScreen");
+const forgotScreen = $("forgotScreen");
+const resetScreen = $("resetScreen");
+const notice = $("notice");
+
+const loginButton = $("loginButton");
+const signupButton = $("signupButton");
+const forgotButton = $("forgotButton");
+const resetButton = $("resetButton");
+
+/* Notices */
+
+function showNotice(message, type = "info") {
+  notice.textContent = message;
+  notice.className = "notice show " + type;
+}
+
+function clearNotice() {
+  notice.textContent = "";
+  notice.className = "notice";
+}
+
+/* Switch between login, signup, forgot-password and reset forms. */
+
+function showScreen(screen) {
+  if (isBusy) return;
+
+  currentScreen = screen;
+
+  loginScreen.classList.toggle("hidden", screen !== "login");
+  signupScreen.classList.toggle("hidden", screen !== "signup");
+  forgotScreen.classList.toggle("hidden", screen !== "forgot");
+  resetScreen.classList.toggle("hidden", screen !== "reset");
+
+  clearNotice();
+
+  const titles = {
+    login: {
+      title: "Welcome to",
+      word: "AlphaScript.",
+      subtitle: "Sign in to continue your developer journey, manage your profile, and connect with a community of builders."
+    },
+
+    signup: {
+      title: "Start building",
+      word: "journey.",
+      subtitle: "Create your AlphaScript account and begin defining your developer identity."
+    },
+
+    forgot: {
+      title: "Recover your",
+      word: "account.",
+      subtitle: "We'll help you regain access to your AlphaScript account."
+    },
+
+    reset: {
+      title: "Secure your",
+      word: "account.",
+      subtitle: "Choose a new password to protect your AlphaScript account."
+    }
+  };
+
+  const info = titles[screen] || titles.login;
+
+  $("pageTitle").replaceChildren(
+    document.createTextNode(info.title + " ")
+  );
+
+  const span = document.createElement("span");
+  span.textContent = info.word;
+
+  $("pageTitle").appendChild(span);
+  $("pageSubtitle").textContent = info.subtitle;
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+/* Form navigation */
+
+$("showSignup").addEventListener("click", event => {
+  event.preventDefault();
+  showScreen("signup");
+});
+
+$("showLogin").addEventListener("click", event => {
+  event.preventDefault();
+  showScreen("login");
+});
+
+$("forgotLink").addEventListener("click", event => {
+  event.preventDefault();
+
+  $("forgotEmail").value =
+    $("loginEmail").value.trim();
+
+  showScreen("forgot");
+});
+
+$("backToLogin").addEventListener("click", event => {
+  event.preventDefault();
+  showScreen("login");
+});
+
+/* Show and hide passwords */
+
+document.querySelectorAll("[data-password]").forEach(button => {
+  button.addEventListener("click", () => {
+    const field = $(button.dataset.password);
+
+    if (!field) return;
+
+    const showPassword = field.type === "password";
+
+    field.type = showPassword ? "text" : "password";
+    button.textContent = showPassword ? "HIDE" : "SHOW";
+  });
+});
+
+/* Theme toggle */
+
+function applyTheme(theme) {
+  document.body.classList.toggle("light", theme === "light");
+
+  $("themeToggle").textContent = theme === "light" ? "☾" : "☀";
+
+  $("themeToggle").setAttribute(
+    "aria-label",
+    theme === "light"
+      ? "Switch to dark theme"
+      : "Switch to light theme"
+  );
+
+  document.querySelector('meta[name="theme-color"]').setAttribute(
+    "content",
+    theme === "light" ? "#f2f6fc" : "#070b14"
+  );
+}
+
+let savedTheme = "dark";
+
+try {
+  savedTheme = localStorage.getItem("alphascript-theme") || "dark";
+} catch (_) {}
+
+applyTheme(savedTheme);
+
+$("themeToggle").addEventListener("click", () => {
+  const nextTheme = document.body.classList.contains("light")
+    ? "dark"
+    : "light";
+
+  applyTheme(nextTheme);
+
+  try {
+    localStorage.setItem("alphascript-theme", nextTheme);
+  } catch (_) {}
+});
+
+/* Button loading states */
+
+function setBusy(button, busyText) {
+  isBusy = true;
+
+  button.dataset.originalText = button.textContent;
+  button.disabled = true;
+  button.textContent = busyText;
+
+  document.querySelectorAll(
+    "#loginScreen button, #signupScreen button, #forgotScreen button, #resetScreen button"
+  ).forEach(item => {
+    item.disabled = true;
+  });
+}
+
+function clearBusy() {
+  isBusy = false;
+
+  document.querySelectorAll(
+    "#loginScreen button, #signupScreen button, #forgotScreen button, #resetScreen button"
+  ).forEach(item => {
+    item.disabled = false;
+  });
+
+  loginButton.textContent =
+    loginButton.dataset.originalText || "Sign in →";
+
+  signupButton.textContent =
+    signupButton.dataset.originalText || "Create account →";
+
+  forgotButton.textContent =
+    forgotButton.dataset.originalText || "Send reset link →";
+
+  resetButton.textContent =
+    resetButton.dataset.originalText || "Update password →";
+}
+
+/* Authentication error messages */
+
+function friendlyAuthError(error, action) {
+  const message = String(error?.message || "").toLowerCase();
+
+  if (
+    message.includes("invalid login credentials") ||
+    message.includes("invalid credentials")
+  ) {
+    return "Incorrect email or password. Please check your details and try again.";
+  }
+
+  if (message.includes("email not confirmed")) {
+    return "Your email hasn't been confirmed yet. Check your inbox for the confirmation link.";
+  }
+
+  if (message.includes("user already registered")) {
+    return "An account with this email already exists. Please sign in instead.";
+  }
+
+  if (message.includes("password should be at least")) {
+    return "Your password is too short. Use at least 8 characters.";
+  }
+
+  if (
+    message.includes("rate limit") ||
+    message.includes("too many requests")
+  ) {
+    return "Too many attempts. Please wait a little and try again.";
+  }
+
+  if (
+    message.includes("network") ||
+    message.includes("fetch")
+  ) {
+    return "A network error occurred. Check your internet connection and try again.";
+  }
+
+  if (action === "reset" && message.includes("expired")) {
+    return "This password-reset link has expired. Request a new one.";
+  }
+
+  return error?.message || "Something went wrong. Please try again.";
+}
+
+/* Clean authentication parameters from the URL */
+
+function cleanAuthUrl() {
+  try {
+    window.history.replaceState(
+      {},
+      document.title,
+      window.location.pathname
+    );
+  } catch (_) {}
+}
+
+/* Redirect to the profile after successful authentication */
+
+function goToProfile() {
+  window.location.replace(PROFILE_URL);
+}
+
+/* LOGIN */
+
+loginScreen.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  if (isBusy) return;
+
+  clearNotice();
+
+  if (!supabaseClient) {
+    showNotice(
+      "Authentication is unavailable. Check your Supabase configuration and internet connection.",
+      "error"
+    );
+    return;
+  }
+
+  const email = $("loginEmail").value.trim();
+  const password = $("loginPassword").value;
+
+  if (!email || !password) {
+    showNotice("Enter your email address and password.", "error");
+    return;
+  }
+
+  setBusy(loginButton, "Signing in...");
+  showNotice("Verifying your account...", "info");
+
+  try {
+    const { data, error } =
+      await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+      });
+
+    if (error) throw error;
+
+    if (!data.user) {
+      throw new Error("No user account was returned.");
+    }
+
+    showNotice(
+      "Login successful! Opening your developer profile...",
+      "success"
+    );
+
+    setTimeout(goToProfile, 450);
+
+  } catch (error) {
+    clearBusy();
+    showNotice(friendlyAuthError(error, "login"), "error");
+  }
+});
+
+/* SIGN UP */
+
+signupScreen.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  if (isBusy) return;
