@@ -7,175 +7,177 @@
 <title>AlphaScript | Developer Authentication</title>
 
 <style>
-:root{
-  --bg:#070b14;
-  --panel:#0e1625;
-  --border:#243650;
-  --cyan:#53e7ff;
-  --blue:#568cff;
-  --violet:#a77bff;
-  --text:#f0f5ff;
-  --muted:#8e9db6;
-  --success:#71f5bc;
-  --danger:#ff8398;
+:root {
+  --bg: #070b14;
+  --panel: #0e1625;
+  --border: #243650;
+  --cyan: #53e7ff;
+  --blue: #568cff;
+  --violet: #a77bff;
+  --text: #f0f5ff;
+  --muted: #8e9db6;
+  --success: #71f5bc;
+  --danger: #ff8398;
 }
 
-body.light{
-  --bg:#f2f6fc;
-  --panel:#fff;
-  --border:#d8e2f0;
-  --text:#101b2d;
-  --muted:#61718a;
+body.light {
+  --bg: #f2f6fc;
+  --panel: #ffffff;
+  --border: #d8e2f0;
+  --text: #101b2d;
+  --muted: #61718a;
 }
 
-*{
-  box-sizing:border-box;
+* {
+  box-sizing: border-box;
 }
 
-html{
-  scroll-behavior:smooth;
+html {
+  scroll-behavior: smooth;
 }
 
-body{
-  margin:0;
-  min-height:100vh;
+body {
+  margin: 0;
+  min-height: 100vh;
   background:
-    radial-gradient(ellipse at 10% 0%,#12284b 0,transparent 42%),
-    radial-gradient(ellipse at 95% 80%,#251342 0,transparent 38%),
+    radial-gradient(ellipse at 10% 0%, #12284b 0, transparent 42%),
+    radial-gradient(ellipse at 95% 80%, #251342 0, transparent 38%),
     var(--bg);
-  color:var(--text);
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  transition:background .3s,color .3s;
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  transition: background .3s, color .3s;
 }
 
-body.light{
+body.light {
   background:
-    radial-gradient(ellipse at 10% 0%,#dcecff 0,transparent 42%),
-    radial-gradient(ellipse at 95% 80%,#efe4ff 0,transparent 38%),
+    radial-gradient(ellipse at 10% 0%, #dcecff 0, transparent 42%),
+    radial-gradient(ellipse at 95% 80%, #efe4ff 0, transparent 38%),
     var(--bg);
 }
 
-button,input{
-  font:inherit;
+button,
+input {
+  font: inherit;
 }
 
-button,a{
-  -webkit-tap-highlight-color:transparent;
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
 }
 
-a{
-  color:var(--cyan);
-  text-decoration:none;
+a {
+  color: var(--cyan);
+  text-decoration: none;
 }
 
-button{
-  cursor:pointer;
+button {
+  cursor: pointer;
 }
 
-button:disabled{
-  opacity:.55;
-  cursor:not-allowed;
+button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
 }
 
-.shell{
-  width:min(100%,480px);
-  margin:auto;
-  padding:22px 18px 35px;
+.shell {
+  width: min(100%, 480px);
+  margin: auto;
+  padding: 22px 18px 35px;
 }
 
-.topbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:28px;
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 28px;
 }
 
-.brand{
-  font-size:18px;
-  font-weight:950;
-  letter-spacing:2px;
-  color:var(--text);
+.brand {
+  font-size: 18px;
+  font-weight: 950;
+  letter-spacing: 2px;
+  color: var(--text);
 }
 
-.brand span{
-  color:var(--cyan);
+.brand span {
+  color: var(--cyan);
 }
 
-.top-actions{
-  display:flex;
-  align-items:center;
-  gap:8px;
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.icon-btn{
-  min-width:40px;
-  min-height:40px;
-  border:1px solid var(--border);
-  border-radius:11px;
-  background:var(--panel);
-  color:var(--text);
+.icon-btn {
+  min-width: 40px;
+  min-height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--panel);
+  color: var(--text);
 }
 
-.intro{
-  margin-bottom:24px;
-  animation:fadeUp .7s ease both;
+.intro {
+  margin-bottom: 24px;
+  animation: fadeUp .7s ease both;
 }
 
-.eyebrow{
-  color:var(--cyan);
-  font-size:11px;
-  font-weight:850;
-  letter-spacing:3px;
-  text-transform:uppercase;
+.eyebrow {
+  color: var(--cyan);
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: 3px;
+  text-transform: uppercase;
 }
 
-h1{
-  margin:12px 0;
-  font-size:clamp(31px,8vw,43px);
-  line-height:1.1;
-  letter-spacing:-1.5px;
+h1 {
+  margin: 12px 0;
+  font-size: clamp(31px, 8vw, 43px);
+  line-height: 1.1;
+  letter-spacing: -1.5px;
 }
 
-h1 span{
-  color:var(--cyan);
-  background:linear-gradient(90deg,var(--cyan),var(--violet));
-  -webkit-background-clip:text;
-  background-clip:text;
-  -webkit-text-fill-color:transparent;
+h1 span {
+  color: var(--cyan);
+  background: linear-gradient(90deg, var(--cyan), var(--violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.subtitle{
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.8;
-  margin:0;
+.subtitle {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.8;
+  margin: 0;
 }
 
-.panel{
-  position:relative;
-  overflow:hidden;
-  padding:clamp(22px,6vw,32px);
-  border:1px solid var(--border);
-  border-radius:22px;
-  background:linear-gradient(145deg,#101a2aee,#0b111eee);
-  box-shadow:0 20px 70px #0005;
-  animation:fadeUp .7s .12s ease both;
+.panel {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(22px, 6vw, 32px);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: linear-gradient(145deg, #101a2aee, #0b111eee);
+  box-shadow: 0 20px 70px #0005;
+  animation: fadeUp .7s .12s ease both;
 }
 
-body.light .panel{
-  background:linear-gradient(145deg,#ffffffed,#f7faffed);
-  box-shadow:0 20px 60px #344d7014;
+body.light .panel {
+  background: linear-gradient(145deg, #ffffffed, #f7faffed);
+  box-shadow: 0 20px 60px #344d7014;
 }
 
-.panel:before{
-  content:"";
-  position:absolute;
-  top:0;
-  left:12%;
-  width:76%;
-  height:1px;
-  background:linear-gradient(
+.panel:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 12%;
+  width: 76%;
+  height: 1px;
+  background: linear-gradient(
     90deg,
     transparent,
     var(--cyan),
@@ -184,380 +186,352 @@ body.light .panel{
   );
 }
 
-.panel h2{
-  margin:0 0 8px;
-  font-size:25px;
-  letter-spacing:-.5px;
+.panel h2 {
+  margin: 0 0 8px;
+  font-size: 25px;
+  letter-spacing: -.5px;
 }
 
-.panel-description{
-  margin:0 0 24px;
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.7;
+.panel-description {
+  margin: 0 0 24px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
 }
 
-.form-group{
-  margin-bottom:17px;
+.form-group {
+  margin-bottom: 17px;
 }
 
-.form-group label{
-  display:block;
-  margin-bottom:8px;
-  font-size:12px;
-  font-weight:750;
-  color:var(--text);
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 750;
+  color: var(--text);
 }
 
-.input-wrap{
-  position:relative;
+.input-wrap {
+  position: relative;
 }
 
-.field{
-  display:block;
-  width:100%;
-  min-height:49px;
-  padding:13px 14px;
-  border:1px solid #30435e;
-  border-radius:11px;
-  outline:none;
-  background:#080f1c;
-  color:#f0f5ff;
-  transition:border-color .2s,box-shadow .2s;
+.field {
+  display: block;
+  width: 100%;
+  min-height: 49px;
+  padding: 13px 14px;
+  border: 1px solid #30435e;
+  border-radius: 11px;
+  outline: none;
+  background: #080f1c;
+  color: #f0f5ff;
+  transition: border-color .2s, box-shadow .2s;
 }
 
-body.light .field{
-  background:#f7faff;
-  border-color:#d4dfed;
-  color:#101b2d;
+body.light .field {
+  background: #f7faff;
+  border-color: #d4dfed;
+  color: #101b2d;
 }
 
-.field:focus{
-  border-color:var(--cyan);
-  box-shadow:0 0 0 3px #53e7ff17;
+.field:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px #53e7ff17;
 }
 
-.field::placeholder{
-  color:#65758f;
+.field::placeholder {
+  color: #65758f;
 }
 
-.password-field{
-  padding-right:68px;
+.password-field {
+  padding-right: 68px;
 }
 
-.password-toggle{
-  position:absolute;
-  top:50%;
-  right:8px;
-  transform:translateY(-50%);
-  padding:7px;
-  border:0;
-  background:transparent;
-  color:var(--cyan);
-  font-size:11px;
-  font-weight:800;
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  padding: 7px;
+  border: 0;
+  background: transparent;
+  color: var(--cyan);
+  font-size: 11px;
+  font-weight: 800;
 }
 
-.form-options{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  margin:4px 0 20px;
-  font-size:12px;
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0 20px;
+  font-size: 12px;
 }
 
-.remember{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  color:var(--muted);
+.remember {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
 }
 
-.remember input{
-  accent-color:var(--cyan);
+.remember input {
+  accent-color: var(--cyan);
 }
 
-.text-link{
-  color:var(--cyan);
-  font-size:12px;
-  font-weight:750;
+.text-link {
+  color: var(--cyan);
+  font-size: 12px;
+  font-weight: 750;
 }
 
-.btn{
-  min-height:47px;
-  padding:12px 16px;
-  border:1px solid var(--border);
-  border-radius:11px;
-  background:#121e30;
-  color:var(--text);
-  font-weight:800;
-  transition:transform .2s,filter .2s;
+.btn {
+  min-height: 47px;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: #121e30;
+  color: var(--text);
+  font-weight: 800;
+  transition: transform .2s, filter .2s;
 }
 
-body.light .btn{
-  background:#edf3fc;
-  color:#17243a;
+body.light .btn {
+  background: #edf3fc;
+  color: #17243a;
 }
 
-.btn:hover:not(:disabled){
-  filter:brightness(1.12);
-  transform:translateY(-1px);
+.btn:hover:not(:disabled) {
+  filter: brightness(1.12);
+  transform: translateY(-1px);
 }
 
-.btn-primary{
-  width:100%;
-  border-color:transparent;
-  background:linear-gradient(100deg,#168fce,#5268f4 65%,#8554dc);
-  color:#fff;
-  box-shadow:0 8px 25px #5268f428;
+.btn-primary {
+  width: 100%;
+  border-color: transparent;
+  background: linear-gradient(100deg, #168fce, #5268f4 65%, #8554dc);
+  color: #fff;
+  box-shadow: 0 8px 25px #5268f428;
 }
 
-.btn-primary:hover:not(:disabled){
-  box-shadow:0 10px 30px #5268f445;
+.btn-primary:hover:not(:disabled) {
+  box-shadow: 0 10px 30px #5268f445;
 }
 
-.divider{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin:22px 0;
-  color:var(--muted);
-  font-size:11px;
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0;
+  color: var(--muted);
+  font-size: 11px;
 }
 
 .divider:before,
-.divider:after{
-  content:"";
-  flex:1;
-  height:1px;
-  background:var(--border);
+.divider:after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
 }
 
-.switch-text{
-  margin:20px 0 0;
-  color:var(--muted);
-  text-align:center;
-  font-size:13px;
-  line-height:1.7;
+.switch-text {
+  margin: 20px 0 0;
+  color: var(--muted);
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.7;
 }
 
-.notice{
-  display:none;
-  margin-top:18px;
-  padding:12px 13px;
-  border:1px solid var(--border);
-  border-radius:11px;
-  font-size:12px;
-  line-height:1.7;
-  overflow-wrap:anywhere;
+.notice {
+  display: none;
+  margin-top: 18px;
+  padding: 12px 13px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  font-size: 12px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
 }
 
-.notice.show{
-  display:block;
-  animation:fadeUp .25s ease both;
+.notice.show {
+  display: block;
+  animation: fadeUp .25s ease both;
 }
 
-.notice.info{
-  color:var(--muted);
-  background:#101b2a;
+.notice.info {
+  color: var(--muted);
+  background: #101b2a;
 }
 
-.notice.success{
-  color:var(--success);
-  border-color:#71f5bc40;
-  background:#71f5bc0a;
+.notice.success {
+  color: var(--success);
+  border-color: #71f5bc40;
+  background: #71f5bc0a;
 }
 
-.notice.error{
-  color:var(--danger);
-  border-color:#ff839840;
-  background:#ff83980a;
+.notice.error {
+  color: var(--danger);
+  border-color: #ff839840;
+  background: #ff83980a;
 }
 
-.footer{
-  padding-top:24px;
-  color:var(--muted);
-  font-size:10px;
-  text-align:center;
-  letter-spacing:1.4px;
-  line-height:1.8;
+.footer {
+  padding-top: 24px;
+  color: var(--muted);
+  font-size: 10px;
+  text-align: center;
+  letter-spacing: 1.4px;
+  line-height: 1.8;
 }
 
-.hidden{
-  display:none!important;
+.hidden {
+  display: none !important;
 }
 
-/* Intro animation */
+/* Animated logo introduction */
 
-#introOverlay{
-  position:fixed;
-  inset:0;
-  z-index:9999;
-  display:grid;
-  place-items:center;
-  overflow:hidden;
-  background:#070b14;
-  transition:opacity .65s ease,visibility .65s ease;
+#introOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #070b14;
+  transition: opacity .65s ease, visibility .65s ease;
 }
 
-#introOverlay.finished{
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
+#introOverlay.finished {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
-.intro-orb{
-  position:absolute;
-  width:250px;
-  height:250px;
-  border-radius:50%;
-  background:radial-gradient(circle,#168fce30 0,transparent 70%);
-  animation:orbPulse 2.5s ease-in-out infinite alternate;
+.intro-orb {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #168fce30 0, transparent 70%);
+  animation: orbPulse 2.5s ease-in-out infinite alternate;
 }
 
-.intro-content{
-  position:relative;
-  z-index:1;
-  text-align:center;
-  animation:introAppear 1s cubic-bezier(.2,.8,.2,1) both;
+.intro-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  animation: introAppear 1s cubic-bezier(.2, .8, .2, 1) both;
 }
 
-.intro-logo{
-  font-size:clamp(30px,8vw,48px);
-  font-weight:950;
-  letter-spacing:5px;
-  color:#f0f5ff;
-  text-shadow:0 0 35px #53e7ff24;
+.intro-logo {
+  font-size: clamp(30px, 8vw, 48px);
+  font-weight: 950;
+  letter-spacing: 5px;
+  color: #f0f5ff;
+  text-shadow: 0 0 35px #53e7ff24;
 }
 
-.intro-logo span{
-  color:#53e7ff;
+.intro-logo span {
+  color: #53e7ff;
 }
 
-.intro-line{
-  width:0;
-  height:2px;
-  margin:18px auto;
-  background:linear-gradient(90deg,#53e7ff,#a77bff);
-  animation:lineGrow 1s .4s ease forwards;
+.intro-line {
+  width: 0;
+  height: 2px;
+  margin: 18px auto;
+  background: linear-gradient(90deg, #53e7ff, #a77bff);
+  animation: lineGrow 1s .4s ease forwards;
 }
 
-.intro-caption{
-  color:#8e9db6;
-  font-size:10px;
-  letter-spacing:4px;
-  opacity:0;
-  animation:captionAppear .7s .8s ease forwards;
+.intro-caption {
+  color: #8e9db6;
+  font-size: 10px;
+  letter-spacing: 4px;
+  opacity: 0;
+  animation: captionAppear .7s .8s ease forwards;
 }
 
-.intro-loader{
-  width:110px;
-  height:3px;
-  margin:26px auto 0;
-  overflow:hidden;
-  border-radius:9px;
-  background:#1a2638;
+.intro-loader {
+  width: 110px;
+  height: 3px;
+  margin: 26px auto 0;
+  overflow: hidden;
+  border-radius: 9px;
+  background: #1a2638;
 }
 
-.intro-loader:after{
-  content:"";
-  display:block;
-  width:45%;
-  height:100%;
-  border-radius:9px;
-  background:#53e7ff;
-  animation:loaderMove 1s ease-in-out infinite alternate;
+.intro-loader:after {
+  content: "";
+  display: block;
+  width: 45%;
+  height: 100%;
+  border-radius: 9px;
+  background: #53e7ff;
+  animation: loaderMove 1s ease-in-out infinite alternate;
 }
 
-@keyframes fadeUp{
-  from{
-    opacity:0;
-    transform:translateY(12px);
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes orbPulse {
+  from { transform: scale(.8); opacity: .45; }
+  to { transform: scale(1.25); opacity: 1; }
+}
+
+@keyframes introAppear {
+  from { opacity: 0; transform: translateY(18px) scale(.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes lineGrow {
+  to { width: 190px; }
+}
+
+@keyframes captionAppear {
+  to { opacity: 1; }
+}
+
+@keyframes loaderMove {
+  from { transform: translateX(0); }
+  to { transform: translateX(125%); }
+}
+
+@media (max-width: 420px) {
+  .shell {
+    padding: 17px 13px 28px;
   }
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-}
 
-@keyframes orbPulse{
-  from{
-    transform:scale(.8);
-    opacity:.45;
+  .topbar {
+    margin-bottom: 25px;
   }
-  to{
-    transform:scale(1.25);
-    opacity:1;
-  }
-}
 
-@keyframes introAppear{
-  from{
-    opacity:0;
-    transform:translateY(18px) scale(.97);
+  .panel {
+    padding: 22px 18px;
   }
-  to{
-    opacity:1;
-    transform:translateY(0) scale(1);
-  }
-}
 
-@keyframes lineGrow{
-  to{
-    width:190px;
-  }
-}
-
-@keyframes captionAppear{
-  to{
-    opacity:1;
-  }
-}
-
-@keyframes loaderMove{
-  from{
-    transform:translateX(0);
-  }
-  to{
-    transform:translateX(125%);
+  .form-options {
+    font-size: 11px;
   }
 }
 
-@media(max-width:420px){
-  .shell{
-    padding:17px 13px 28px;
-  }
-
-  .topbar{
-    margin-bottom:25px;
-  }
-
-  .panel{
-    padding:22px 18px;
-  }
-
-  .form-options{
-    font-size:11px;
-  }
-}
-
-@media(prefers-reduced-motion:reduce){
+@media (prefers-reduced-motion: reduce) {
   *,
   *::before,
-  *::after{
-    animation-duration:.01ms!important;
-    animation-iteration-count:1!important;
-    scroll-behavior:auto!important;
-    transition-duration:.01ms!important;
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
   }
 }
 </style>
 </head>
 
 <body>
-
-<!-- Animated AlphaScript logo -->
 
 <div id="introOverlay" aria-label="Loading AlphaScript">
   <div class="intro-orb"></div>
@@ -569,8 +543,6 @@ body.light .btn{
     <div class="intro-loader"></div>
   </div>
 </div>
-
-<!-- Main login page -->
 
 <main class="shell">
 
@@ -601,7 +573,7 @@ body.light .btn{
 
   <section class="panel">
 
-    <!-- LOGIN FORM -->
+    <!-- LOGIN -->
 
     <form id="loginScreen" novalidate>
       <h2>Welcome back</h2>
@@ -658,11 +630,9 @@ body.light .btn{
         </a>
       </div>
 
-      <button
-        type="submit"
-        class="btn btn-primary"
-        id="loginButton"
-      >Sign in →</button>
+      <button type="submit" class="btn btn-primary" id="loginButton">
+        Sign in →
+      </button>
 
       <div class="divider">OR</div>
 
@@ -672,7 +642,7 @@ body.light .btn{
       </p>
     </form>
 
-    <!-- SIGN-UP FORM -->
+    <!-- SIGN UP -->
 
     <form id="signupScreen" class="hidden" novalidate>
       <h2>Create your account</h2>
@@ -763,11 +733,9 @@ body.light .btn{
         </div>
       </div>
 
-      <button
-        type="submit"
-        class="btn btn-primary"
-        id="signupButton"
-      >Create account →</button>
+      <button type="submit" class="btn btn-primary" id="signupButton">
+        Create account →
+      </button>
 
       <p class="switch-text">
         Already have an account?
@@ -775,7 +743,7 @@ body.light .btn{
       </p>
     </form>
 
-    <!-- FORGOT PASSWORD FORM -->
+    <!-- FORGOT PASSWORD -->
 
     <form id="forgotScreen" class="hidden" novalidate>
       <h2>Reset your password</h2>
@@ -800,11 +768,9 @@ body.light .btn{
         >
       </div>
 
-      <button
-        type="submit"
-        class="btn btn-primary"
-        id="forgotButton"
-      >Send reset link →</button>
+      <button type="submit" class="btn btn-primary" id="forgotButton">
+        Send reset link →
+      </button>
 
       <p class="switch-text">
         Remember your password?
@@ -812,7 +778,7 @@ body.light .btn{
       </p>
     </form>
 
-    <!-- NEW PASSWORD FORM -->
+    <!-- NEW PASSWORD -->
 
     <form id="resetScreen" class="hidden" novalidate>
       <h2>Choose a new password</h2>
@@ -867,11 +833,9 @@ body.light .btn{
         </div>
       </div>
 
-      <button
-        type="submit"
-        class="btn btn-primary"
-        id="resetButton"
-      >Update password →</button>
+      <button type="submit" class="btn btn-primary" id="resetButton">
+        Update password →
+      </button>
     </form>
 
     <div id="notice" class="notice" role="status" aria-live="polite"></div>
@@ -895,25 +859,19 @@ const SUPABASE_URL =
   "https://qaivqscssdtsnthdiqtu.supabase.co";
 
 const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_TjT6PMScm58zNVJiugk-zQ_6oIaJNU9";
+  "sb_publishable_TjT6PMScm58zNVJiug-kzQ_6oIaJNU9";
 
-/* Use the profile page in the same GitHub Pages repository. */
+/* Page addresses */
 
-const PROFILE_URL =
-  new URL("profile.html", window.location.href).href;
+const HOME_URL = new URL("index.html", window.location.href).href;
+const PROFILE_URL = new URL("profile.html", window.location.href).href;
 
-const LOGIN_PATH =
-  window.location.href.split("#")[0].split("?")[0];
-
-const RESET_CALLBACK_URL =
-  LOGIN_PATH + "?mode=reset";
+const $ = id => document.getElementById(id);
 
 let supabaseClient = null;
 let currentScreen = "login";
 let isBusy = false;
 let recoveryMode = false;
-
-const $ = id => document.getElementById(id);
 
 const loginScreen = $("loginScreen");
 const signupScreen = $("signupScreen");
@@ -938,7 +896,7 @@ function clearNotice() {
   notice.className = "notice";
 }
 
-/* Switch between login, signup, forgot-password and reset forms. */
+/* Form navigation */
 
 function showScreen(screen) {
   if (isBusy) return;
@@ -958,19 +916,16 @@ function showScreen(screen) {
       word: "AlphaScript.",
       subtitle: "Sign in to continue your developer journey, manage your profile, and connect with a community of builders."
     },
-
     signup: {
       title: "Start building",
       word: "journey.",
       subtitle: "Create your AlphaScript account and begin defining your developer identity."
     },
-
     forgot: {
       title: "Recover your",
       word: "account.",
       subtitle: "We'll help you regain access to your AlphaScript account."
     },
-
     reset: {
       title: "Secure your",
       word: "account.",
@@ -986,17 +941,12 @@ function showScreen(screen) {
 
   const span = document.createElement("span");
   span.textContent = info.word;
-
   $("pageTitle").appendChild(span);
+
   $("pageSubtitle").textContent = info.subtitle;
 
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
-
-/* Form navigation */
 
 $("showSignup").addEventListener("click", event => {
   event.preventDefault();
@@ -1010,10 +960,7 @@ $("showLogin").addEventListener("click", event => {
 
 $("forgotLink").addEventListener("click", event => {
   event.preventDefault();
-
-  $("forgotEmail").value =
-    $("loginEmail").value.trim();
-
+  $("forgotEmail").value = $("loginEmail").value.trim();
   showScreen("forgot");
 });
 
@@ -1027,17 +974,15 @@ $("backToLogin").addEventListener("click", event => {
 document.querySelectorAll("[data-password]").forEach(button => {
   button.addEventListener("click", () => {
     const field = $(button.dataset.password);
-
     if (!field) return;
 
     const showPassword = field.type === "password";
-
     field.type = showPassword ? "text" : "password";
     button.textContent = showPassword ? "HIDE" : "SHOW";
   });
 });
 
-/* Theme toggle */
+/* Theme */
 
 function applyTheme(theme) {
   document.body.classList.toggle("light", theme === "light");
@@ -1046,9 +991,7 @@ function applyTheme(theme) {
 
   $("themeToggle").setAttribute(
     "aria-label",
-    theme === "light"
-      ? "Switch to dark theme"
-      : "Switch to light theme"
+    theme === "light" ? "Switch to dark theme" : "Switch to light theme"
   );
 
   document.querySelector('meta[name="theme-color"]').setAttribute(
@@ -1057,13 +1000,11 @@ function applyTheme(theme) {
   );
 }
 
-let savedTheme = "dark";
-
 try {
-  savedTheme = localStorage.getItem("alphascript-theme") || "dark";
-} catch (_) {}
-
-applyTheme(savedTheme);
+  applyTheme(localStorage.getItem("alphascript-theme") || "dark");
+} catch (_) {
+  applyTheme("dark");
+}
 
 $("themeToggle").addEventListener("click", () => {
   const nextTheme = document.body.classList.contains("light")
@@ -1077,13 +1018,15 @@ $("themeToggle").addEventListener("click", () => {
   } catch (_) {}
 });
 
-/* Button loading states */
+/* Loading states */
 
 function setBusy(button, busyText) {
   isBusy = true;
 
-  button.dataset.originalText = button.textContent;
-  button.disabled = true;
+  if (!button.dataset.originalText) {
+    button.dataset.originalText = button.textContent;
+  }
+
   button.textContent = busyText;
 
   document.querySelectorAll(
@@ -1115,7 +1058,7 @@ function clearBusy() {
     resetButton.dataset.originalText || "Update password →";
 }
 
-/* Authentication error messages */
+/* Friendly authentication errors */
 
 function friendlyAuthError(error, action) {
   const message = String(error?.message || "").toLowerCase();
@@ -1124,11 +1067,11 @@ function friendlyAuthError(error, action) {
     message.includes("invalid login credentials") ||
     message.includes("invalid credentials")
   ) {
-    return "Incorrect email or password. Please check your details and try again.";
+    return "Incorrect email or password. Check your details and try again.";
   }
 
   if (message.includes("email not confirmed")) {
-    return "Your email hasn't been confirmed yet. Check your inbox for the confirmation link.";
+    return "Your email hasn't been confirmed. Check your inbox for the confirmation link.";
   }
 
   if (message.includes("user already registered")) {
@@ -1160,22 +1103,56 @@ function friendlyAuthError(error, action) {
   return error?.message || "Something went wrong. Please try again.";
 }
 
-/* Clean authentication parameters from the URL */
+/*
+ * Check whether the user's profile is complete.
+ * A complete profile must have both username and full_name.
+ */
 
-function cleanAuthUrl() {
-  try {
-    window.history.replaceState(
-      {},
-      document.title,
-      window.location.pathname
+async function getProfileDestination(user) {
+  if (!user) {
+    return "login";
+  }
+
+  const { data: profile, error } = await supabaseClient
+    .from("profiles")
+    .select("username, full_name")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Profile check failed:", error);
+
+    throw new Error(
+      "We signed you in, but couldn't check your profile. Please try again. Details: " +
+      error.message
     );
-  } catch (_) {}
+  }
+
+  if (
+    profile &&
+    typeof profile.username === "string" &&
+    profile.username.trim() !== "" &&
+    typeof profile.full_name === "string" &&
+    profile.full_name.trim() !== ""
+  ) {
+    return "home";
+  }
+
+  return "profile";
 }
 
-/* Redirect to the profile after successful authentication */
+async function redirectAccordingToProfile(user) {
+  const destination = await getProfileDestination(user);
 
-function goToProfile() {
-  window.location.replace(PROFILE_URL);
+  if (destination === "home") {
+    window.location.replace(HOME_URL);
+  } else if (destination === "profile") {
+    window.location.replace(PROFILE_URL);
+  } else {
+    window.location.replace(
+      new URL("login.html", window.location.href).href
+    );
+  }
 }
 
 /* LOGIN */
@@ -1184,7 +1161,6 @@ loginScreen.addEventListener("submit", async event => {
   event.preventDefault();
 
   if (isBusy) return;
-
   clearNotice();
 
   if (!supabaseClient) {
@@ -1207,11 +1183,10 @@ loginScreen.addEventListener("submit", async event => {
   showNotice("Verifying your account...", "info");
 
   try {
-    const { data, error } =
-      await supabaseClient.auth.signInWithPassword({
-        email,
-        password
-      });
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
 
     if (error) throw error;
 
@@ -1219,12 +1194,9 @@ loginScreen.addEventListener("submit", async event => {
       throw new Error("No user account was returned.");
     }
 
-    showNotice(
-      "Login successful! Opening your developer profile...",
-      "success"
-    );
+    showNotice("Login successful! Checking your profile...", "success");
 
-    setTimeout(goToProfile, 450);
+    await redirectAccordingToProfile(data.user);
 
   } catch (error) {
     clearBusy();
@@ -1238,7 +1210,6 @@ signupScreen.addEventListener("submit", async event => {
   event.preventDefault();
 
   if (isBusy) return;
-
   clearNotice();
 
   if (!supabaseClient) {
@@ -1264,10 +1235,7 @@ signupScreen.addEventListener("submit", async event => {
   }
 
   if (password.length < 8) {
-    showNotice(
-      "Your password must contain at least 8 characters.",
-      "error"
-    );
+    showNotice("Your password must contain at least 8 characters.", "error");
     $("signupPassword").focus();
     return;
   }
@@ -1286,7 +1254,7 @@ signupScreen.addEventListener("submit", async event => {
       email,
       password,
       options: {
-        emailRedirectTo: LOGIN_PATH,
+        emailRedirectTo: HOME_URL,
         data: { username }
       }
     });
@@ -1295,22 +1263,20 @@ signupScreen.addEventListener("submit", async event => {
 
     if (data.session && data.user) {
       showNotice(
-        "Your account is ready! Opening your developer profile...",
+        "Your account is ready! Opening profile setup...",
         "success"
       );
 
-      setTimeout(goToProfile, 450);
+      await redirectAccordingToProfile(data.user);
       return;
     }
 
     clearBusy();
 
     showNotice(
-      "Account created! Check your email for the confirmation link. After confirming your email, you can sign in.",
+      "Your account has been created. Check your email to confirm it. After confirmation, sign in to continue to profile setup.",
       "success"
     );
-
-    signupButton.textContent = "Account created ✓";
 
   } catch (error) {
     clearBusy();
@@ -1320,16 +1286,15 @@ signupScreen.addEventListener("submit", async event => {
 
 /* FORGOT PASSWORD */
 
-forgotScreen.addEventListener("submit", async event => {
+$("forgotScreen").addEventListener("submit", async event => {
   event.preventDefault();
 
   if (isBusy) return;
-
   clearNotice();
 
   if (!supabaseClient) {
     showNotice(
-      "Authentication is unavailable. Check your Supabase configuration.",
+      "Authentication is unavailable. Check your configuration.",
       "error"
     );
     return;
@@ -1349,9 +1314,14 @@ forgotScreen.addEventListener("submit", async event => {
   showNotice("Sending your password-reset email...", "info");
 
   try {
+    const resetUrl = new URL(
+      "login.html?mode=reset",
+      window.location.href
+    ).href;
+
     const { error } =
       await supabaseClient.auth.resetPasswordForEmail(email, {
-        redirectTo: RESET_CALLBACK_URL
+        redirectTo: resetUrl
       });
 
     if (error) throw error;
@@ -1362,8 +1332,6 @@ forgotScreen.addEventListener("submit", async event => {
       "If an account exists for that email, a password-reset link will be sent. Check your inbox and spam folder.",
       "success"
     );
-
-    forgotButton.textContent = "Reset link requested ✓";
 
   } catch (error) {
     clearBusy();
@@ -1377,12 +1345,11 @@ resetScreen.addEventListener("submit", async event => {
   event.preventDefault();
 
   if (isBusy) return;
-
   clearNotice();
 
   if (!supabaseClient) {
     showNotice(
-      "Authentication is unavailable. Check your Supabase configuration.",
+      "Authentication is unavailable. Check your configuration.",
       "error"
     );
     return;
@@ -1414,15 +1381,23 @@ resetScreen.addEventListener("submit", async event => {
 
     if (error) throw error;
 
-    recoveryMode = false;
-    cleanAuthUrl();
-
     showNotice(
-      "Your password has been updated successfully. Opening your developer profile...",
+      "Your password has been updated. Checking your profile...",
       "success"
     );
 
-    setTimeout(goToProfile, 900);
+    const { data, error: sessionError } =
+      await supabaseClient.auth.getSession();
+
+    if (sessionError) throw sessionError;
+
+    if (data.session?.user) {
+      await redirectAccordingToProfile(data.session.user);
+    } else {
+      window.location.replace(
+        new URL("login.html", window.location.href).href
+      );
+    }
 
   } catch (error) {
     clearBusy();
@@ -1430,7 +1405,19 @@ resetScreen.addEventListener("submit", async event => {
   }
 });
 
-/* HANDLE AUTHENTICATION CALLBACKS */
+/* CLEAN AUTHENTICATION CALLBACK URL */
+
+function cleanAuthUrl() {
+  try {
+    window.history.replaceState(
+      {},
+      document.title,
+      window.location.pathname
+    );
+  } catch (_) {}
+}
+
+/* CHECK FOR AN EXISTING SESSION */
 
 async function handleAuthCallback() {
   const url = new URL(window.location.href);
@@ -1445,8 +1432,7 @@ async function handleAuthCallback() {
     showScreen(recoveryMode ? "reset" : "login");
 
     showNotice(
-      "Authentication link error: " +
-      authError.replace(/\+/g, " "),
+      "Authentication link error: " + authError.replace(/\+/g, " "),
       "error"
     );
 
@@ -1464,10 +1450,6 @@ async function handleAuthCallback() {
       showNotice(friendlyAuthError(error, "callback"), "error");
       return;
     }
-
-    if (!recoveryMode) {
-      cleanAuthUrl();
-    }
   }
 
   const hash = new URLSearchParams(
@@ -1481,9 +1463,9 @@ async function handleAuthCallback() {
   if (recoveryMode) {
     showScreen("reset");
 
-    const { data } = await supabaseClient.auth.getSession();
+    const { data, error } = await supabaseClient.auth.getSession();
 
-    if (!data.session) {
+    if (error || !data.session) {
       showNotice(
         "Your password-reset session could not be verified. Please request a new reset link.",
         "error"
@@ -1493,17 +1475,31 @@ async function handleAuthCallback() {
     return;
   }
 
-  /*
-   * IMPORTANT:
-   * Do not automatically redirect an existing session to profile.html.
-   * Display the login form whenever index.html opens.
-   */
-
-  const { error } = await supabaseClient.auth.getSession();
+  const { data, error } = await supabaseClient.auth.getSession();
 
   if (error) {
     showScreen("login");
-    showNotice(friendlyAuthError(error, "callback"), "error");
+    showNotice(friendlyAuthError(error, "session"), "error");
+    return;
+  }
+
+  /*
+   * A logged-in user should not need to sign in again.
+   * Check their profile and choose the correct destination.
+   */
+
+  if (data.session?.user) {
+    showNotice(
+      "You're already signed in. Checking your profile...",
+      "info"
+    );
+
+    try {
+      await redirectAccordingToProfile(data.session.user);
+    } catch (profileError) {
+      showNotice(profileError.message, "error");
+    }
+
     return;
   }
 
@@ -1514,7 +1510,7 @@ async function handleAuthCallback() {
   }
 }
 
-/* START THE WEBSITE */
+/* START ALPHASCRIPT AUTHENTICATION */
 
 async function start() {
   const overlay = $("introOverlay");
