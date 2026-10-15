@@ -2,554 +2,396 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#070b14">
-<title>AlphaScript | Developer Authentication</title>
+<meta name="description" content="AlphaScript Developer's Workshop — free tools to build, test, and refine code.">
+<title>AlphaScript | Developer's Workshop</title>
 
 <style>
-:root{
-  --bg:#070b14;
-  --panel:#0e1625;
-  --border:#243650;
-  --cyan:#53e7ff;
-  --blue:#568cff;
-  --violet:#a77bff;
-  --text:#f0f5ff;
-  --muted:#8e9db6;
-  --success:#71f5bc;
-  --danger:#ff8398;
+:root {
+  --bg: #070b14;
+  --panel: #0e1625;
+  --border: #243650;
+  --cyan: #53e7ff;
+  --blue: #568cff;
+  --violet: #a77bff;
+  --text: #f0f5ff;
+  --muted: #8e9db6;
 }
 
-body.light{
-  --bg:#f2f6fc;
-  --panel:#fff;
-  --border:#d8e2f0;
-  --text:#101b2d;
-  --muted:#61718a;
+* {
+  box-sizing: border-box;
 }
 
-*{
-  box-sizing:border-box;
+html {
+  scroll-behavior: smooth;
 }
 
-html{
-  scroll-behavior:smooth;
-}
-
-body{
-  margin:0;
-  min-height:100vh;
+body {
+  margin: 0;
+  min-height: 100vh;
   background:
-    radial-gradient(ellipse at 10% 0%,#12284b 0,transparent 42%),
-    radial-gradient(ellipse at 95% 80%,#251342 0,transparent 38%),
+    radial-gradient(ellipse at 10% 0%, #12284b, transparent 42%),
+    radial-gradient(ellipse at 95% 75%, #251342, transparent 38%),
     var(--bg);
-  color:var(--text);
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  transition:background .3s,color .3s;
+  color: var(--text);
+  font-family: system-ui, Arial, sans-serif;
 }
 
-body.light{
-  background:
-    radial-gradient(ellipse at 10% 0%,#dcecff 0,transparent 42%),
-    radial-gradient(ellipse at 95% 80%,#efe4ff 0,transparent 38%),
-    var(--bg);
+a {
+  color: var(--cyan);
+  text-decoration: none;
 }
 
-button,input{
-  font:inherit;
+button, input, textarea {
+  font: inherit;
 }
 
-button,a{
-  -webkit-tap-highlight-color:transparent;
+button {
+  cursor: pointer;
 }
 
-a{
-  color:var(--cyan);
-  text-decoration:none;
+.wrap {
+  width: min(1160px, calc(100% - 30px));
+  margin: auto;
 }
 
-button{
-  cursor:pointer;
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #070b14ee;
+  border-bottom: 1px solid var(--border);
 }
 
-button:disabled{
-  opacity:.55;
-  cursor:not-allowed;
+.topbar-inner {
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
 }
 
-.shell{
-  width:min(100%,480px);
-  margin:auto;
-  padding:22px 18px 35px;
+.brand {
+  font-weight: 950;
+  letter-spacing: 2px;
+  font-size: 19px;
+  color: white;
 }
 
-.topbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:28px;
+.brand span {
+  color: var(--cyan);
 }
 
-.brand{
-  font-size:18px;
-  font-weight:950;
-  letter-spacing:2px;
-  color:var(--text);
+.nav {
+  display: flex;
+  gap: 20px;
+  font-size: 13px;
 }
 
-.brand span{
-  color:var(--cyan);
+.nav a {
+  color: var(--muted);
 }
 
-.top-actions{
-  display:flex;
-  align-items:center;
-  gap:8px;
+.nav-actions {
+  display: flex;
+  gap: 9px;
+  align-items: center;
 }
 
-.icon-btn{
-  min-width:40px;
-  min-height:40px;
-  border:1px solid var(--border);
-  border-radius:11px;
-  background:var(--panel);
-  color:var(--text);
+.btn, .icon-btn {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel);
+  color: var(--text);
+  padding: 11px 15px;
+  font-weight: 750;
 }
 
-.intro{
-  margin-bottom:24px;
-  animation:fadeUp .7s ease both;
+.icon-btn {
+  width: 43px;
+  height: 43px;
+  padding: 0;
 }
 
-.eyebrow{
-  color:var(--cyan);
-  font-size:11px;
-  font-weight:850;
-  letter-spacing:3px;
-  text-transform:uppercase;
+.btn-primary {
+  background: linear-gradient(100deg, #168fce, #5268f4 65%, #8554dc);
+  border-color: transparent;
+  color: white;
 }
 
-h1{
-  margin:12px 0;
-  font-size:clamp(31px,8vw,43px);
-  line-height:1.1;
-  letter-spacing:-1.5px;
+.hero {
+  padding: 70px 0 45px;
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+  align-items: center;
+  gap: 35px;
 }
 
-h1 span{
-  color:var(--cyan);
-  background:linear-gradient(90deg,var(--cyan),var(--violet));
-  -webkit-background-clip:text;
-  background-clip:text;
-  -webkit-text-fill-color:transparent;
+.eyebrow {
+  color: var(--cyan);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  text-transform: uppercase;
 }
 
-.subtitle{
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.8;
-  margin:0;
+h1 {
+  font-size: clamp(39px, 6vw, 68px);
+  line-height: 1.05;
+  letter-spacing: -2px;
+  margin: 18px 0;
 }
 
-.panel{
-  position:relative;
-  overflow:hidden;
-  padding:clamp(22px,6vw,32px);
-  border:1px solid var(--border);
-  border-radius:22px;
-  background:linear-gradient(145deg,#101a2aee,#0b111eee);
-  box-shadow:0 20px 70px #0005;
-  animation:fadeUp .7s .12s ease both;
+.gradient-text, h1 span {
+  background: linear-gradient(90deg, var(--cyan), var(--blue), var(--violet));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
-body.light .panel{
-  background:linear-gradient(145deg,#ffffffed,#f7faffed);
-  box-shadow:0 20px 60px #344d7014;
+.hero p {
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.8;
 }
 
-.panel:before{
-  content:"";
-  position:absolute;
-  top:0;
-  left:12%;
-  width:76%;
-  height:1px;
-  background:linear-gradient(
-    90deg,
-    transparent,
-    var(--cyan),
-    var(--violet),
-    transparent
-  );
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 25px;
 }
 
-.panel h2{
-  margin:0 0 8px;
-  font-size:25px;
-  letter-spacing:-.5px;
+.preview {
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: #101a2a;
+  padding: 20px;
+  overflow: auto;
 }
 
-.panel-description{
-  margin:0 0 24px;
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.7;
+.code {
+  background: #080f1c;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 17px;
+  color: #c4d4ed;
+  font: 13px/1.9 monospace;
+  white-space: pre-wrap;
 }
 
-.form-group{
-  margin-bottom:17px;
+.c-cyan { color: var(--cyan); }
+.c-purple { color: #b69bff; }
+.c-green { color: #71f5bc; }
+
+.section {
+  padding: 45px 0;
 }
 
-.form-group label{
-  display:block;
-  margin-bottom:8px;
-  font-size:12px;
-  font-weight:750;
-  color:var(--text);
+.section-head {
+  margin-bottom: 24px;
 }
 
-.input-wrap{
-  position:relative;
+.section-head h2 {
+  font-size: clamp(27px, 4vw, 37px);
 }
 
-.field{
-  display:block;
-  width:100%;
-  min-height:49px;
-  padding:13px 14px;
-  border:1px solid #30435e;
-  border-radius:11px;
-  outline:none;
-  background:#080f1c;
-  color:#f0f5ff;
-  transition:border-color .2s,box-shadow .2s;
+.section-head p {
+  color: var(--muted);
+  line-height: 1.7;
 }
 
-body.light .field{
-  background:#f7faff;
-  border-color:#d4dfed;
-  color:#101b2d;
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
 }
 
-.field:focus{
-  border-color:var(--cyan);
-  box-shadow:0 0 0 3px #53e7ff17;
+.tool-card {
+  text-align: left;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--panel);
+  color: var(--text);
+  padding: 22px;
+  min-height: 175px;
 }
 
-.field::placeholder{
-  color:#65758f;
+.tool-card:hover {
+  border-color: var(--cyan);
+  transform: translateY(-3px);
 }
 
-.password-field{
-  padding-right:68px;
+.tool-icon {
+  color: var(--cyan);
+  font-size: 25px;
+  margin-bottom: 12px;
 }
 
-.password-toggle{
-  position:absolute;
-  top:50%;
-  right:8px;
-  transform:translateY(-50%);
-  padding:7px;
-  border:0;
-  background:transparent;
-  color:var(--cyan);
-  font-size:11px;
-  font-weight:800;
+.tool-card h3 {
+  margin: 0 0 9px;
 }
 
-.form-options{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  margin:4px 0 20px;
-  font-size:12px;
+.tool-card p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
 }
 
-.remember{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  color:var(--muted);
+.workspace {
+  margin-top: 20px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--panel);
+  padding: 20px;
 }
 
-.remember input{
-  accent-color:var(--cyan);
+.workspace h3 {
+  margin-top: 0;
 }
 
-.text-link{
-  color:var(--cyan);
-  font-size:12px;
-  font-weight:750;
+.tool-panel {
+  display: none;
 }
 
-.btn{
-  min-height:47px;
-  padding:12px 16px;
-  border:1px solid var(--border);
-  border-radius:11px;
-  background:#121e30;
-  color:var(--text);
-  font-weight:800;
-  transition:transform .2s,filter .2s;
+.tool-panel.active {
+  display: block;
 }
 
-body.light .btn{
-  background:#edf3fc;
-  color:#17243a;
+textarea, input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #080f1c;
+  color: white;
+  padding: 13px;
+  margin: 8px 0;
 }
 
-.btn:hover:not(:disabled){
-  filter:brightness(1.12);
-  transform:translateY(-1px);
+textarea {
+  min-height: 150px;
+  resize: vertical;
+  font: 13px/1.6 monospace;
 }
 
-.btn-primary{
-  width:100%;
-  border-color:transparent;
-  background:linear-gradient(100deg,#168fce,#5268f4 65%,#8554dc);
-  color:#fff;
-  box-shadow:0 8px 25px #5268f428;
+.output {
+  min-height: 75px;
+  overflow: auto;
+  overflow-wrap: anywhere;
+  background: #080f1c;
+  color: #d6e5ff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 13px;
+  white-space: pre-wrap;
+  font: 13px/1.6 monospace;
 }
 
-.btn-primary:hover:not(:disabled){
-  box-shadow:0 10px 30px #5268f445;
+.output iframe {
+  width: 100%;
+  height: 250px;
+  border: 0;
+  background: white;
 }
 
-.divider{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin:22px 0;
-  color:var(--muted);
-  font-size:11px;
+.tool-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
-.divider:before,
-.divider:after{
-  content:"";
-  flex:1;
-  height:1px;
-  background:var(--border);
+.tool-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 12px 0;
 }
 
-.switch-text{
-  margin:20px 0 0;
-  color:var(--muted);
-  text-align:center;
-  font-size:13px;
-  line-height:1.7;
+.hidden {
+  display: none !important;
 }
 
-.notice{
-  display:none;
-  margin-top:18px;
-  padding:12px 13px;
-  border:1px solid var(--border);
-  border-radius:11px;
-  font-size:12px;
-  line-height:1.7;
-  overflow-wrap:anywhere;
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
 }
 
-.notice.show{
-  display:block;
-  animation:fadeUp .25s ease both;
+.feature {
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--panel);
 }
 
-.notice.info{
-  color:var(--muted);
-  background:#101b2a;
+.feature p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
 }
 
-.notice.success{
-  color:var(--success);
-  border-color:#71f5bc40;
-  background:#71f5bc0a;
+.cta {
+  margin: 45px 0 60px;
+  padding: 32px;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: linear-gradient(120deg, #112643, #17142d);
+  text-align: center;
 }
 
-.notice.error{
-  color:var(--danger);
-  border-color:#ff839840;
-  background:#ff83980a;
+.cta p {
+  color: var(--muted);
+  line-height: 1.7;
 }
 
-.footer{
-  padding-top:24px;
-  color:var(--muted);
-  font-size:10px;
-  text-align:center;
-  letter-spacing:1.4px;
-  line-height:1.8;
+footer {
+  border-top: 1px solid var(--border);
+  padding: 25px 0;
+  color: var(--muted);
+  font-size: 12px;
 }
 
-.hidden{
-  display:none!important;
-}
-
-/* Intro animation */
-
-#introOverlay{
-  position:fixed;
-  inset:0;
-  z-index:9999;
-  display:grid;
-  place-items:center;
-  overflow:hidden;
-  background:#070b14;
-  transition:opacity .65s ease,visibility .65s ease;
-}
-
-#introOverlay.finished{
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-}
-
-.intro-orb{
-  position:absolute;
-  width:250px;
-  height:250px;
-  border-radius:50%;
-  background:radial-gradient(circle,#168fce30 0,transparent 70%);
-  animation:orbPulse 2.5s ease-in-out infinite alternate;
-}
-
-.intro-content{
-  position:relative;
-  z-index:1;
-  text-align:center;
-  animation:introAppear 1s cubic-bezier(.2,.8,.2,1) both;
-}
-
-.intro-logo{
-  font-size:clamp(30px,8vw,48px);
-  font-weight:950;
-  letter-spacing:5px;
-  color:#f0f5ff;
-  text-shadow:0 0 35px #53e7ff24;
-}
-
-.intro-logo span{
-  color:#53e7ff;
-}
-
-.intro-line{
-  width:0;
-  height:2px;
-  margin:18px auto;
-  background:linear-gradient(90deg,#53e7ff,#a77bff);
-  animation:lineGrow 1s .4s ease forwards;
-}
-
-.intro-caption{
-  color:#8e9db6;
-  font-size:10px;
-  letter-spacing:4px;
-  opacity:0;
-  animation:captionAppear .7s .8s ease forwards;
-}
-
-.intro-loader{
-  width:110px;
-  height:3px;
-  margin:26px auto 0;
-  overflow:hidden;
-  border-radius:9px;
-  background:#1a2638;
-}
-
-.intro-loader:after{
-  content:"";
-  display:block;
-  width:45%;
-  height:100%;
-  border-radius:9px;
-  background:#53e7ff;
-  animation:loaderMove 1s ease-in-out infinite alternate;
-}
-
-@keyframes fadeUp{
-  from{
-    opacity:0;
-    transform:translateY(12px);
+@media (max-width: 800px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding-top: 45px;
   }
-  to{
-    opacity:1;
-    transform:translateY(0);
+
+  .tools-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .nav {
+    display: none;
   }
 }
 
-@keyframes orbPulse{
-  from{
-    transform:scale(.8);
-    opacity:.45;
-  }
-  to{
-    transform:scale(1.25);
-    opacity:1;
-  }
-}
-
-@keyframes introAppear{
-  from{
-    opacity:0;
-    transform:translateY(18px) scale(.97);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0) scale(1);
-  }
-}
-
-@keyframes lineGrow{
-  to{
-    width:190px;
-  }
-}
-
-@keyframes captionAppear{
-  to{
-    opacity:1;
-  }
-}
-
-@keyframes loaderMove{
-  from{
-    transform:translateX(0);
-  }
-  to{
-    transform:translateX(125%);
-  }
-}
-
-@media(max-width:420px){
-  .shell{
-    padding:17px 13px 28px;
+@media (max-width: 540px) {
+  .brand {
+    font-size: 16px;
   }
 
-  .topbar{
-    margin-bottom:25px;
+  .hero p {
+    font-size: 15px;
   }
 
-  .panel{
-    padding:22px 18px;
+  .tools-grid,
+  .feature-grid,
+  .tool-row {
+    grid-template-columns: 1fr;
   }
 
-  .form-options{
-    font-size:11px;
+  .tool-card {
+    min-height: 145px;
   }
-}
 
-@media(prefers-reduced-motion:reduce){
-  *,
-  *::before,
-  *::after{
-    animation-duration:.01ms!important;
-    animation-iteration-count:1!important;
-    scroll-behavior:auto!important;
-    transition-duration:.01ms!important;
+  .workspace {
+    padding: 14px;
+  }
+
+  .cta {
+    padding: 24px 15px;
   }
 }
 </style>
@@ -557,1005 +399,504 @@ body.light .btn{
 
 <body>
 
-<!-- Animated AlphaScript logo -->
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="#home">ALPHA<span>SCRIPT</span></a>
 
-<div id="introOverlay" aria-label="Loading AlphaScript">
-  <div class="intro-orb"></div>
+    <nav class="nav">
+      <a href="#tools">Developer tools</a>
+      <a href="#why">About</a>
+      <a href="#workspace">Workspace</a>
+    </nav>
 
-  <div class="intro-content">
-    <div class="intro-logo">ALPHA<span>SCRIPT</span></div>
-    <div class="intro-line"></div>
-    <div class="intro-caption">BUILD WITH PURPOSE</div>
-    <div class="intro-loader"></div>
-  </div>
-</div>
-
-<!-- Main login page -->
-
-<main class="shell">
-
-  <header class="topbar">
-    <a class="brand" href="index.html">ALPHA<span>SCRIPT</span></a>
-
-    <div class="top-actions">
-      <button
-        type="button"
-        class="icon-btn"
-        id="themeToggle"
-        aria-label="Toggle light and dark theme"
-        title="Toggle theme"
-      >☀</button>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">☀</button>
+      <a class="btn btn-primary" href="login.html">Sign in ↗</a>
     </div>
-  </header>
+  </div>
+</header>
 
-  <section class="intro">
+<main id="home" class="wrap">
+
+  <section class="hero">
+    <div>
+      <div class="eyebrow">Your next chapter starts here</div>
+
+      <h1>
+        Build smarter.<br>
+        Test faster.<br>
+        <span>Go further.</span>
+      </h1>
+
+      <p>
+        Your developer workspace for writing, testing, and
+        refining code. Useful tools, one clean workspace,
+        and room to grow.
+      </p>
+
+      <div class="hero-buttons">
+        <a class="btn btn-primary" href="#tools">Explore free tools →</a>
+        <a class="btn" href="#workspace">Try the workspace</a>
+      </div>
+
+      <p>✦ Free core tools · No installation · Works on mobile</p>
+    </div>
+
+    <div class="preview">
+      <div class="eyebrow">welcome.js</div>
+
+      <pre class="code"><span class="c-purple">const</span> <span class="c-cyan">nextChapter</span> = {
+  idea: <span class="c-green">"something great"</span>,
+  tools: ["build", "test", "learn"],
+  ready: true
+};
+
+if (nextChapter.ready) {
+  console.log("Let's build.");
+}</pre>
+    </div>
+  </section>
+
+  <section id="tools" class="section">
+    <div class="section-head">
+      <div class="eyebrow">The workshop</div>
+      <h2>Tools for your next idea.</h2>
+      <p>Choose a tool to open it right here. No account is required for these browser-based utilities.</p>
+    </div>
+
+    <div class="tools-grid">
+
+      <button class="tool-card" data-tool="html">
+        <div class="tool-icon">&lt;/&gt;</div>
+        <h3>HTML/CSS Playground</h3>
+        <p>Write HTML and CSS, then preview your page instantly.</p>
+      </button>
+
+      <button class="tool-card" data-tool="js">
+        <div class="tool-icon">JS</div>
+        <h3>JavaScript Playground</h3>
+        <p>Try JavaScript snippets and inspect their output.</p>
+      </button>
+
+      <button class="tool-card" data-tool="json">
+        <div class="tool-icon">{ }</div>
+        <h3>JSON Formatter</h3>
+        <p>Format, validate, and make JSON easier to read.</p>
+      </button>
+
+      <button class="tool-card" data-tool="regex">
+        <div class="tool-icon">.*</div>
+        <h3>Regex Tester</h3>
+        <p>Test regular expressions against sample text.</p>
+      </button>
+
+      <button class="tool-card" data-tool="diff">
+        <div class="tool-icon">⇄</div>
+        <h3>Text Difference Checker</h3>
+        <p>Compare two text versions and spot changes.</p>
+      </button>
+
+      <button class="tool-card" data-tool="format">
+        <div class="tool-icon">≡</div>
+        <h3>Code Indentation Helper</h3>
+        <p>Indent pasted code to make it easier to read.</p>
+      </button>
+
+    </div>
+
+    <section id="workspace" class="workspace">
+      <h3 id="toolTitle">Choose a tool above</h3>
+
+      <div id="toolWelcome">
+        <p>Tap any tool card to open the tool here.</p>
+      </div>
+
+      <div class="tool-panel" id="panel-html">
+        <p>Enter HTML and CSS, then run the preview.</p>
+        <label for="htmlCode">HTML</label>
+        <textarea id="htmlCode"><h1>Hello, AlphaScript!</h1>
+<p>Change this HTML and preview your idea.</p></textarea>
+
+        <label for="cssCode">CSS</label>
+        <textarea id="cssCode">body {
+  font-family: system-ui;
+  padding: 24px;
+  color: #14213d;
+}
+h1 { color: #168fce; }</textarea>
+
+        <button class="btn btn-primary" id="runHtml">Run preview →</button>
+        <div class="output" style="margin-top:12px">
+          <iframe id="htmlOutput" sandbox="allow-scripts" title="HTML preview"></iframe>
+        </div>
+      </div>
+
+      <div class="tool-panel" id="panel-js">
+        <p>Run a JavaScript snippet. Do not run code you don't trust.</p>
+        <label for="jsCode">JavaScript</label>
+        <textarea id="jsCode">const total = 12 + 30;
+console.log("AlphaScript is ready!");
+console.log("Total:", total);</textarea>
+
+        <div class="tool-actions">
+          <button class="btn btn-primary" id="runJs">Run JavaScript →</button>
+          <button class="btn" id="clearJs">Clear output</button>
+        </div>
+
+        <div id="jsOutput" class="output">Your output will appear here.</div>
+      </div>
+
+      <div class="tool-panel" id="panel-json">
+        <p>Paste JSON to format or validate it.</p>
+        <label for="jsonInput">JSON input</label>
+        <textarea id="jsonInput">{"name":"AlphaScript","free":true,"tools":["HTML","JavaScript","JSON"]}</textarea>
+
+        <div class="tool-actions">
+          <button class="btn btn-primary" id="formatJson">Format JSON →</button>
+          <button class="btn" id="minifyJson">Minify</button>
+        </div>
+
+        <div id="jsonOutput" class="output">Formatted JSON will appear here.</div>
+        <p id="jsonStatus"></p>
+      </div>
+
+      <div class="tool-panel" id="panel-regex">
+        <p>Enter a regular expression and sample text.</p>
+
+        <label for="regexPattern">Pattern</label>
+        <input id="regexPattern" value="[A-Z][a-z]+">
+
+        <label for="regexFlags">Flags</label>
+        <input id="regexFlags" value="g">
+
+        <label for="regexText">Test text</label>
+        <textarea id="regexText">AlphaScript helps Developers build better tools.</textarea>
+
+        <button class="btn btn-primary" id="testRegex">Test pattern →</button>
+        <div id="regexOutput" class="output" style="margin-top:12px"></div>
+      </div>
+
+      <div class="tool-panel" id="panel-diff">
+        <p>Compare two versions of text.</p>
+
+        <div class="tool-row">
+          <div>
+            <label for="diffA">Original text</label>
+            <textarea id="diffA">AlphaScript
+Build tools
+Learn every day</textarea>
+          </div>
+
+          <div>
+            <label for="diffB">Updated text</label>
+            <textarea id="diffB">AlphaScript
+Build better tools
+Learn every day</textarea>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="compareText">Compare text →</button>
+        <div id="diffOutput" class="output" style="margin-top:12px"></div>
+      </div>
+
+      <div class="tool-panel" id="panel-format">
+        <p>This is a simple indentation helper, not a full code formatter.</p>
+
+        <label for="formatInput">Code or text</label>
+        <textarea id="formatInput">function hello(){
+console.log("Hello");
+if(true){
+console.log("Ready");
+}
+}</textarea>
+
+        <div class="tool-actions">
+          <button class="btn btn-primary" id="cleanCode">Indent lines →</button>
+          <button class="btn" id="copyFormatted">Copy result</button>
+        </div>
+
+        <div id="formatOutput" class="output"></div>
+      </div>
+
+    </section>
+  </section>
+
+  <section id="why" class="section">
+    <div class="eyebrow">Made for builders</div>
+    <h2>A workspace that grows with you.</h2>
+
+    <div class="feature-grid">
+      <article class="feature">
+        <h3>⚡ Quick to use</h3>
+        <p>Open a tool and start without installing software.</p>
+      </article>
+
+      <article class="feature">
+        <h3>🔒 Your code stays yours</h3>
+        <p>The starter tools run in your browser. Never paste passwords or private keys into online tools.</p>
+      </article>
+
+      <article class="feature">
+        <h3>🚀 More coming</h3>
+        <p>Future plans include saved projects, AI coding assistance, and optional Pro features.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="cta">
     <div class="eyebrow">Your next chapter starts here</div>
-
-    <h1 id="pageTitle">Welcome to <span>AlphaScript.</span></h1>
-
-    <p class="subtitle" id="pageSubtitle">
-      Sign in to continue your developer journey, manage your profile,
-      and connect with a community of builders.
-    </p>
+    <h2>Have an idea? <span class="gradient-text">Build it.</span></h2>
+    <p>Explore the tools, experiment with code, and keep moving forward.</p>
+    <a class="btn btn-primary" href="#tools">Open the workshop →</a>
   </section>
-
-  <section class="panel">
-
-    <!-- LOGIN FORM -->
-
-    <form id="loginScreen" novalidate>
-      <h2>Welcome back</h2>
-
-      <p class="panel-description">
-        Sign in to access your AlphaScript account.
-      </p>
-
-      <div class="form-group">
-        <label for="loginEmail">Email address</label>
-
-        <input
-          class="field"
-          type="email"
-          id="loginEmail"
-          name="email"
-          placeholder="you@example.com"
-          autocomplete="email"
-          maxlength="254"
-          required
-        >
-      </div>
-
-      <div class="form-group">
-        <label for="loginPassword">Password</label>
-
-        <div class="input-wrap">
-          <input
-            class="field password-field"
-            type="password"
-            id="loginPassword"
-            name="password"
-            placeholder="Enter your password"
-            autocomplete="current-password"
-            required
-          >
-
-          <button
-            class="password-toggle"
-            type="button"
-            data-password="loginPassword"
-          >SHOW</button>
-        </div>
-      </div>
-
-      <div class="form-options">
-        <label class="remember">
-          <input type="checkbox" id="rememberMe" checked>
-          Remember me
-        </label>
-
-        <a href="#" class="text-link" id="forgotLink">
-          Forgot password?
-        </a>
-      </div>
-
-      <button
-        type="submit"
-        class="btn btn-primary"
-        id="loginButton"
-      >Sign in →</button>
-
-      <div class="divider">OR</div>
-
-      <p class="switch-text">
-        Don't have an account?
-        <a href="#" class="text-link" id="showSignup">Create one</a>
-      </p>
-    </form>
-
-    <!-- SIGN-UP FORM -->
-
-    <form id="signupScreen" class="hidden" novalidate>
-      <h2>Create your account</h2>
-
-      <p class="panel-description">
-        Join AlphaScript and start building your developer identity.
-      </p>
-
-      <div class="form-group">
-        <label for="signupUsername">Username</label>
-
-        <input
-          class="field"
-          type="text"
-          id="signupUsername"
-          name="username"
-          placeholder="e.g. Junior_Neutron"
-          autocomplete="username"
-          minlength="3"
-          maxlength="24"
-          pattern="[A-Za-z0-9_]{3,24}"
-          required
-        >
-
-        <p class="subtitle" style="font-size:11px;margin-top:7px">
-          Use 3–24 letters, numbers or underscores.
-        </p>
-      </div>
-
-      <div class="form-group">
-        <label for="signupEmail">Email address</label>
-
-        <input
-          class="field"
-          type="email"
-          id="signupEmail"
-          name="email"
-          placeholder="you@example.com"
-          autocomplete="email"
-          maxlength="254"
-          required
-        >
-      </div>
-
-      <div class="form-group">
-        <label for="signupPassword">Password</label>
-
-        <div class="input-wrap">
-          <input
-            class="field password-field"
-            type="password"
-            id="signupPassword"
-            name="password"
-            placeholder="Create a strong password"
-            autocomplete="new-password"
-            minlength="8"
-            required
-          >
-
-          <button
-            class="password-toggle"
-            type="button"
-            data-password="signupPassword"
-          >SHOW</button>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="confirmPassword">Confirm password</label>
-
-        <div class="input-wrap">
-          <input
-            class="field password-field"
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            placeholder="Enter your password again"
-            autocomplete="new-password"
-            minlength="8"
-            required
-          >
-
-          <button
-            class="password-toggle"
-            type="button"
-            data-password="confirmPassword"
-          >SHOW</button>
-        </div>
-      </div>
-
-      <button
-        type="submit"
-        class="btn btn-primary"
-        id="signupButton"
-      >Create account →</button>
-
-      <p class="switch-text">
-        Already have an account?
-        <a href="#" class="text-link" id="showLogin">Sign in</a>
-      </p>
-    </form>
-
-    <!-- FORGOT PASSWORD FORM -->
-
-    <form id="forgotScreen" class="hidden" novalidate>
-      <h2>Reset your password</h2>
-
-      <p class="panel-description">
-        Enter the email address associated with your account.
-        We'll send you a password-reset link.
-      </p>
-
-      <div class="form-group">
-        <label for="forgotEmail">Email address</label>
-
-        <input
-          class="field"
-          type="email"
-          id="forgotEmail"
-          name="email"
-          placeholder="you@example.com"
-          autocomplete="email"
-          maxlength="254"
-          required
-        >
-      </div>
-
-      <button
-        type="submit"
-        class="btn btn-primary"
-        id="forgotButton"
-      >Send reset link →</button>
-
-      <p class="switch-text">
-        Remember your password?
-        <a href="#" class="text-link" id="backToLogin">Back to login</a>
-      </p>
-    </form>
-
-    <!-- NEW PASSWORD FORM -->
-
-    <form id="resetScreen" class="hidden" novalidate>
-      <h2>Choose a new password</h2>
-
-      <p class="panel-description">
-        Enter a new password for your AlphaScript account.
-      </p>
-
-      <div class="form-group">
-        <label for="newPassword">New password</label>
-
-        <div class="input-wrap">
-          <input
-            class="field password-field"
-            type="password"
-            id="newPassword"
-            name="newPassword"
-            placeholder="Create a new password"
-            autocomplete="new-password"
-            minlength="8"
-            required
-          >
-
-          <button
-            class="password-toggle"
-            type="button"
-            data-password="newPassword"
-          >SHOW</button>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="confirmNewPassword">Confirm new password</label>
-
-        <div class="input-wrap">
-          <input
-            class="field password-field"
-            type="password"
-            id="confirmNewPassword"
-            name="confirmNewPassword"
-            placeholder="Enter the new password again"
-            autocomplete="new-password"
-            minlength="8"
-            required
-          >
-
-          <button
-            class="password-toggle"
-            type="button"
-            data-password="confirmNewPassword"
-          >SHOW</button>
-        </div>
-      </div>
-
-      <button
-        type="submit"
-        class="btn btn-primary"
-        id="resetButton"
-      >Update password →</button>
-    </form>
-
-    <div id="notice" class="notice" role="status" aria-live="polite"></div>
-
-  </section>
-
-  <footer class="footer">
-    BUILD WITH PURPOSE · LEARN WITHOUT LIMITS
-  </footer>
 
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<footer class="wrap">
+  <a class="brand" href="#home">ALPHA<span>SCRIPT</span></a>
+  <p>BUILD WITH PURPOSE · LEARN WITHOUT LIMITS</p>
+  <p>Core tools are free to use.</p>
+</footer>
 
 <script>
 "use strict";
 
-/* Supabase configuration */
-
-const SUPABASE_URL =
-  "https://qaivqscssdtsnthdiqtu.supabase.co";
-
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_TjT6PMScm58zNVJiugk-zQ_6oIaJNU9";
-
-/* Use the profile page in the same GitHub Pages repository. */
-
-const PROFILE_URL =
-  new URL("profile.html", window.location.href).href;
-
-const LOGIN_PATH =
-  window.location.href.split("#")[0].split("?")[0];
-
-const RESET_CALLBACK_URL =
-  LOGIN_PATH + "?mode=reset";
-
-let supabaseClient = null;
-let currentScreen = "login";
-let isBusy = false;
-let recoveryMode = false;
-
 const $ = id => document.getElementById(id);
 
-const loginScreen = $("loginScreen");
-const signupScreen = $("signupScreen");
-const forgotScreen = $("forgotScreen");
-const resetScreen = $("resetScreen");
-const notice = $("notice");
+const toolNames = {
+  html: "HTML/CSS Playground",
+  js: "JavaScript Playground",
+  json: "JSON Formatter",
+  regex: "Regex Tester",
+  diff: "Text Difference Checker",
+  format: "Code Indentation Helper"
+};
 
-const loginButton = $("loginButton");
-const signupButton = $("signupButton");
-const forgotButton = $("forgotButton");
-const resetButton = $("resetButton");
+function openTool(name) {
+  document.querySelectorAll(".tool-panel").forEach(panel => {
+    panel.classList.remove("active");
+  });
 
-/* Notices */
+  $("toolWelcome").classList.add("hidden");
+  $("toolTitle").textContent = toolNames[name];
+  $("panel-" + name).classList.add("active");
 
-function showNotice(message, type = "info") {
-  notice.textContent = message;
-  notice.className = "notice show " + type;
+  $("workspace").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
 }
 
-function clearNotice() {
-  notice.textContent = "";
-  notice.className = "notice";
-}
+document.querySelectorAll("[data-tool]").forEach(card => {
+  card.addEventListener("click", () => openTool(card.dataset.tool));
+});
 
-/* Switch between login, signup, forgot-password and reset forms. */
+$("runHtml").addEventListener("click", () => {
+  const html = $("htmlCode").value;
+  const css = $("cssCode").value.replace(/<\/style/gi, "<\\/style");
 
-function showScreen(screen) {
-  if (isBusy) return;
+  $("htmlOutput").srcdoc =
+    "<!doctype html><html><head><meta charset='utf-8'><style>" +
+    css +
+    "</style></head><body>" +
+    html +
+    "</body></html>";
+});
 
-  currentScreen = screen;
+$("runJs").addEventListener("click", () => {
+  const code = $("jsCode").value;
+  const frame = document.createElement("iframe");
 
-  loginScreen.classList.toggle("hidden", screen !== "login");
-  signupScreen.classList.toggle("hidden", screen !== "signup");
-  forgotScreen.classList.toggle("hidden", screen !== "forgot");
-  resetScreen.classList.toggle("hidden", screen !== "reset");
+  frame.sandbox = "allow-scripts";
+  frame.className = "hidden";
+  frame.title = "JavaScript sandbox";
 
-  clearNotice();
+  const safeCode = JSON.stringify(code);
 
-  const titles = {
-    login: {
-      title: "Welcome to",
-      word: "AlphaScript.",
-      subtitle: "Sign in to continue your developer journey, manage your profile, and connect with a community of builders."
-    },
+  frame.srcdoc =
+    "<!doctype html><script>" +
+    "const send=(...a)=>parent.postMessage({" +
+    "alphaScriptOutput:a.map(x=>{" +
+    "try{return typeof x==='string'?x:JSON.stringify(x)}" +
+    "catch(e){return String(x)}}" +
+    ").join(' ')" +
+    "},'*');" +
+    "console.log=send;" +
+    "console.info=send;" +
+    "console.warn=send;" +
+    "console.error=send;" +
+    "try{(new Function(" + safeCode + "))()}" +
+    "catch(e){send('Error: '+e.message)}" +
+    "<\/script>";
 
-    signup: {
-      title: "Start building",
-      word: "journey.",
-      subtitle: "Create your AlphaScript account and begin defining your developer identity."
-    },
+  document.body.appendChild(frame);
 
-    forgot: {
-      title: "Recover your",
-      word: "account.",
-      subtitle: "We'll help you regain access to your AlphaScript account."
-    },
+  const output = $("jsOutput");
+  output.textContent = "Running…";
 
-    reset: {
-      title: "Secure your",
-      word: "account.",
-      subtitle: "Choose a new password to protect your AlphaScript account."
+  const handler = event => {
+    if (
+      event.source === frame.contentWindow &&
+      event.data &&
+      "alphaScriptOutput" in event.data
+    ) {
+      output.textContent +=
+        (output.textContent === "Running…" ? "" : "\n") +
+        event.data.alphaScriptOutput;
     }
   };
 
-  const info = titles[screen] || titles.login;
+  window.addEventListener("message", handler);
 
-  $("pageTitle").replaceChildren(
-    document.createTextNode(info.title + " ")
-  );
+  setTimeout(() => {
+    window.removeEventListener("message", handler);
+    frame.remove();
 
-  const span = document.createElement("span");
-  span.textContent = info.word;
+    if (output.textContent === "Running…") {
+      output.textContent = "Finished. No console output.";
+    }
+  }, 700);
+});
 
-  $("pageTitle").appendChild(span);
-  $("pageSubtitle").textContent = info.subtitle;
+$("clearJs").addEventListener("click", () => {
+  $("jsOutput").textContent = "Your output will appear here.";
+});
 
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+function parseJson(text) {
+  try {
+    return { ok: true, value: JSON.parse(text) };
+  } catch (error) {
+    return { ok: false, error: error.message };
+  }
 }
 
-/* Form navigation */
+$("formatJson").addEventListener("click", () => {
+  const result = parseJson($("jsonInput").value);
 
-$("showSignup").addEventListener("click", event => {
-  event.preventDefault();
-  showScreen("signup");
+  $("jsonOutput").textContent = result.ok
+    ? JSON.stringify(result.value, null, 2)
+    : "Invalid JSON: " + result.error;
+
+  $("jsonStatus").textContent = result.ok
+    ? "Valid JSON ✓"
+    : "Please correct the JSON syntax.";
 });
 
-$("showLogin").addEventListener("click", event => {
-  event.preventDefault();
-  showScreen("login");
+$("minifyJson").addEventListener("click", () => {
+  const result = parseJson($("jsonInput").value);
+
+  $("jsonOutput").textContent = result.ok
+    ? JSON.stringify(result.value)
+    : "Invalid JSON: " + result.error;
+
+  $("jsonStatus").textContent = result.ok
+    ? "Minified successfully ✓"
+    : "Please correct the JSON syntax.";
 });
 
-$("forgotLink").addEventListener("click", event => {
-  event.preventDefault();
+$("testRegex").addEventListener("click", () => {
+  try {
+    const pattern = $("regexPattern").value;
+    const flags = $("regexFlags").value;
+    const text = $("regexText").value;
 
-  $("forgotEmail").value =
-    $("loginEmail").value.trim();
+    const regex = new RegExp(pattern, flags);
+    const globalRegex = new RegExp(
+      regex.source,
+      regex.flags.includes("g") ? regex.flags : regex.flags + "g"
+    );
 
-  showScreen("forgot");
+    const matches = [...text.matchAll(globalRegex)];
+
+    $("regexOutput").textContent = matches.length
+      ? matches.map((match, index) =>
+          (index + 1) + ". " + JSON.stringify(match[0]) +
+          " — index " + match.index
+        ).join("\n")
+      : "No matches found.";
+
+  } catch (error) {
+    $("regexOutput").textContent = "Regex error: " + error.message;
+  }
 });
 
-$("backToLogin").addEventListener("click", event => {
-  event.preventDefault();
-  showScreen("login");
+$("compareText").addEventListener("click", () => {
+  const a = $("diffA").value.split("\n");
+  const b = $("diffB").value.split("\n");
+  const length = Math.max(a.length, b.length);
+  const output = [];
+
+  for (let i = 0; i < length; i++) {
+    if (a[i] === b[i]) {
+      if (a[i] !== undefined) output.push("  " + a[i]);
+    } else {
+      if (a[i] !== undefined) output.push("− " + a[i]);
+      if (b[i] !== undefined) output.push("+ " + b[i]);
+    }
+  }
+
+  $("diffOutput").textContent =
+    output.join("\n") || "No differences found.";
 });
 
-/* Show and hide passwords */
+$("cleanCode").addEventListener("click", () => {
+  let level = 0;
 
-document.querySelectorAll("[data-password]").forEach(button => {
-  button.addEventListener("click", () => {
-    const field = $(button.dataset.password);
+  const lines = $("formatInput").value.split("\n");
 
-    if (!field) return;
+  const result = lines.map(line => {
+    const text = line.trim();
 
-    const showPassword = field.type === "password";
+    if (!text) return "";
 
-    field.type = showPassword ? "text" : "password";
-    button.textContent = showPassword ? "HIDE" : "SHOW";
+    if (/^[}\])]/.test(text)) {
+      level = Math.max(0, level - 1);
+    }
+
+    const output = "  ".repeat(level) + text;
+
+    const opens = (text.match(/[{[(]/g) || []).length;
+    const closes = (text.match(/[}\])]/g) || []).length;
+
+    level = Math.max(0, level + opens - closes);
+
+    return output;
   });
+
+  $("formatOutput").textContent = result.join("\n");
 });
 
-/* Theme toggle */
+$("copyFormatted").addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(
+      $("formatOutput").textContent
+    );
 
-function applyTheme(theme) {
-  document.body.classList.toggle("light", theme === "light");
+    $("copyFormatted").textContent = "Copied ✓";
 
-  $("themeToggle").textContent = theme === "light" ? "☾" : "☀";
+    setTimeout(() => {
+      $("copyFormatted").textContent = "Copy result";
+    }, 1500);
 
-  $("themeToggle").setAttribute(
-    "aria-label",
-    theme === "light"
-      ? "Switch to dark theme"
-      : "Switch to light theme"
-  );
-
-  document.querySelector('meta[name="theme-color"]').setAttribute(
-    "content",
-    theme === "light" ? "#f2f6fc" : "#070b14"
-  );
-}
-
-let savedTheme = "dark";
-
-try {
-  savedTheme = localStorage.getItem("alphascript-theme") || "dark";
-} catch (_) {}
-
-applyTheme(savedTheme);
+  } catch (error) {
+    $("formatOutput").textContent +=
+      "\n\nSelect    "\n\nSelect the result manually to copy it.";
+  }
+});
 
 $("themeToggle").addEventListener("click", () => {
-  const nextTheme = document.body.classList.contains("light")
-    ? "dark"
-    : "light";
-
-  applyTheme(nextTheme);
-
-  try {
-    localStorage.setItem("alphascript-theme", nextTheme);
-  } catch (_) {}
-});
-
-/* Button loading states */
-
-function setBusy(button, busyText) {
-  isBusy = true;
-
-  button.dataset.originalText = button.textContent;
-  button.disabled = true;
-  button.textContent = busyText;
-
-  document.querySelectorAll(
-    "#loginScreen button, #signupScreen button, #forgotScreen button, #resetScreen button"
-  ).forEach(item => {
-    item.disabled = true;
-  });
-}
-
-function clearBusy() {
-  isBusy = false;
-
-  document.querySelectorAll(
-    "#loginScreen button, #signupScreen button, #forgotScreen button, #resetScreen button"
-  ).forEach(item => {
-    item.disabled = false;
-  });
-
-  loginButton.textContent =
-    loginButton.dataset.originalText || "Sign in →";
-
-  signupButton.textContent =
-    signupButton.dataset.originalText || "Create account →";
-
-  forgotButton.textContent =
-    forgotButton.dataset.originalText || "Send reset link →";
-
-  resetButton.textContent =
-    resetButton.dataset.originalText || "Update password →";
-}
-
-/* Authentication error messages */
-
-function friendlyAuthError(error, action) {
-  const message = String(error?.message || "").toLowerCase();
-
-  if (
-    message.includes("invalid login credentials") ||
-    message.includes("invalid credentials")
-  ) {
-    return "Incorrect email or password. Please check your details and try again.";
-  }
-
-  if (message.includes("email not confirmed")) {
-    return "Your email hasn't been confirmed yet. Check your inbox for the confirmation link.";
-  }
-
-  if (message.includes("user already registered")) {
-    return "An account with this email already exists. Please sign in instead.";
-  }
-
-  if (message.includes("password should be at least")) {
-    return "Your password is too short. Use at least 8 characters.";
-  }
-
-  if (
-    message.includes("rate limit") ||
-    message.includes("too many requests")
-  ) {
-    return "Too many attempts. Please wait a little and try again.";
-  }
-
-  if (
-    message.includes("network") ||
-    message.includes("fetch")
-  ) {
-    return "A network error occurred. Check your internet connection and try again.";
-  }
-
-  if (action === "reset" && message.includes("expired")) {
-    return "This password-reset link has expired. Request a new one.";
-  }
-
-  return error?.message || "Something went wrong. Please try again.";
-}
-
-/* Clean authentication parameters from the URL */
-
-function cleanAuthUrl() {
-  try {
-    window.history.replaceState(
-      {},
-      document.title,
-      window.location.pathname
-    );
-  } catch (_) {}
-}
-
-/* Redirect to the profile after successful authentication */
-
-function goToProfile() {
-  window.location.replace(PROFILE_URL);
-}
-
-/* LOGIN */
-
-loginScreen.addEventListener("submit", async event => {
-  event.preventDefault();
-
-  if (isBusy) return;
-
-  clearNotice();
-
-  if (!supabaseClient) {
-    showNotice(
-      "Authentication is unavailable. Check your Supabase configuration and internet connection.",
-      "error"
-    );
-    return;
-  }
-
-  const email = $("loginEmail").value.trim();
-  const password = $("loginPassword").value;
-
-  if (!email || !password) {
-    showNotice("Enter your email address and password.", "error");
-    return;
-  }
-
-  setBusy(loginButton, "Signing in...");
-  showNotice("Verifying your account...", "info");
-
-  try {
-    const { data, error } =
-      await supabaseClient.auth.signInWithPassword({
-        email,
-        password
-      });
-
-    if (error) throw error;
-
-    if (!data.user) {
-      throw new Error("No user account was returned.");
-    }
-
-    showNotice(
-      "Login successful! Opening your developer profile...",
-      "success"
-    );
-
-    setTimeout(goToProfile, 450);
-
-  } catch (error) {
-    clearBusy();
-    showNotice(friendlyAuthError(error, "login"), "error");
-  }
-});
-
-/* SIGN UP */
-
-signupScreen.addEventListener("submit", async event => {
-  event.preventDefault();
-
-  if (isBusy) return;
-
-  clearNotice();
-
-  if (!supabaseClient) {
-    showNotice(
-      "Authentication is unavailable. Check your Supabase configuration.",
-      "error"
-    );
-    return;
-  }
-
-  const username = $("signupUsername").value.trim();
-  const email = $("signupEmail").value.trim();
-  const password = $("signupPassword").value;
-  const confirmPassword = $("confirmPassword").value;
-
-  if (!/^[A-Za-z0-9_]{3,24}$/.test(username)) {
-    showNotice(
-      "Your username must contain 3–24 letters, numbers or underscores.",
-      "error"
-    );
-    $("signupUsername").focus();
-    return;
-  }
-
-  if (password.length < 8) {
-    showNotice(
-      "Your password must contain at least 8 characters.",
-      "error"
-    );
-    $("signupPassword").focus();
-    return;
-  }
-
-  if (password !== confirmPassword) {
-    showNotice("Your passwords do not match.", "error");
-    $("confirmPassword").focus();
-    return;
-  }
-
-  setBusy(signupButton, "Creating account...");
-  showNotice("Creating your AlphaScript account...", "info");
-
-  try {
-    const { data, error } = await supabaseClient.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: LOGIN_PATH,
-        data: { username }
-      }
-    });
-
-    if (error) throw error;
-
-    if (data.session && data.user) {
-      showNotice(
-        "Your account is ready! Opening your developer profile...",
-        "success"
-      );
-
-      setTimeout(goToProfile, 450);
-      return;
-    }
-
-    clearBusy();
-
-    showNotice(
-      "Account created! Check your email for the confirmation link. After confirming your email, you can sign in.",
-      "success"
-    );
-
-    signupButton.textContent = "Account created ✓";
-
-  } catch (error) {
-    clearBusy();
-    showNotice(friendlyAuthError(error, "signup"), "error");
-  }
-});
-
-/* FORGOT PASSWORD */
-
-forgotScreen.addEventListener("submit", async event => {
-  event.preventDefault();
-
-  if (isBusy) return;
-
-  clearNotice();
-
-  if (!supabaseClient) {
-    showNotice(
-      "Authentication is unavailable. Check your Supabase configuration.",
-      "error"
-    );
-    return;
-  }
-
-  const email = $("forgotEmail").value.trim();
-
-  if (!email) {
-    showNotice(
-      "Enter the email address associated with your account.",
-      "error"
-    );
-    return;
-  }
-
-  setBusy(forgotButton, "Sending reset link...");
-  showNotice("Sending your password-reset email...", "info");
-
-  try {
-    const { error } =
-      await supabaseClient.auth.resetPasswordForEmail(email, {
-        redirectTo: RESET_CALLBACK_URL
-      });
-
-    if (error) throw error;
-
-    clearBusy();
-
-    showNotice(
-      "If an account exists for that email, a password-reset link will be sent. Check your inbox and spam folder.",
-      "success"
-    );
-
-    forgotButton.textContent = "Reset link requested ✓";
-
-  } catch (error) {
-    clearBusy();
-    showNotice(friendlyAuthError(error, "forgot"), "error");
-  }
-});
-
-/* UPDATE PASSWORD */
-
-resetScreen.addEventListener("submit", async event => {
-  event.preventDefault();
-
-  if (isBusy) return;
-
-  clearNotice();
-
-  if (!supabaseClient) {
-    showNotice(
-      "Authentication is unavailable. Check your Supabase configuration.",
-      "error"
-    );
-    return;
-  }
-
-  const password = $("newPassword").value;
-  const confirmPassword = $("confirmNewPassword").value;
-
-  if (password.length < 8) {
-    showNotice(
-      "Your new password must contain at least 8 characters.",
-      "error"
-    );
-    return;
-  }
-
-  if (password !== confirmPassword) {
-    showNotice("Your new passwords do not match.", "error");
-    return;
-  }
-
-  setBusy(resetButton, "Updating password...");
-  showNotice("Updating your password...", "info");
-
-  try {
-    const { error } = await supabaseClient.auth.updateUser({
-      password
-    });
-
-    if (error) throw error;
-
-    recoveryMode = false;
-    cleanAuthUrl();
-
-    showNotice(
-      "Your password has been updated successfully. Opening your developer profile...",
-      "success"
-    );
-
-    setTimeout(goToProfile, 900);
-
-  } catch (error) {
-    clearBusy();
-    showNotice(friendlyAuthError(error, "reset"), "error");
-  }
-});
-
-/* HANDLE AUTHENTICATION CALLBACKS */
-
-async function handleAuthCallback() {
-  const url = new URL(window.location.href);
-
-  recoveryMode = url.searchParams.get("mode") === "reset";
-
-  const authError =
-    url.searchParams.get("error_description") ||
-    url.searchParams.get("error");
-
-  if (authError) {
-    showScreen(recoveryMode ? "reset" : "login");
-
-    showNotice(
-      "Authentication link error: " +
-      authError.replace(/\+/g, " "),
-      "error"
-    );
-
-    return;
-  }
-
-  const code = url.searchParams.get("code");
-
-  if (code) {
-    const { error } =
-      await supabaseClient.auth.exchangeCodeForSession(code);
-
-    if (error) {
-      showScreen(recoveryMode ? "reset" : "login");
-      showNotice(friendlyAuthError(error, "callback"), "error");
-      return;
-    }
-
-    if (!recoveryMode) {
-      cleanAuthUrl();
-    }
-  }
-
-  const hash = new URLSearchParams(
-    window.location.hash.replace(/^#/, "")
-  );
-
-  if (hash.get("type") === "recovery") {
-    recoveryMode = true;
-  }
-
-  if (recoveryMode) {
-    showScreen("reset");
-
-    const { data } = await supabaseClient.auth.getSession();
-
-    if (!data.session) {
-      showNotice(
-        "Your password-reset session could not be verified. Please request a new reset link.",
-        "error"
-      );
-    }
-
-    return;
-  }
-
-  /*
-   * IMPORTANT:
-   * Do not automatically redirect an existing session to profile.html.
-   * Display the login form whenever index.html opens.
-   */
-
-  const { error } = await supabaseClient.auth.getSession();
-
-  if (error) {
-    showScreen("login");
-    showNotice(friendlyAuthError(error, "callback"), "error");
-    return;
-  }
-
-  if (url.searchParams.get("screen") === "signup") {
-    showScreen("signup");
+  document.body.classList.toggle("light");
+
+  if (document.body.classList.contains("light")) {
+    document.body.style.background = "#f2f6fc";
+    document.body.style.color = "#101b2d";
+    $("themeToggle").textContent = "☾";
   } else {
-    showScreen("login");
+    document.body.style.background = "";
+    document.body.style.color = "";
+    $("themeToggle").textContent = "☀";
   }
-}
-
-/* START THE WEBSITE */
-
-async function start() {
-  const overlay = $("introOverlay");
-
-  window.setTimeout(() => {
-    overlay.classList.add("finished");
-  }, 1500);
-
-  if (!window.supabase) {
-    showNotice(
-      "Supabase failed to load. Check your internet connection and reload the page.",
-      "error"
-    );
-    return;
-  }
-
-  try {
-    supabaseClient = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_PUBLISHABLE_KEY,
-      {
-        auth: {
-          persistSession: true,
-          autoRefreshToken: true,
-          detectSessionInUrl: true
-        }
-      }
-    );
-
-    await handleAuthCallback();
-
-  } catch (error) {
-    showNotice(
-      error.message ||
-      "Could not connect to Supabase. Check your project configuration.",
-      "error"
-    );
-  }
-}
-
-start();
+});
 </script>
 
 </body>
