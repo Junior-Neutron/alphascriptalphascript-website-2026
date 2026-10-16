@@ -2,38 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#070b14">
-  <meta
-    name="description"
-    content="AlphaScript Developer's Workshop: code, test, format, organize, and export your projects."
-  >
-
-  <title>AlphaScript | Developer's Workshop</title>
+  <meta name="description" content="AlphaScript Developer Workshop — free coding tools and a personal project workspace.">
+  <title>AlphaScript | Developer Workshop</title>
 
   <style>
     :root {
       color-scheme: dark;
-
       --bg: #070b14;
-      --surface: #0e1625;
-      --surface-2: #121e30;
-      --surface-3: #18273b;
-      --border: #263751;
-
-      --text: #f0f5ff;
-      --muted: #94a4bd;
-
+      --panel: #0e1625;
+      --panel2: #101c30;
+      --border: #243650;
       --cyan: #53e7ff;
       --blue: #568cff;
       --violet: #a77bff;
-
-      --green: #57e5ad;
-      --red: #ff7185;
-      --yellow: #ffd166;
-
-      --radius: 17px;
-      --shadow: 0 18px 50px #00000020;
+      --text: #f0f5ff;
+      --muted: #8e9db6;
+      --danger: #ff7474;
+      --success: #6ee7a8;
     }
 
     * {
@@ -48,31 +35,18 @@
     body {
       margin: 0;
       min-height: 100vh;
-
       background:
-        radial-gradient(
-          ellipse at 8% 0%,
-          #12284b 0,
-          transparent 40%
-        ),
-        radial-gradient(
-          ellipse at 95% 70%,
-          #251342 0,
-          transparent 36%
-        ),
+        radial-gradient(ellipse at 10% 0%, #12284b, transparent 42%),
+        radial-gradient(ellipse at 95% 75%, #251342, transparent 38%),
         var(--bg);
-
       color: var(--text);
-      font-family:
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      transition: background .2s, color .2s;
+    }
 
-      transition:
-        background-color 0.2s,
-        color 0.2s;
+    a {
+      color: var(--cyan);
+      text-decoration: none;
     }
 
     button,
@@ -87,75 +61,37 @@
     }
 
     button:disabled {
-      cursor: not-allowed;
-      opacity: 0.55;
-    }
-
-    a {
-      color: var(--cyan);
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    button:focus-visible,
-    a:focus-visible,
-    input:focus-visible,
-    textarea:focus-visible,
-    select:focus-visible {
-      outline: 2px solid var(--cyan);
-      outline-offset: 3px;
+      opacity: .6;
+      cursor: wait;
     }
 
     .wrap {
-      width: min(1180px, calc(100% - 28px));
-      margin-inline: auto;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .muted {
-      color: var(--muted);
-    }
-
-    .small {
-      font-size: 12px;
-      line-height: 1.6;
+      width: min(1160px, calc(100% - 28px));
+      margin: auto;
     }
 
     .topbar {
       position: sticky;
       top: 0;
-      z-index: 100;
-
+      z-index: 20;
+      background: rgba(7, 11, 20, .94);
       border-bottom: 1px solid var(--border);
-
-      background: #070b14ee;
-      backdrop-filter: blur(18px);
+      backdrop-filter: blur(12px);
     }
 
     .topinner {
       min-height: 68px;
-
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
+      gap: 12px;
     }
 
     .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 0;
-
       color: var(--text);
       font-weight: 950;
-      font-size: 19px;
-      letter-spacing: 1.7px;
+      letter-spacing: 2px;
+      font-size: 18px;
       white-space: nowrap;
     }
 
@@ -165,7 +101,6 @@
 
     .nav {
       display: flex;
-      align-items: center;
       gap: 18px;
       font-size: 13px;
     }
@@ -174,305 +109,179 @@
       color: var(--muted);
     }
 
-    .nav a:hover {
-      color: var(--cyan);
-    }
-
-    .actions {
+    .actions,
+    .buttons,
+    .toolactions {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
+      gap: 9px;
       flex-wrap: wrap;
-      gap: 7px;
     }
 
     .btn,
-    .icon-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-
+    .icon {
       border: 1px solid var(--border);
       border-radius: 11px;
-
-      background: var(--surface);
+      background: var(--panel);
       color: var(--text);
-
       padding: 10px 13px;
-      font-size: 13px;
       font-weight: 750;
-
-      text-decoration: none;
-      transition:
-        border-color 0.15s,
-        transform 0.15s,
-        opacity 0.15s;
+      transition: transform .15s, border-color .15s;
     }
 
     .btn:hover,
-    .icon-btn:hover {
+    .icon:hover {
       border-color: var(--cyan);
-      text-decoration: none;
+      transform: translateY(-1px);
     }
 
-    .btn:active,
-    .icon-btn:active {
-      transform: translateY(1px);
-    }
-
-    .icon-btn {
+    .icon {
       width: 40px;
       height: 40px;
       padding: 0;
-      font-size: 17px;
     }
 
     .primary {
-      color: #fff;
+      background: linear-gradient(100deg, #168fce, #5268f4 65%, #8554dc);
       border-color: transparent;
-
-      background:
-        linear-gradient(
-          110deg,
-          #168fce,
-          #5268f4 65%,
-          #8554dc
-        );
+      color: white;
     }
 
-    .success-btn {
-      border-color: #286b58;
-      background: #103b32;
-      color: #b9ffe5;
-    }
-
-    .danger-btn {
-      border-color: #723044;
-      background: #351522;
-      color: #ffc0cb;
+    .danger {
+      border-color: #7b353e;
+      color: #ffb4b4;
     }
 
     .status {
+      padding: 10px 0;
       color: var(--muted);
-      font-size: 12px;
-      line-height: 1.65;
+      font-size: 13px;
       overflow-wrap: anywhere;
     }
 
-    .status.success {
-      color: var(--green);
-    }
-
     .status.error {
-      color: var(--red);
+      color: var(--danger);
     }
 
-    .status.warning {
-      color: var(--yellow);
-    }
-
-    .account-status {
-      padding: 12px 0;
+    .status.success {
+      color: var(--success);
     }
 
     .hero {
+      padding: 50px 0 35px;
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
+      grid-template-columns: 1.2fr .8fr;
       align-items: center;
-      gap: 30px;
-
-      padding: 48px 0 34px;
+      gap: 32px;
     }
 
     .eyebrow {
       color: var(--cyan);
       font-size: 11px;
       font-weight: 900;
-      letter-spacing: 2.8px;
+      letter-spacing: 3px;
       text-transform: uppercase;
     }
 
     h1 {
       margin: 16px 0;
-      font-size: clamp(38px, 6vw, 66px);
-      line-height: 1.04;
+      font-size: clamp(38px, 6vw, 65px);
+      line-height: 1.05;
       letter-spacing: -2px;
     }
 
     h2 {
-      font-size: clamp(24px, 4vw, 34px);
       line-height: 1.2;
     }
 
     .gradient {
-      background: linear-gradient(
-        90deg,
-        var(--cyan),
-        var(--blue),
-        var(--violet)
-      );
-
+      color: var(--cyan);
+      background: linear-gradient(90deg, var(--cyan), var(--blue), var(--violet));
       background-clip: text;
       -webkit-background-clip: text;
-      color: transparent;
+      -webkit-text-fill-color: transparent;
     }
 
-    .hero p {
-      max-width: 650px;
+    .hero p,
+    .section > p,
+    .feature p,
+    .cta p {
       color: var(--muted);
-      font-size: 15px;
-      line-height: 1.8;
-    }
-
-    .hero-buttons {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin: 22px 0;
+      line-height: 1.75;
     }
 
     .preview,
-    .card,
     .workspace,
     .settings,
     .feature,
-    .panel {
+    .tool {
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--surface);
-      box-shadow: var(--shadow);
+      border-radius: 17px;
+      background: var(--panel);
     }
 
     .preview {
-      overflow: hidden;
-      padding: 16px;
-      background: #0c1422;
+      padding: 18px;
+      background: #101a2a;
     }
 
-    .windowbar {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-
-      margin-bottom: 14px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--violet);
-    }
-
-    .dot:nth-child(2) {
-      background: var(--yellow);
-    }
-
-    .dot:nth-child(3) {
-      background: var(--green);
+    .code,
+    textarea,
+    .output {
+      font: 13px/1.65 ui-monospace, SFMono-Regular, Consolas, monospace;
     }
 
     .code {
       overflow: auto;
-      margin: 0;
-
-      padding: 17px;
-
+      white-space: pre-wrap;
+      padding: 15px;
+      background: #080f1c;
       border: 1px solid var(--border);
       border-radius: 12px;
-
-      background: #080f1c;
-      color: #d5e4ff;
-
-      font: 13px/1.8 ui-monospace, monospace;
-      white-space: pre;
+      color: #c4d4ed;
     }
 
     .section {
       padding: 35px 0;
     }
 
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      gap: 22px;
-      margin-bottom: 20px;
-    }
-
-    .section-head h2 {
-      margin-bottom: 8px;
-    }
-
-    .section-head p {
-      max-width: 520px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.7;
-    }
-
-    .tools-grid {
+    .tools {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 13px;
     }
 
-    .tool-card {
-      min-height: 155px;
-      padding: 19px;
-
-      border: 1px solid var(--border);
-      border-radius: 15px;
-
-      background: var(--surface);
+    .tool {
+      min-width: 0;
+      min-height: 135px;
+      padding: 18px;
       color: var(--text);
       text-align: left;
-
-      transition:
-        border-color 0.15s,
-        transform 0.15s,
-        background 0.15s;
+      transition: border-color .15s, transform .15s;
     }
 
-    .tool-card:hover {
+    .tool:hover,
+    .tool.selected {
       border-color: var(--cyan);
-      background: var(--surface-2);
       transform: translateY(-2px);
     }
 
-    .tool-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-
-      min-width: 38px;
-      height: 34px;
-      padding: 0 7px;
-
-      border: 1px solid #345071;
-      border-radius: 10px;
-
-      background: #10243b;
-      color: var(--cyan);
-
-      font-family: ui-monospace, monospace;
-      font-size: 15px;
-      font-weight: 900;
+    .tool h3 {
+      margin: 9px 0 7px;
+      font-size: 16px;
     }
 
-    .tool-card h3 {
-      margin: 12px 0 7px;
-      font-size: 15px;
-    }
-
-    .tool-card p {
+    .tool p {
       margin: 0;
       color: var(--muted);
       font-size: 12px;
-      line-height: 1.65;
+      line-height: 1.6;
+    }
+
+    .toolicon {
+      color: var(--cyan);
+      font-size: 22px;
+      font-weight: 900;
     }
 
     .workspace,
@@ -481,191 +290,98 @@
       padding: 20px;
     }
 
-    .workspace-head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 17px;
+    .workspace h3 {
+      margin-top: 0;
     }
 
-    .workspace-head h2,
-    .workspace-head h3 {
-      margin: 4px 0;
-    }
-
-    .panel {
+    .tool-panel {
       display: none;
-      margin-top: 15px;
-      padding: 17px;
-      box-shadow: none;
     }
 
-    .panel.active {
+    .tool-panel.active {
       display: block;
     }
 
     label {
       display: block;
-      margin: 12px 0 6px;
-      font-size: 12px;
-      font-weight: 750;
+      margin: 13px 0 5px;
+      font-size: 13px;
+      font-weight: 700;
     }
 
     input:not([type="checkbox"]),
     input:not([type="radio"]),
     textarea,
     select {
+      max-width: 100%;
+    }
+
+    input:not([type="checkbox"]),
+    textarea,
+    select {
       width: 100%;
-      min-width: 0;
-
-      margin: 5px 0;
-
+      margin: 6px 0;
+      padding: 12px;
       border: 1px solid var(--border);
       border-radius: 10px;
-
-      padding: 11px 12px;
-
       background: #080f1c;
       color: var(--text);
     }
 
+    input[type="checkbox"] {
+      accent-color: var(--cyan);
+    }
+
     textarea {
-      min-height: 145px;
+      display: block;
+      min-height: 130px;
       resize: vertical;
-
-      font: 13px/1.7 ui-monospace, monospace;
-      tab-size: 2;
-    }
-
-    textarea.code-editor {
-      min-height: 240px;
-    }
-
-    textarea.short {
-      min-height: 90px;
-    }
-
-    .field-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 13px;
-    }
-
-    .tool-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 13px 0;
+      overflow-wrap: anywhere;
     }
 
     .output {
-      min-height: 65px;
-      max-height: 500px;
+      min-height: 55px;
+      padding: 12px;
+      margin-top: 12px;
       overflow: auto;
-
-      margin-top: 10px;
-      padding: 13px;
-
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
       border: 1px solid var(--border);
       border-radius: 10px;
-
       background: #080f1c;
-      color: #d6e5ff;
-
-      font: 13px/1.7 ui-monospace, monospace;
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
+      color: var(--text);
     }
 
-    .preview-frame {
+    .output iframe {
       display: block;
       width: 100%;
-      min-height: 300px;
-
-      border: 1px solid var(--border);
-      border-radius: 10px;
-
-      background: #fff;
-    }
-
-    .divider {
-      height: 1px;
-      margin: 18px 0;
+      min-height: 240px;
+      background: white;
       border: 0;
-      background: var(--border);
+      border-radius: 8px;
     }
 
-    .settings-grid {
+    .toolrow {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
+      gap: 12px;
     }
 
-    .settings-card {
-      padding: 15px;
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      background: var(--surface-2);
-    }
-
-    .settings-card h3 {
-      margin-top: 0;
-    }
-
-    .settings-card p {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.7;
-    }
-
-    .setting-toggle {
+    .settings label {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 9px;
     }
 
-    .setting-toggle input {
+    .settings input[type="checkbox"] {
       width: auto;
     }
 
-    .project-list {
-      display: grid;
-      gap: 8px;
+    .hidden {
+      display: none !important;
     }
 
-    .project-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-
-      padding: 12px;
-
-      border: 1px solid var(--border);
-      border-radius: 11px;
-
-      background: var(--surface-2);
-    }
-
-    .project-item strong {
-      display: block;
-      overflow-wrap: anywhere;
-    }
-
-    .project-item small {
-      display: block;
-      margin-top: 4px;
-      color: var(--muted);
-      font-size: 11px;
-    }
-
-    .project-item button {
-      flex-shrink: 0;
-    }
-
-    .feature-grid {
+    .featuregrid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 13px;
@@ -673,100 +389,83 @@
 
     .feature {
       padding: 18px;
-      box-shadow: none;
-    }
-
-    .feature h3 {
-      margin-top: 0;
     }
 
     .feature p {
-      color: var(--muted);
       font-size: 13px;
-      line-height: 1.7;
     }
 
     .cta {
-      margin: 35px 0 45px;
-      padding: 30px 20px;
-
+      margin: 35px 0 50px;
+      padding: 30px;
       border: 1px solid var(--border);
       border-radius: 20px;
-
-      background: linear-gradient(120deg, #112643, #17142d);
       text-align: center;
-    }
-
-    .cta p {
-      color: var(--muted);
-      line-height: 1.7;
+      background: linear-gradient(120deg, #112643, #17142d);
     }
 
     footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-
-      padding: 22px 0;
       border-top: 1px solid var(--border);
-
+      padding: 22px 0;
       color: var(--muted);
-      font-size: 11px;
+      font-size: 12px;
     }
 
-    /* Light theme */
+    .small {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .color-preview {
+      width: 100%;
+      min-height: 90px;
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .result-good {
+      color: var(--success);
+    }
+
+    .result-bad {
+      color: var(--danger);
+    }
 
     body.light {
       color-scheme: light;
-
       --bg: #f2f6fc;
-      --surface: #ffffff;
-      --surface-2: #f5f8fd;
-      --surface-3: #eaf0f9;
-      --border: #d5dfed;
-
+      --panel: #ffffff;
+      --panel2: #edf3fb;
+      --border: #d4deeb;
       --text: #101b2d;
-      --muted: #5c6b83;
-
-      background:
-        radial-gradient(
-          ellipse at 8% 0%,
-          #d9edff,
-          transparent 42%
-        ),
-        radial-gradient(
-          ellipse at 95% 70%,
-          #efe2ff,
-          transparent 36%
-        ),
-        var(--bg);
+      --muted: #52617a;
+      background: #f2f6fc;
+      color: var(--text);
     }
 
     body.light .topbar {
-      background: #f2f6fcee;
+      background: rgba(242, 246, 252, .95);
     }
 
     body.light .preview {
-      background: #ffffff;
+      background: #fff;
     }
 
     body.light .code,
-    body.light .output,
     body.light input:not([type="checkbox"]),
     body.light textarea,
-    body.light select {
+    body.light select,
+    body.light .output {
       background: #f7f9fd;
       color: #101b2d;
-    }
-
-    body.light .tool-card:hover {
-      background: #f0f7ff;
-    }
-
-    body.light .settings-card {
-      background: #f5f8fd;
     }
 
     body.light .cta {
@@ -777,26 +476,25 @@
       color: #101b2d;
     }
 
-    @media (max-width: 850px) {
+    body.light .tool p {
+      color: #52617a;
+    }
+
+    @media (max-width: 820px) {
       .hero {
         grid-template-columns: 1fr;
-        padding-top: 30px;
       }
 
       .nav {
         display: none;
       }
 
-      .tools-grid {
+      .tools {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
-    @media (max-width: 580px) {
-      .wrap {
-        width: calc(100% - 18px);
-      }
-
+    @media (max-width: 550px) {
       .topinner {
         min-height: 60px;
         gap: 5px;
@@ -804,55 +502,45 @@
 
       .brand {
         font-size: 13px;
-        letter-spacing: 0.7px;
+        letter-spacing: 1px;
       }
 
       .actions {
         gap: 4px;
       }
 
-      .actions .btn {
-        padding: 8px;
+      .btn {
+        padding: 8px 9px;
         font-size: 11px;
       }
 
-      .icon-btn {
+      .icon {
         width: 34px;
         height: 34px;
       }
 
-      .tools-grid,
-      .feature-grid,
-      .field-grid,
-      .settings-grid {
+      .tools,
+      .featuregrid,
+      .toolrow,
+      .field-row {
         grid-template-columns: 1fr;
       }
 
-      .tool-card {
-        min-height: 125px;
-        padding: 15px;
+      .hero {
+        padding-top: 30px;
       }
 
       .workspace,
-      .settings,
-      .panel {
-        padding: 12px;
+      .settings {
+        padding: 13px;
       }
 
-      .section-head {
-        display: block;
+      .tool {
+        min-height: 110px;
       }
 
-      .hero h1 {
-        letter-spacing: -1.3px;
-      }
-
-      .project-item {
-        align-items: flex-start;
-      }
-
-      footer {
-        display: block;
+      .cta {
+        padding: 20px 12px;
       }
     }
 
@@ -861,8 +549,8 @@
       *::before,
       *::after {
         scroll-behavior: auto !important;
-        transition-duration: 0.01ms !important;
-        animation-duration: 0.01ms !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
       }
     }
   </style>
@@ -872,141 +560,53 @@
 
 <header class="topbar">
   <div class="wrap topinner">
-
-    <a class="brand" href="#home" aria-label="AlphaScript homepage">
+    <a class="brand" href="#home" aria-label="AlphaScript home">
       ALPHA<span>SCRIPT</span>
     </a>
 
     <nav class="nav" aria-label="Main navigation">
-      <a href="#tools">Developer tools</a>
-      <a href="#workspace">Workspace</a>
-      <a href="#projects">My projects</a>
+      <a href="#tools">Tools</a>
       <a href="#about">About</a>
+      <a href="#workspace">Workspace</a>
     </nav>
 
     <div class="actions">
-      <button
-        class="icon-btn"
-        id="themeToggle"
-        type="button"
-        aria-label="Toggle light and dark theme"
-        title="Toggle theme"
-      >☀</button>
-
-      <button class="btn" id="profileButton" type="button">
-        My profile
-      </button>
-
-      <button class="btn" id="settingsButton" type="button">
-        Settings
-      </button>
+      <button class="icon" id="themeToggle" type="button" aria-label="Switch theme">☀</button>
+      <button class="btn" id="profileButton" type="button">My profile</button>
+      <button class="btn" id="settingsButton" type="button">Settings</button>
+      <button class="btn primary" id="logoutTop" type="button">Log out</button>
     </div>
-
   </div>
 </header>
 
 <main class="wrap" id="home">
 
-  <div
-    id="accountStatus"
-    class="status account-status"
-    role="status"
-    aria-live="polite"
-  >
+  <div id="accountStatus" class="status" role="status" aria-live="polite">
     Checking your account…
   </div>
 
-  <!-- SETTINGS -->
-
   <section id="settingsPanel" class="settings hidden">
+    <h2>Settings</h2>
 
-    <div class="workspace-head">
-      <div>
-        <div class="eyebrow">Your preferences</div>
-        <h2>Settings</h2>
-        <p class="muted small">
-          Manage your AlphaScript workspace and account.
-        </p>
-      </div>
+    <label>
+      <input type="checkbox" id="themeCheck">
+      Use light appearance
+    </label>
 
-      <button class="btn" id="closeSettings" type="button">
-        Close settings
-      </button>
-    </div>
+    <p>Signed in as <strong id="accountEmail">Checking…</strong></p>
 
-    <div class="settings-grid">
-
-      <article class="settings-card">
-        <h3>Appearance</h3>
-
-        <label class="setting-toggle">
-          <input type="checkbox" id="themeCheck">
-          Use light theme
-        </label>
-
-        <p>
-          Switch between dark and light appearances.
-          Your choice is remembered on this device.
-        </p>
-      </article>
-
-      <article class="settings-card">
-        <h3>Account</h3>
-
-        <p>
-          Signed in as:
-          <strong id="accountEmail">Loading…</strong>
-        </p>
-
-        <div class="tool-actions">
-          <button class="btn primary" id="updateProfile" type="button">
-            Edit profile
-          </button>
-
-          <a class="btn" href="rest-password.html">
-            Reset password
-          </a>
-        </div>
-      </article>
-
-      <article class="settings-card">
-        <h3>Project privacy</h3>
-
-        <p>
-          Projects should be private to your account.
-          Database Row Level Security must enforce that rule.
-        </p>
-
-        <p class="small">
-          Never save service-role keys, passwords, or other secrets
-          inside public website code.
-        </p>
-      </article>
-
-      <article class="settings-card">
-        <h3>Session</h3>
-
-        <p>
-          Sign out of your AlphaScript account on this device.
-        </p>
-
-        <button class="btn danger-btn" id="logoutSettings" type="button">
-          Log out
-        </button>
-      </article>
-
+    <div class="toolactions">
+      <button class="btn" id="updateProfile" type="button">Edit profile</button>
+      <button class="btn" id="closeSettings" type="button">Close settings</button>
+      <button class="btn danger" id="logoutSettings" type="button">Log out</button>
     </div>
 
     <p id="settingsStatus" class="status" role="status" aria-live="polite"></p>
-
   </section>
 
-  <!-- HERO -->
-
   <section class="hero">
-
     <div>
-      <div class="eyebrow">Your developer workshop</div>
+      <div class="eyebrow">Your next chapter starts here</div>
 
       <h1>
         Build smarter.<br>
@@ -1015,32 +615,19 @@
       </h1>
 
       <p id="welcome">
-        Your workspace for writing, testing, formatting, and organizing code.
+        Your developer workspace for writing, testing, and refining code.
       </p>
 
-      <div class="hero-buttons">
-        <a class="btn primary" href="#tools">
-          Explore developer tools →
-        </a>
-
-        <a class="btn" href="#workspace">
-          Open workspace
-        </a>
+      <div class="buttons">
+        <a class="btn primary" href="#tools">Explore free tools →</a>
+        <a class="btn" href="#workspace">Open workspace</a>
       </div>
 
-      <p class="small">
-        ✦ Browser-based tools · Project saving · Export and download
-      </p>
+      <p class="small">✦ Free core tools · No installation · Mobile-friendly</p>
     </div>
 
     <div class="preview">
-      <div class="windowbar">
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span style="margin-left:8px">welcome.js</span>
-      </div>
-
+      <div class="eyebrow">welcome.js</div>
       <pre class="code">const nextChapter = {
   idea: "something great",
   tools: ["build", "test", "learn"],
@@ -1049,1647 +636,748 @@
 
 if (nextChapter.ready) {
   console.log("Let's build.");
-}
-
-// Your next idea starts here.</pre>
+}</pre>
     </div>
-
   </section>
-
-  <!-- TOOLS -->
 
   <section id="tools" class="section">
+    <div class="eyebrow">The workshop</div>
+    <h2>Tools for your next idea.</h2>
+    <p>Choose a tool to open it in your workspace.</p>
 
-    <div class="section-head">
-      <div>
-        <div class="eyebrow">The workshop</div>
-        <h2>Tools for your next idea.</h2>
-      </div>
+    <div class="tools" id="toolCards">
 
-      <p>
-        Choose a tool to open it in your workspace.
-        Your project can then be saved to your account or exported.
-      </p>
-    </div>
-
-    <div class="tools-grid">
-
-      <button class="tool-card" data-tool="html" type="button">
-        <span class="tool-icon">&lt;/&gt;</span>
+      <button class="tool" type="button" data-tool="html">
+        <div class="toolicon">&lt;/&gt;</div>
         <h3>HTML/CSS Playground</h3>
-        <p>Write HTML and CSS and preview your page.</p>
+        <p>Write HTML and CSS and preview the result.</p>
       </button>
 
-      <button class="tool-card" data-tool="js" type="button">
-        <span class="tool-icon">JS</span>
+      <button class="tool" type="button" data-tool="js">
+        <div class="toolicon">JS</div>
         <h3>JavaScript Playground</h3>
-        <p>Run JavaScript in an isolated browser frame.</p>
+        <p>Run JavaScript in an isolated iframe and inspect console output.</p>
       </button>
 
-      <button class="tool-card" data-tool="json" type="button">
-        <span class="tool-icon">{ }</span>
+      <button class="tool" type="button" data-tool="json">
+        <div class="toolicon">{ }</div>
         <h3>JSON Formatter</h3>
-        <p>Format, validate, and minify JSON data.</p>
+        <p>Format, validate, and minify JSON.</p>
       </button>
 
-      <button class="tool-card" data-tool="regex" type="button">
-        <span class="tool-icon">.*</span>
+      <button class="tool" type="button" data-tool="regex">
+        <div class="toolicon">.*</div>
         <h3>Regex Tester</h3>
-        <p>Test regular expressions against sample text.</p>
+        <p>Test regular expressions against text.</p>
       </button>
 
-      <button class="tool-card" data-tool="diff" type="button">
-        <span class="tool-icon">±</span>
+      <button class="tool" type="button" data-tool="diff">
+        <div class="toolicon">⇄</div>
         <h3>Text Difference Checker</h3>
-        <p>Compare two texts and identify changes.</p>
+        <p>Compare two versions of text line by line.</p>
       </button>
 
-      <button class="tool-card" data-tool="indent" type="button">
-        <span class="tool-icon">⇥</span>
+      <button class="tool" type="button" data-tool="indent">
+        <div class="toolicon">≡</div>
         <h3>Indentation Helper</h3>
-        <p>Adjust indentation in your code.</p>
+        <p>Indent and clean up pasted code.</p>
       </button>
 
-      <button class="tool-card" data-tool="python" type="button">
-        <span class="tool-icon">Py</span>
+      <button class="tool" type="button" data-tool="python">
+        <div class="toolicon">Py</div>
         <h3>Python Editor</h3>
-        <p>Write, copy, and download Python code.</p>
+        <p>Write and download Python files.</p>
       </button>
 
-      <button class="tool-card" data-tool="java" type="button">
-        <span class="tool-icon">J</span>
+      <button class="tool" type="button" data-tool="java">
+        <div class="toolicon">Ja</div>
         <h3>Java Editor</h3>
-        <p>Prepare and export Java programs.</p>
+        <p>Write and download Java source files.</p>
       </button>
 
-      <button class="tool-card" data-tool="cpp" type="button">
-        <span class="tool-icon">C++</span>
+      <button class="tool" type="button" data-tool="cpp">
+        <div class="toolicon">C++</div>
         <h3>C++ Editor</h3>
-        <p>Write and download C++ source code.</p>
+        <p>Write and download C++ source files.</p>
       </button>
 
-      <button class="tool-card" data-tool="sql" type="button">
-        <span class="tool-icon">SQL</span>
+      <button class="tool" type="button" data-tool="sql">
+        <div class="toolicon">SQL</div>
         <h3>SQL Formatter</h3>
-        <p>Organize SQL statements for readability.</p>
+        <p>Format common SQL statements.</p>
       </button>
 
-      <button class="tool-card" data-tool="base64" type="button">
-        <span class="tool-icon">64</span>
-        <h3>Base64 Encoder</h3>
-        <p>Encode and decode Base64 text.</p>
+      <button class="tool" type="button" data-tool="base64">
+        <div class="toolicon">64</div>
+        <h3>Base64 Converter</h3>
+        <p>Encode and decode text.</p>
       </button>
 
-      <button class="tool-card" data-tool="url" type="button">
-        <span class="tool-icon">URL</span>
-        <h3>URL Encoder</h3>
-        <p>Encode and decode URL components.</p>
+      <button class="tool" type="button" data-tool="url">
+        <div class="toolicon">URL</div>
+        <h3>URL Encoder/Decoder</h3>
+        <p>Encode or decode URL components.</p>
       </button>
 
-      <button class="tool-card" data-tool="color" type="button">
-        <span class="tool-icon">#</span>
+      <button class="tool" type="button" data-tool="color">
+        <div class="toolicon">#</div>
         <h3>Color Converter</h3>
-        <p>Convert HEX and RGB colors.</p>
+        <p>Convert hexadecimal colors to RGB and HSL.</p>
       </button>
 
-      <button class="tool-card" data-tool="timestamp" type="button">
-        <span class="tool-icon">⏱</span>
+      <button class="tool" type="button" data-tool="timestamp">
+        <div class="toolicon">◷</div>
         <h3>Timestamp Converter</h3>
-        <p>Convert Unix timestamps into dates.</p>
+        <p>Convert dates and Unix timestamps.</p>
       </button>
 
     </div>
   </section>
 
-  <!-- PROJECT WORKSPACE -->
-  <section class="home-section" id="workspace">
-    <div class="section-heading">
-      <div>
-        <span class="eyebrow">YOUR WORK</span>
-        <h2>Project Workspace</h2>
-        <p>Organize your code, save drafts, and export your projects.</p>
-      </div>
+  <section id="workspace" class="workspace">
+    <h2 id="toolTitle">Your workspace</h2>
 
-      <button class="primary-button" id="newProjectButton" type="button">
-        + New Project
-      </button>
-    </div>
+    <p id="toolWelcome" class="small">
+      Choose any tool above to begin.
+    </p>
 
-    <div class="workspace-toolbar">
-      <input
-        id="projectSearch"
-        type="search"
-        placeholder="Search your projects..."
-        aria-label="Search projects"
-      >
+    <!-- HTML/CSS -->
+    <div class="tool-panel" id="panel-html">
+      <label for="htmlCode">HTML</label>
+      <textarea id="htmlCode"><h1>Hello, AlphaScript!</h1>
+<p>Build something great.</p></textarea>
 
-      <select id="projectFilter" aria-label="Filter projects">
-        <option value="all">All projects</option>
-        <option value="favorite">Favorites</option>
-        <option value="html">HTML/CSS</option>
-        <option value="javascript">JavaScript</option>
-        <option value="python">Python</option>
-        <option value="java">Java</option>
-        <option value="cpp">C++</option>
-        <option value="other">Other</option>
-      </select>
-    </div>
+      <label for="cssCode">CSS</label>
+      <textarea id="cssCode">body {
+  font-family: system-ui;
+  padding: 24px;
+  color: #14213d;
+}
+h1 {
+  color: #168fce;
+}</textarea>
 
-    <p id="projectNotice" class="status-message" role="status"></p>
+      <button class="btn primary" id="runHtml" type="button">Run preview</button>
 
-    <div id="projectGrid" class="project-grid"></div>
-
-    <div id="emptyProjects" class="empty-state">
-      <div class="empty-state-icon">&lt;/&gt;</div>
-      <h3>Your workspace is ready</h3>
-      <p>Create your first project to start organizing your code.</p>
-      <button
-        class="primary-button"
-        id="emptyCreateButton"
-        type="button"
-      >
-        Create your first project
-      </button>
-    </div>
-  </section>
-
-  <!-- RECENT ACTIVITY -->
-  <section class="home-section" id="activity">
-    <div class="section-heading">
-      <div>
-        <span class="eyebrow">YOUR PROGRESS</span>
-        <h2>Recent Activity</h2>
-        <p>Keep track of your recent workspace activity on this device.</p>
+      <div class="output">
+        <iframe id="htmlOutput" sandbox title="HTML preview"></iframe>
       </div>
     </div>
 
-    <div id="activityList" class="activity-list">
-      <p class="muted-text">Your recent activity will appear here.</p>
-    </div>
-  </section>
+    <!-- JavaScript -->
+    <div class="tool-panel" id="panel-js">
+      <label for="jsCode">JavaScript</label>
+      <textarea id="jsCode">const total = 12 + 30;
+console.log("AlphaScript is ready!");
+console.log("Total:", total);</textarea>
 
-</main>
-
-<!-- TOOL MODAL -->
-<div
-  class="modal-overlay hidden"
-  id="toolModal"
-  role="dialog"
-  aria-modal="true"
-  aria-labelledby="toolModalTitle"
->
-  <div class="modal modal-wide">
-    <div class="modal-header">
-      <div>
-        <span class="eyebrow">ALPHASCRIPT TOOLKIT</span>
-        <h2 id="toolModalTitle">Developer Tool</h2>
+      <div class="toolactions">
+        <button class="btn primary" id="runJs" type="button">Run JavaScript</button>
+        <button class="btn" id="clearJs" type="button">Clear output</button>
       </div>
 
-      <button
-        class="icon-button"
-        id="closeToolModal"
-        type="button"
-        aria-label="Close tool"
-      >&times;</button>
+      <div id="jsOutput" class="output">Output appears here.</div>
     </div>
 
-    <div id="toolModalContent"></div>
-  </div>
-</div>
+    <!-- JSON -->
+    <div class="tool-panel" id="panel-json">
+      <label for="jsonInput">JSON input</label>
+      <textarea id="jsonInput">{"name":"AlphaScript","free":true,"tools":["HTML","JavaScript","JSON"]}</textarea>
 
-<!-- PROJECT EDITOR MODAL -->
-<div
-  class="modal-overlay hidden"
-  id="projectModal"
-  role="dialog"
-  aria-modal="true"
-  aria-labelledby="projectModalTitle"
->
-  <div class="modal modal-wide">
-    <div class="modal-header">
-      <div>
-        <span class="eyebrow">PROJECT WORKSPACE</span>
-        <h2 id="projectModalTitle">Create Project</h2>
+      <div class="toolactions">
+        <button class="btn primary" id="formatJson" type="button">Format JSON</button>
+        <button class="btn" id="minifyJson" type="button">Minify JSON</button>
+        <button class="btn" id="validateJson" type="button">Validate JSON</button>
       </div>
 
-      <button
-        class="icon-button"
-        id="closeProjectModal"
-        type="button"
-        aria-label="Close project editor"
-      >&times;</button>
+      <div id="jsonOutput" class="output" aria-live="polite"></div>
     </div>
 
-    <form id="projectForm">
-      <input type="hidden" id="projectId">
+    <!-- Regex -->
+    <div class="tool-panel" id="panel-regex">
+      <label for="regexPattern">Regular expression</label>
+      <input id="regexPattern" value="[A-Z][a-z]+">
 
-      <div class="form-grid">
-        <label class="form-field">
-          Project name
-          <input
-            id="projectName"
-            type="text"
-            maxlength="100"
-            placeholder="My first project"
-            required
-          >
-        </label>
+      <label for="regexFlags">Flags (for example, g, i, m)</label>
+      <input id="regexFlags" value="g">
 
-        <label class="form-field">
-          Language
-          <select id="projectLanguage" required>
-            <option value="html">HTML/CSS</option>
-            <option value="javascript">JavaScript</option>
-            <option value="python">Python</option>
-            <option value="java">Java</option>
-            <option value="cpp">C++</option>
-            <option value="sql">SQL</option>
-            <option value="other">Other</option>
-          </select>
-        </label>
+      <label for="regexText">Test text</label>
+      <textarea id="regexText">AlphaScript helps Developers build better tools.</textarea>
 
-        <label class="form-field">
-          Folder
-          <input
-            id="projectFolder"
-            type="text"
-            maxlength="80"
-            placeholder="Personal projects"
-          >
-        </label>
+      <button class="btn primary" id="testRegex" type="button">Test pattern</button>
 
-        <label class="form-field">
-          Description
-          <input
-            id="projectDescription"
-            type="text"
-            maxlength="300"
-            placeholder="What does this project do?"
-          >
-        </label>
+      <div id="regexOutput" class="output" aria-live="polite"></div>
+    </div>
+
+    <!-- Difference checker -->
+    <div class="tool-panel" id="panel-diff">
+      <div class="toolrow">
+        <div>
+          <label for="diffA">Original text</label>
+          <textarea id="diffA">AlphaScript
+Build tools
+Learn every day</textarea>
+        </div>
+
+        <div>
+          <label for="diffB">Updated text</label>
+          <textarea id="diffB">AlphaScript
+Build better tools
+Learn every day</textarea>
+        </div>
       </div>
 
-      <label class="form-field">
-        Source code
-        <textarea
-          id="projectCode"
-          rows="15"
-          spellcheck="false"
-          placeholder="Write or paste your code here..."
-        ></textarea>
-      </label>
+      <button class="btn primary" id="compareText" type="button">Compare text</button>
 
-      <p id="projectFormMessage" class="status-message" role="status"></p>
+      <div id="diffOutput" class="output" aria-live="polite"></div>
+    </div>
 
-      <div class="modal-actions">
-        <button
-          class="secondary-button"
-          id="downloadProjectButton"
-          type="button"
-        >Download code</button>
+    <!-- Indentation -->
+    <div class="tool-panel" id="panel-indent">
+      <label for="indentInput">Code</label>
+      <textarea id="indentInput">function hello(){
+console.log("Hello");
+if(true){
+console.log("Ready");
+}
+}</textarea>
 
-        <button
-          class="secondary-button"
-          id="exportProjectButton"
-          type="button"
-        >Export project JSON</button>
-
-        <button
-          class="primary-button"
-          id="saveProjectButton"
-          type="submit"
-        >Save Project</button>
+      <div class="toolactions">
+        <button class="btn primary" id="indentCode" type="button">Indent lines</button>
+        <button class="btn" id="copyIndent" type="button">Copy result</button>
       </div>
 
-      <p class="muted-text">
-        Projects are currently saved in this browser on this device.
-        Online private storage will be connected after the database setup.
+      <label for="indentOutput">Result</label>
+      <textarea id="indentOutput" readonly></textarea>
+      <p class="small">This is a basic indentation helper, not a full language-aware formatter.</p>
+    </div>
+
+    <!-- Python -->
+    <div class="tool-panel" id="panel-python">
+      <label for="pythonCode">Python source code</label>
+      <textarea id="pythonCode">def greet(name):
+    print(f"Hello, {name}!")
+
+greet("AlphaScript")</textarea>
+
+      <div class="toolactions">
+        <button class="btn primary" id="downloadPython" type="button">Download .py</button>
+        <button class="btn" id="copyPython" type="button">Copy code</button>
+      </div>
+
+      <p class="small">This editor writes Python code. It does not execute Python in the browser.</p>
+      <div id="pythonOutput" class="output" aria-live="polite"></div>
+    </div>
+
+        <!-- Java -->
+    <div class="tool-panel" id="javaTool">
+      <h3>Java Editor</h3>
+      <label for="javaCode">Java code</label>
+      <textarea id="javaCode" spellcheck="false">public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello, AlphaScript!");
+    }
+}</textarea>
+
+      <div class="tool-actions">
+        <button class="btn" id="downloadJava" type="button">Download .java</button>
+        <button class="btn" id="copyJava" type="button">Copy code</button>
+      </div>
+
+      <p class="small">
+        This editor lets you write Java code and download it.
+        It does not compile or execute Java in the browser.
       </p>
-    </form>
-  </div>
-</div>
+      <div id="javaOutput" class="output" aria-live="polite"></div>
+    </div>
 
-<!-- SETTINGS MODAL -->
-<div
-  class="modal-overlay hidden"
-  id="settingsModal"
-  role="dialog"
-  aria-modal="true"
-  aria-labelledby="settingsModalTitle"
->
-  <div class="modal">
-    <div class="modal-header">
-      <div>
-        <span class="eyebrow">PERSONALIZE</span>
-        <h2 id="settingsModalTitle">Settings</h2>
+    <!-- C++ -->
+    <div class="tool-panel" id="cppTool">
+      <h3>C++ Editor</h3>
+      <label for="cppCode">C++ code</label>
+      <textarea id="cppCode" spellcheck="false">#include <iostream>
+using namespace std;
+
+int main() {
+    cout << "Hello, AlphaScript!" << endl;
+    return 0;
+}</textarea>
+
+      <div class="tool-actions">
+        <button class="btn" id="downloadCpp" type="button">Download .cpp</button>
+        <button class="btn" id="copyCpp" type="button">Copy code</button>
       </div>
 
-      <button
-        class="icon-button"
-        id="closeSettingsButton"
-        type="button"
-        aria-label="Close settings"
-      >&times;</button>
+      <p class="small">
+        Write and download C++ code here. Running C++ requires a compiler,
+        which is not built into this browser editor.
+      </p>
+      <div id="cppOutput" class="output" aria-live="polite"></div>
     </div>
 
-    <div class="settings-group">
-      <h3>Appearance</h3>
+    <!-- SQL -->
+    <div class="tool-panel" id="sqlTool">
+      <h3>SQL Formatter</h3>
+      <label for="sqlCode">SQL query</label>
+      <textarea id="sqlCode" spellcheck="false">select id, username, full_name
+from profiles
+where username is not null
+order by username;</textarea>
 
-      <label class="setting-row">
-        <span>
-          <strong>Dark theme</strong>
-          <small>Use the dark appearance across the website.</small>
-        </span>
-        <input id="darkThemeSetting" type="checkbox">
-      </label>
+      <div class="tool-actions">
+        <button class="btn" id="formatSql" type="button">Format SQL</button>
+        <button class="btn" id="copySql" type="button">Copy SQL</button>
+        <button class="btn" id="downloadSql" type="button">Download .sql</button>
+      </div>
+
+      <div id="sqlOutput" class="output" aria-live="polite"></div>
     </div>
 
-    <div class="settings-group">
-      <h3>Workspace</h3>
+    <!-- Markdown -->
+    <div class="tool-panel" id="markdownTool">
+      <h3>Markdown Preview</h3>
+      <label for="markdownCode">Markdown text</label>
+      <textarea id="markdownCode" spellcheck="false"># Welcome to AlphaScript
 
-      <label class="setting-row">
-        <span>
-          <strong>Automatic draft saving</strong>
-          <small>Save unfinished editor drafts in this browser.</small>
-        </span>
-        <input id="autosaveSetting" type="checkbox">
-      </label>
+Write **bold text**, *italic text*, and lists.
 
-      <label class="setting-row">
-        <span>
-          <strong>Confirm before deleting</strong>
-          <small>Ask before removing a saved project.</small>
-        </span>
-        <input id="confirmDeleteSetting" type="checkbox">
-      </label>
+- First item
+- Second item
 
-      <button
-        class="secondary-button full-width"
-        id="exportAllProjectsButton"
-        type="button"
-      >Export all local projects</button>
+[Example link](https://example.com)</textarea>
+
+      <div class="tool-actions">
+        <button class="btn" id="previewMarkdown" type="button">Preview</button>
+        <button class="btn" id="downloadMarkdown" type="button">Download .md</button>
+      </div>
+
+      <h4>Preview</h4>
+      <div id="markdownPreview" class="output" aria-live="polite"></div>
     </div>
 
-    <div class="settings-group">
-      <h3>Your account</h3>
-
-      <a class="secondary-button full-width" href="profile.html">
-        Edit Profile
-      </a>
-
-      <a class="secondary-button full-width" href="rest-password.html">
-        Password Recovery
-      </a>
-
-      <button
-        class="danger-button full-width"
-        id="settingsLogoutButton"
-        type="button"
-      >Log Out</button>
-    </div>
+    <!-- Close tool panels -->
   </div>
 </div>
-
-<footer class="site-footer">
-  <div class="footer-inner">
-    <a href="index.html" class="brand footer-brand">
-      <span class="brand-mark">&lt;/&gt;</span>
-      <span>Alpha<span class="brand-accent">Script</span></span>
-    </a>
-
-    <p>Build, learn, and create with AlphaScript.</p>
-
-    <p>&copy; <span id="currentYear"></span> AlphaScript</p>
-  </div>
-</footer>
-
-<!-- SUPABASE -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 "use strict";
 
-/* ==========================================
-   1. SUPABASE CONFIGURATION
-========================================== */
+/* =========================================================
+   ALPHASCRIPT HOMEPAGE — TOOL FUNCTIONALITY
+   ========================================================= */
 
-const SUPABASE_URL =
-  "https://qaivqscssdtsnthdiqtu.supabase.co";
+(() => {
+  const $ = (selector) => document.querySelector(selector);
 
-const SUPABASE_KEY =
-  "sb_publishable_TjT6PMScm58zNVJiug-kzQ_6oIaJNU9";
-
-const supabaseClient =
-  window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-/* ==========================================
-   2. HELPERS
-========================================== */
-
-const $ = (selector) => document.querySelector(selector);
-
-const $$ = (selector) => [...document.querySelectorAll(selector)];
-
-const PROJECTS_KEY = "alphascript_projects_v1";
-const ACTIVITY_KEY = "alphascript_activity_v1";
-const SETTINGS_KEY = "alphascript_settings_v1";
-const DRAFT_KEY = "alphascript_project_draft_v1";
-
-let currentUser = null;
-let projects = [];
-let activity = [];
-let editingProjectId = null;
-let draftTimer = null;
-
-function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, (character) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;"
-  })[character]);
-}
-
-function readJSON(key, fallback) {
-  try {
-    const result = JSON.parse(localStorage.getItem(key));
-    return result ?? fallback;
-  } catch {
-    return fallback;
-  }
-}
-
-function downloadFile(filename, content, mimeType = "text/plain;charset=utf-8") {
-  const blob = new Blob([content], { type: mimeType });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-}
-
-function safeFilename(name) {
-  return String(name || "project")
-    .replace(/[<>:"/\\|?*\x00-\x1F]/g, "_")
-    .trim()
-    .slice(0, 100) || "project";
-}
-
-function showNotice(message, isError = false) {
-  const notice = $("#projectNotice");
-
-  if (!notice) return;
-
-  notice.textContent = message;
-  notice.classList.toggle("error", isError);
-}
-
-function showModal(modal) {
-  if (!modal) return;
-
-  modal.classList.remove("hidden");
-  document.body.classList.add("modal-open");
-}
-
-function hideModal(modal) {
-  if (!modal) return;
-
-  modal.classList.add("hidden");
-
-  if (!$$(".modal-overlay").some((item) => !item.classList.contains("hidden"))) {
-    document.body.classList.remove("modal-open");
-  }
-}
-
-/* ==========================================
-   3. SETTINGS AND THEME
-========================================== */
-
-const defaultSettings = {
-  darkTheme: true,
-  autosave: true,
-  confirmDelete: true
-};
-
-let settings = {
-  ...defaultSettings,
-  ...readJSON(SETTINGS_KEY, {})
-};
-
-function saveSettings() {
-  localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
-}
-
-function applyTheme() {
-  document.body.classList.toggle("light-theme", !settings.darkTheme);
-
-  const themeButton = $("#themeButton");
-
-  if (themeButton) {
-    themeButton.setAttribute(
-      "aria-label",
-      settings.darkTheme ? "Switch to light theme" : "Switch to dark theme"
-    );
-
-    themeButton.textContent = settings.darkTheme ? "☀" : "☾";
-  }
-
-  if ($("#darkThemeSetting")) {
-    $("#darkThemeSetting").checked = settings.darkTheme;
-  }
-}
-
-function openSettings() {
-  $("#darkThemeSetting").checked = settings.darkTheme;
-  $("#autosaveSetting").checked = settings.autosave;
-  $("#confirmDeleteSetting").checked = settings.confirmDelete;
-
-  showModal($("#settingsModal"));
-}
-
-$("#themeButton")?.addEventListener("click", () => {
-  settings.darkTheme = !settings.darkTheme;
-  saveSettings();
-  applyTheme();
-});
-
-$("#settingsButton")?.addEventListener("click", openSettings);
-
-$("#darkThemeSetting").addEventListener("change", (event) => {
-  settings.darkTheme = event.target.checked;
-  saveSettings();
-  applyTheme();
-});
-
-$("#autosaveSetting").addEventListener("change", (event) => {
-  settings.autosave = event.target.checked;
-  saveSettings();
-});
-
-$("#confirmDeleteSetting").addEventListener("change", (event) => {
-  settings.confirmDelete = event.target.checked;
-  saveSettings();
-});
-
-$("#closeSettingsButton").addEventListener("click", () => {
-  hideModal($("#settingsModal"));
-});
-
-/* ==========================================
-   4. AUTHENTICATION
-========================================== */
-
-async function logout() {
-  const button = $("#settingsLogoutButton");
-
-  if (button) {
-    button.disabled = true;
-    button.textContent = "Logging out...";
-  }
-
-  const { error } = await supabaseClient.auth.signOut();
-
-  if (error) {
-    if (button) {
-      button.disabled = false;
-      button.textContent = "Log Out";
+  function showMessage(element, message) {
+    if (element) {
+      element.textContent = message;
     }
-
-    alert("Unable to log out: " + error.message);
-    return;
   }
 
-  window.location.replace("login.html");
-}
+  function downloadText(filename, content, mimeType = "text/plain;charset=utf-8") {
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
 
-$("#logoutButton")?.addEventListener("click", logout);
-$("#settingsLogoutButton").addEventListener("click", logout);
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
 
-async function checkAuthentication() {
-  const { data, error } = await supabaseClient.auth.getSession();
-
-  if (error) {
-    console.error("Session check failed:", error.message);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
-  currentUser = data?.session?.user ?? null;
-
-  if (!currentUser) {
-    window.location.replace("login.html");
-    return false;
-  }
-
-  const accountName = $("#accountName");
-  const accountEmail = $("#accountEmail");
-
-  if (accountName) {
-    accountName.textContent =
-      currentUser.user_metadata?.full_name ||
-      currentUser.user_metadata?.username ||
-      "Developer";
-  }
-
-  if (accountEmail) {
-    accountEmail.textContent = currentUser.email || "";
-  }
-
-  return true;
-}
-
-/* ==========================================
-   5. PROJECT STORAGE
-========================================== */
-
-/*
-  IMPORTANT:
-  This version uses localStorage for projects.
-  Projects are not yet synced across devices or
-  stored in Supabase. We will connect that later.
-*/
-
-function loadProjects() {
-  projects = readJSON(PROJECTS_KEY, []);
-
-  if (!Array.isArray(projects)) {
-    projects = [];
-  }
-}
-
-function saveProjects() {
-  localStorage.setItem(PROJECTS_KEY, JSON.stringify(projects));
-  renderProjects();
-}
-
-function recordActivity(message) {
-  activity.unshift({
-    id: Date.now(),
-    message,
-    date: new Date().toISOString()
-  });
-
-  activity = activity.slice(0, 15);
-
-  localStorage.setItem(ACTIVITY_KEY, JSON.stringify(activity));
-  renderActivity();
-}
-
-function renderActivity() {
-  const container = $("#activityList");
-
-  if (!container) return;
-
-  if (!activity.length) {
-    container.innerHTML =
-      '<p class="muted-text">Your recent activity will appear here.</p>';
-    return;
-  }
-
-  container.innerHTML = activity.map((item) => `
-    <div class="activity-item">
-      <span class="activity-dot"></span>
-      <div>
-        <p>${escapeHTML(item.message)}</p>
-        <small>${escapeHTML(new Date(item.date).toLocaleString())}</small>
-      </div>
-    </div>
-  `).join("");
-}
-
-function renderProjects() {
-  const grid = $("#projectGrid");
-  const emptyState = $("#emptyProjects");
-
-  if (!grid || !emptyState) return;
-
-  const search = ($("#projectSearch")?.value || "").trim().toLowerCase();
-  const filter = $("#projectFilter")?.value || "all";
-
-  const filtered = projects.filter((project) => {
-    const searchable = [
-      project.name,
-      project.language,
-      project.folder,
-      project.description,
-      project.code
-    ].join(" ").toLowerCase();
-
-    const matchesSearch = searchable.includes(search);
-
-    let matchesFilter = true;
-
-    if (filter === "favorite") {
-      matchesFilter = Boolean(project.favorite);
-    } else if (filter === "other") {
-      matchesFilter = ![
-        "html", "javascript", "python", "java", "cpp"
-      ].includes(project.language);
-    } else if (filter !== "all") {
-      matchesFilter = project.language === filter;
-    }
-
-    return matchesSearch && matchesFilter;
-  });
-
-  if (!filtered.length) {
-    grid.innerHTML = "";
-
-    emptyState.classList.remove("hidden");
-
-    const heading = emptyState.querySelector("h3");
-    const description = emptyState.querySelector("p");
-
-    if (projects.length) {
-      heading.textContent = "No matching projects";
-      description.textContent =
-        "Try another search or filter, or create a new project.";
-    } else {
-      heading.textContent = "Your workspace is ready";
-      description.textContent =
-        "Create your first project to start organizing your code.";
-    }
-
-    return;
-  }
-
-  emptyState.classList.add("hidden");
-
-  grid.innerHTML = filtered.map((project) => `
-    <article class="project-card">
-      <div class="project-card-top">
-        <span class="project-language">
-          ${escapeHTML(String(project.language || "other").toUpperCase())}
-        </span>
-
-        <button
-          type="button"
-          class="favorite-button ${project.favorite ? "is-favorite" : ""}"
-          data-favorite="${escapeHTML(project.id)}"
-          aria-label="${project.favorite ? "Remove from favorites" : "Add to favorites"}"
-          title="Toggle favorite"
-        >${project.favorite ? "★" : "☆"}</button>
-      </div>
-
-      <h3>${escapeHTML(project.name)}</h3>
-
-      <p>${escapeHTML(project.description || "No description added.")}</p>
-
-      <div class="project-card-meta">
-        <span>${escapeHTML(project.folder || "Unsorted")}</span>
-        <span>${escapeHTML(new Date(project.updatedAt || project.createdAt).toLocaleDateString())}</span>
-      </div>
-
-      <div class="project-card-actions">
-        <button
-          type="button"
-          class="secondary-button"
-          data-edit="${escapeHTML(project.id)}"
-        >Open</button>
-
-        <button
-                    type="button"
-          class="secondary-button"
-          data-download="${escapeHTML(project.id)}"
-        >Download</button>
-
-        <button
-          type="button"
-          class="danger-button"
-          data-delete="${escapeHTML(project.id)}"
-        >Delete</button>
-      </div>
-    </article>
-  `).join("");
-}
-
-$("#projectSearch").addEventListener("input", renderProjects);
-$("#projectFilter").addEventListener("change", renderProjects);
-
-$("#projectGrid").addEventListener("click", (event) => {
-  const editButton = event.target.closest("[data-edit]");
-  const downloadButton = event.target.closest("[data-download]");
-  const deleteButton = event.target.closest("[data-delete]");
-  const favoriteButton = event.target.closest("[data-favorite]");
-
-  if (editButton) {
-    openProject(editButton.dataset.edit);
-    return;
-  }
-
-  if (downloadButton) {
-    downloadProject(downloadButton.dataset.download);
-    return;
-  }
-
-  if (deleteButton) {
-    deleteProject(deleteButton.dataset.delete);
-    return;
-  }
-
-  if (favoriteButton) {
-    const project = projects.find(
-      (item) => item.id === favoriteButton.dataset.favorite
-    );
-
-    if (!project) return;
-
-    project.favorite = !project.favorite;
-    project.updatedAt = new Date().toISOString();
-
-    saveProjects();
-
-    recordActivity(
-      `${project.favorite ? "Added" : "Removed"} "${project.name}" ${
-        project.favorite ? "to" : "from"
-      } favorites.`
-    );
-  }
-});
-
-/* ==========================================
-   6. CREATE AND EDIT PROJECTS
-========================================== */
-
-function openNewProject() {
-  editingProjectId = null;
-
-  $("#projectForm").reset();
-  $("#projectId").value = "";
-  $("#projectModalTitle").textContent = "Create Project";
-  $("#saveProjectButton").textContent = "Save Project";
-  $("#projectFormMessage").textContent = "";
-
-  const draft = settings.autosave
-    ? readJSON(DRAFT_KEY, null)
-    : null;
-
-  if (draft) {
-    $("#projectName").value = draft.name || "";
-    $("#projectLanguage").value = draft.language || "html";
-    $("#projectFolder").value = draft.folder || "";
-    $("#projectDescription").value = draft.description || "";
-    $("#projectCode").value = draft.code || "";
-  }
-
-  showModal($("#projectModal"));
-}
-
-function openProject(id) {
-  const project = projects.find((item) => item.id === id);
-
-  if (!project) return;
-
-  editingProjectId = id;
-
-  $("#projectId").value = project.id;
-  $("#projectName").value = project.name || "";
-  $("#projectLanguage").value = project.language || "html";
-  $("#projectFolder").value = project.folder || "";
-  $("#projectDescription").value = project.description || "";
-  $("#projectCode").value = project.code || "";
-
-  $("#projectModalTitle").textContent = "Edit Project";
-  $("#saveProjectButton").textContent = "Update Project";
-  $("#projectFormMessage").textContent = "";
-
-  showModal($("#projectModal"));
-}
-
-$("#newProjectButton").addEventListener("click", openNewProject);
-$("#emptyCreateButton").addEventListener("click", openNewProject);
-
-$("#closeProjectModal").addEventListener("click", () => {
-  hideModal($("#projectModal"));
-});
-
-$("#projectForm").addEventListener("submit", (event) => {
-  event.preventDefault();
-
-  const name = $("#projectName").value.trim();
-
-  if (!name) {
-    $("#projectFormMessage").textContent =
-      "Please enter a project name.";
-    return;
-  }
-
-  const now = new Date().toISOString();
-
-  const projectData = {
-    id: editingProjectId || (
-      window.crypto?.randomUUID
-        ? crypto.randomUUID()
-        : "project_" + Date.now()
-    ),
-    name,
-    language: $("#projectLanguage").value,
-    folder: $("#projectFolder").value.trim(),
-    description: $("#projectDescription").value.trim(),
-    code: $("#projectCode").value,
-    updatedAt: now
-  };
-
-  if (editingProjectId) {
-    const index = projects.findIndex(
-      (item) => item.id === editingProjectId
-    );
-
-    if (index !== -1) {
-      projectData.createdAt =
-        projects[index].createdAt || now;
-
-      projectData.favorite =
-        projects[index].favorite || false;
-
-      projects[index] = projectData;
-    }
-  } else {
-    projectData.createdAt = now;
-    projectData.favorite = false;
-    projects.unshift(projectData);
-  }
-
-  saveProjects();
-  localStorage.removeItem(DRAFT_KEY);
-
-  recordActivity(
-    `${editingProjectId ? "Updated" : "Created"} project "${name}".`
-  );
-
-  hideModal($("#projectModal"));
-  showNotice("Project saved successfully.");
-});
-
-/* ==========================================
-   7. DELETE PROJECTS
-========================================== */
-
-function deleteProject(id) {
-  const project = projects.find((item) => item.id === id);
-
-  if (!project) return;
-
-  if (
-    settings.confirmDelete &&
-    !confirm(`Delete "${project.name}"? This cannot be undone.`)
-  ) {
-    return;
-  }
-
-  projects = projects.filter((item) => item.id !== id);
-
-  saveProjects();
-
-  recordActivity(`Deleted project "${project.name}".`);
-  showNotice("Project deleted.");
-}
-
-/* ==========================================
-   8. DOWNLOAD AND EXPORT PROJECTS
-========================================== */
-
-function extensionFor(language) {
-  const extensions = {
-    html: "html",
-    javascript: "js",
-    python: "py",
-    java: "java",
-    cpp: "cpp",
-    sql: "sql",
-    other: "txt"
-  };
-
-  return extensions[language] || "txt";
-}
-
-function safeFilename(name) {
-  return String(name || "project")
-    .replace(/[<>:"/\\|?*\x00-\x1F]/g, "_")
-    .trim()
-    .slice(0, 100) || "project";
-}
-
-function downloadFile(
-  filename,
-  content,
-  mimeType = "text/plain;charset=utf-8"
-) {
-  const blob = new Blob([content], { type: mimeType });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-
-  link.href = url;
-  link.download = filename;
-
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-}
-
-function downloadProject(id) {
-  const project = projects.find((item) => item.id === id);
-
-  if (!project) return;
-
-  const filename =
-    safeFilename(project.name) +
-    "." +
-    extensionFor(project.language);
-
-  downloadFile(filename, project.code || "");
-
-  recordActivity(`Downloaded "${project.name}".`);
-}
-
-$("#downloadProjectButton").addEventListener("click", () => {
-  const name = safeFilename($("#projectName").value);
-  const language = $("#projectLanguage").value;
-  const code = $("#projectCode").value;
-
-  downloadFile(
-    name + "." + extensionFor(language),
-    code
-  );
-});
-
-$("#exportProjectButton").addEventListener("click", () => {
-  const exportData = {
-    name: $("#projectName").value.trim(),
-    language: $("#projectLanguage").value,
-    folder: $("#projectFolder").value.trim(),
-    description: $("#projectDescription").value.trim(),
-    code: $("#projectCode").value,
-    exportedAt: new Date().toISOString()
-  };
-
-  downloadFile(
-    safeFilename(exportData.name) + ".json",
-    JSON.stringify(exportData, null, 2),
-    "application/json;charset=utf-8"
-  );
-});
-
-$("#exportAllProjectsButton").addEventListener("click", () => {
-  downloadFile(
-    "alphascript-projects.json",
-    JSON.stringify(projects, null, 2),
-    "application/json;charset=utf-8"
-  );
-
-  recordActivity("Exported all local projects.");
-});
-
-/* ==========================================
-   9. AUTOMATIC DRAFT SAVING
-========================================== */
-
-let draftTimer = null;
-
-[
-  "projectName",
-  "projectLanguage",
-  "projectFolder",
-  "projectDescription",
-  "projectCode"
-].forEach((id) => {
-  $("#" + id).addEventListener("input", () => {
-    if (!settings.autosave) return;
-
-    clearTimeout(draftTimer);
-
-    draftTimer = setTimeout(() => {
-      const draft = {
-        name: $("#projectName").value,
-        language: $("#projectLanguage").value,
-        folder: $("#projectFolder").value,
-        description: $("#projectDescription").value,
-        code: $("#projectCode").value,
-        savedAt: new Date().toISOString()
-      };
-
-      localStorage.setItem(
-        DRAFT_KEY,
-        JSON.stringify(draft)
+  async function copyText(text, outputElement) {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const temporary = document.createElement("textarea");
+        temporary.value = text;
+        temporary.style.position = "fixed";
+        temporary.style.opacity = "0";
+
+        document.body.appendChild(temporary);
+        temporary.select();
+
+        const successful = document.execCommand("copy");
+        temporary.remove();
+
+        if (!successful) {
+          throw new Error("Copy was unsuccessful.");
+        }
+      }
+
+      showMessage(outputElement, "Copied successfully.");
+    } catch (error) {
+      showMessage(
+        outputElement,
+        "Copy failed. Select the code and copy it manually."
       );
-    }, 500);
+    }
+  }
+
+  /* ---------- Python editor ---------- */
+
+  $("#downloadPython")?.addEventListener("click", () => {
+    downloadText("main.py", $("#pythonCode")?.value ?? "");
+    showMessage($("#pythonOutput"), "Python file downloaded.");
   });
-});
 
-/* ==========================================
-   10. TOOL MODAL
-========================================== */
+  $("#copyPython")?.addEventListener("click", () => {
+    copyText($("#pythonCode")?.value ?? "", $("#pythonOutput"));
+  });
 
-const toolTitles = {
-  html: "HTML/CSS Playground",
-  js: "JavaScript Playground",
-  json: "JSON Formatter",
-  regex: "Regex Tester",
-  diff: "Text Difference Checker",
-  indent: "Indentation Helper",
-  python: "Python Editor",
-  java: "Java Editor",
-  cpp: "C++ Editor",
-  sql: "SQL Formatter",
-  base64: "Base64 Encoder",
-  url: "URL Encoder",
-  color: "Color Converter",
-  timestamp: "Timestamp Converter"
-};
+  /* ---------- Java editor ---------- */
 
-function toolLayout(title, body) {
-  return `
-    <div class="tool-interface">
-      <h3>${escapeHTML(title)}</h3>
-      ${body}
-      <p id="toolMessage" class="status-message" role="status"></p>
-    </div>
-  `;
-}
+  $("#downloadJava")?.addEventListener("click", () => {
+    downloadText("Main.java", $("#javaCode")?.value ?? "");
+    showMessage($("#javaOutput"), "Java file downloaded.");
+  });
 
-function renderTool(tool) {
-  const content = $("#toolModalContent");
+  $("#copyJava")?.addEventListener("click", () => {
+    copyText($("#javaCode")?.value ?? "", $("#javaOutput"));
+  });
 
-  $("#toolModalTitle").textContent =
-    toolTitles[tool] || "Developer Tool";
+  /* ---------- C++ editor ---------- */
 
-  const textarea = (id, placeholder, rows = 8) => `
-    <textarea
-      id="${id}"
-      rows="${rows}"
-      spellcheck="false"
-      placeholder="${escapeHTML(placeholder)}"
-    ></textarea>
-  `;
+  $("#downloadCpp")?.addEventListener("click", () => {
+    downloadText("main.cpp", $("#cppCode")?.value ?? "");
+    showMessage($("#cppOutput"), "C++ file downloaded.");
+  });
 
-  const button = (id, label, secondary = false) => `
-    <button
-      class="${secondary ? "secondary-button" : "primary-button"}"
-      id="${id}"
-      type="button"
-    >${escapeHTML(label)}</button>
-  `;
+  $("#copyCpp")?.addEventListener("click", () => {
+    copyText($("#cppCode")?.value ?? "", $("#cppOutput"));
+  });
 
-  switch (tool) {
-    case "html":
-      content.innerHTML = toolLayout("Build a web page", `
-        <p>Write HTML and CSS, then preview the result.</p>
+  /* ---------- SQL formatter ---------- */
 
-        <label class="form-field">
-          HTML
-          ${textarea(
-            "htmlInput",
-            "<h1>Hello, AlphaScript!</h1>\n<p>My first page.</p>",
-            7
-          )}
-        </label>
+  function formatSqlQuery(query) {
+    const keywords = [
+      "SELECT",
+      "FROM",
+      "WHERE",
+      "GROUP BY",
+      "ORDER BY",
+      "HAVING",
+      "LIMIT",
+      "OFFSET",
+      "INSERT INTO",
+      "VALUES",
+      "UPDATE",
+      "SET",
+      "DELETE FROM",
+      "LEFT JOIN",
+      "RIGHT JOIN",
+      "INNER JOIN",
+      "FULL JOIN",
+      "JOIN",
+      "ON",
+      "UNION ALL",
+      "UNION",
+      "CREATE TABLE",
+      "ALTER TABLE",
+      "DROP TABLE",
+      "AND",
+      "OR"
+    ];
 
-        <label class="form-field">
-          CSS
-          ${textarea(
-            "cssInput",
-            "body { font-family: sans-serif; padding: 20px; }\nh1 { color: royalblue; }",
-            5
-          )}
-        </label>
+    let result = query.trim();
 
-        <div class="modal-actions">
-          ${button("runHtmlButton", "Update Preview")}
-          ${button("downloadHtmlButton", "Download HTML", true)}
-        </div>
+    if (!result) {
+      return "";
+    }
 
-        <iframe
-          id="htmlPreview"
-          title="HTML and CSS preview"
-          sandbox=""
-          style="width:100%;height:260px;background:white;border:1px solid #ccc;border-radius:12px"
-        ></iframe>
-      `);
+    // Normalize whitespace without changing quoted text intentionally.
+    result = result.replace(/[ \t]+/g, " ");
 
-      $("#runHtmlButton").addEventListener(
-        "click",
-        renderHtmlPreview
-      );
+    // Put major SQL clauses on separate lines.
+    const majorClauses = [
+      "SELECT",
+      "FROM",
+      "WHERE",
+      "GROUP BY",
+      "ORDER BY",
+      "HAVING",
+      "LIMIT",
+      "OFFSET",
+      "INSERT INTO",
+      "VALUES",
+      "UPDATE",
+      "SET",
+      "DELETE FROM",
+      "LEFT JOIN",
+      "RIGHT JOIN",
+      "INNER JOIN",
+      "FULL JOIN",
+      "JOIN",
+      "UNION ALL",
+      "UNION",
+      "CREATE TABLE",
+      "ALTER TABLE",
+      "DROP TABLE"
+    ];
 
-      $("#downloadHtmlButton").addEventListener("click", () => {
-        downloadFile(
-          "alphascript-page.html",
-          buildHtmlDocument(
-            $("#htmlInput").value,
-            $("#cssInput").value
-          ),
-          "text/html;charset=utf-8"
+    for (const keyword of majorClauses) {
+      const pattern = new RegExp("\\s+" + keyword.replace(/ /g, "\\s+") + "\\b", "gi");
+      result = result.replace(pattern, "\n" + keyword);
+    }
+
+    // Capitalize common SQL keywords.
+    const keywordPattern = new RegExp(
+      "\\b(" + keywords
+        .slice()
+        .sort((a, b) => b.length - a.length)
+        .map((word) => word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/ /g, "\\s+"))
+        .join("|") + ")\\b",
+      "gi"
+    );
+
+    result = result.replace(keywordPattern, (match) => match.toUpperCase());
+
+    return result
+      .split("\n")
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .join("\n");
+  }
+
+  $("#formatSql")?.addEventListener("click", () => {
+    const input = $("#sqlCode");
+    const output = $("#sqlOutput");
+
+    if (!input) return;
+
+    if (!input.value.trim()) {
+      showMessage(output, "Enter an SQL query first.");
+      return;
+    }
+
+    input.value = formatSqlQuery(input.value);
+    showMessage(output, "SQL formatted.");
+  });
+
+  $("#copySql")?.addEventListener("click", () => {
+    copyText($("#sqlCode")?.value ?? "", $("#sqlOutput"));
+  });
+
+  $("#downloadSql")?.addEventListener("click", () => {
+    downloadText(
+      "query.sql",
+      $("#sqlCode")?.value ?? "",
+      "text/sql;charset=utf-8"
+    );
+
+    showMessage($("#sqlOutput"), "SQL file downloaded.");
+  });
+
+  /* ---------- Markdown preview ---------- */
+
+  function escapeHtml(text) {
+    return text.replace(/[&<>"']/g, (character) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[character]);
+  }
+
+  function renderBasicMarkdown(markdown) {
+    let html = escapeHtml(markdown);
+
+    // Inline formatting.
+    html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    html = html.replace(/\*(.+?)\*/g, "<em>$1</em>");
+    html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
+
+    // Headings.
+    html = html.replace(/^### (.+)$/gm, "<h3>$1</h3>");
+    html = html.replace(/^## (.+)$/gm, "<h2>$1</h2>");
+    html = html.replace(/^# (.+)$/gm, "<h1>$1</h1>");
+
+    // Lists.
+    html = html.replace(/^- (.+)$/gm, "<li>$1</li>");
+    html = html.replace(/(<li>.*<\/li>\s*)+/gs, "<ul>$&</ul>");
+
+    // Paragraphs and line breaks.
+    html = html
+      .split(/\n{2,}/)
+      .map((block) => {
+        const trimmed = block.trim();
+
+        if (
+          !trimmed ||
+          /^<h[1-3]>/.test(trimmed) ||
+          /^<ul>/.test(trimmed)
+        ) {
+          return trimmed;
+        }
+
+        return "<p>" + trimmed.replace(/\n/g, "<br>") + "</p>";
+      })
+      .join("\n");
+
+    return html;
+  }
+
+  function updateMarkdownPreview() {
+    const source = $("#markdownCode");
+    const preview = $("#markdownPreview");
+
+    if (!source || !preview) return;
+
+    preview.innerHTML = renderBasicMarkdown(source.value);
+  }
+
+  $("#previewMarkdown")?.addEventListener("click", updateMarkdownPreview);
+
+  $("#markdownCode")?.addEventListener("input", updateMarkdownPreview);
+
+  $("#downloadMarkdown")?.addEventListener("click", () => {
+    downloadText("document.md", $("#markdownCode")?.value ?? "");
+  });
+
+  updateMarkdownPreview();
+
+  /* ---------- Theme toggle ---------- */
+
+  const themeToggle = $("#themeToggle");
+
+  if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      document.body.classList.toggle("light");
+
+      const lightMode = document.body.classList.contains("light");
+
+      try {
+        localStorage.setItem(
+          "alphascript-theme",
+          lightMode ? "light" : "dark"
         );
-      });
+      } catch (_) {
+        // The theme still works if browser storage is unavailable.
+      }
 
-      renderHtmlPreview();
-      break;
+      themeToggle.textContent = lightMode ? "☾" : "☀";
+    });
 
-    case "json":
-      content.innerHTML = toolLayout("JSON formatter and validator", `
-        <label class="form-field">
-          JSON input
-          ${textarea(
-            "jsonInput",
-            '{"name":"AlphaScript","active":true}',
-            10
-          )}
-        </label>
+    try {
+      const savedTheme = localStorage.getItem("alphascript-theme");
 
-        <div class="modal-actions">
-          ${button("formatJsonButton", "Format JSON")}
-          ${button("minifyJsonButton", "Minify JSON", true)}
-          ${button("validateJsonButton", "Validate JSON", true)}
-        </div>
-      `);
-
-      $("#formatJsonButton").addEventListener("click", () => {
-        try {
-          $("#jsonInput").value = JSON.stringify(
-            JSON.parse($("#jsonInput").value),
-            null,
-            2
-          );
-
-          toolMessage("Valid JSON formatted successfully.");
-        } catch (error) {
-          toolMessage("Invalid JSON: " + error.message, true);
-        }
-      });
-
-      $("#minifyJsonButton").addEventListener("click", () => {
-        try {
-          $("#jsonInput").value = JSON.stringify(
-            JSON.parse($("#jsonInput").value)
-          );
-
-          toolMessage("JSON minified.");
-        } catch (error) {
-          toolMessage("Invalid JSON: " + error.message, true);
-        }
-      });
-
-      $("#validateJsonButton").addEventListener("click", () => {
-        try {
-          JSON.parse($("#jsonInput").value);
-          toolMessage("Your JSON is valid.");
-        } catch (error) {
-          toolMessage("Invalid JSON: " + error.message, true);
-        }
-      });
-      break;
-
-    case "base64":
-      content.innerHTML = toolLayout("Base64 encoder and decoder", `
-        <label class="form-field">
-          Input text
-          ${textarea("base64Input", "Enter text here...", 7)}
-        </label>
-
-        <div class="modal-actions">
-          ${button("encodeBase64Button", "Encode")}
-          ${button("decodeBase64Button", "Decode", true)}
-        </div>
-      `);
-
-      $("#encodeBase64Button").addEventListener("click", () => {
-        try {
-          const bytes = new TextEncoder().encode(
-            $("#base64Input").value
-          );
-
-          let binary = "";
-
-          bytes.forEach((byte) => {
-            binary += String.fromCharCode(byte);
-          });
-
-          $("#base64Input").value = btoa(binary);
-          toolMessage("Text encoded.");
-        } catch (error) {
-          toolMessage("Unable to encode: " + error.message, true);
-        }
-      });
-
-      $("#decodeBase64Button").addEventListener("click", () => {
-        try {
-          const bytes = Uint8Array.from(
-            atob($("#base64Input").value.trim()),
-            (character) => character.charCodeAt(0)
-          );
-
-          $("#base64Input").value = new TextDecoder().decode(bytes);
-          toolMessage("Base64 decoded.");
-        } catch {
-          toolMessage("This is not valid Base64 text.", true);
-        }
-      });
-      break;
-
-    case "url":
-      content.innerHTML = toolLayout("URL encoder and decoder", `
-        <label class="form-field">
-          Text or URL component
-          ${textarea("urlInput", "Hello AlphaScript & welcome!", 7)}
-        </label>
-
-        <div class="modal-actions">
-          ${button("encodeUrlButton", "Encode")}
-          ${button("decodeUrlButton", "Decode", true)}
-        </div>
-      `);
-
-      $("#encodeUrlButton").addEventListener("click", () => {
-        $("#urlInput").value = encodeURIComponent(
-          $("#urlInput").value
-        );
-      });
-
-      $("#decodeUrlButton").addEventListener("click", () => {
-        try {
-          $("#urlInput").value = decodeURIComponent(
-            $("#urlInput").value
-          );
-        } catch {
-          toolMessage("Unable to decode this input.", true);
-        }
-      });
-      break;
-
-    case "color":
-      content.innerHTML = toolLayout("HEX and RGB color converter", `
-        <label class="form-field">
-          HEX color
-          <input id="hexColorInput" value="#6C63FF">
-        </label>
-
-        <label class="form-field">
-          RGB result
-          <input id="rgbColorOutput" readonly>
-        </label>
-
-        <div
-          id="colorPreview"
-          style="height:100px;border-radius:12px;border:1px solid #777;margin:12px 0"
-        ></div>
-
-        ${button("convertColorButton", "Convert Color")}
-      `);
-
-      $("#convertColorButton").addEventListener("click", () => {
-        const hex = $("#hexColorInput")
-          .value.trim().replace(/^#/, "");
-
-        if (!/^[0-9a-fA-F]{3}$|^[0-9a-fA-F]{6}$/.test(hex)) {
-          toolMessage("Enter a valid HEX color.", true);
-          return;
-        }
-
-        const expanded = hex.length === 3
-          ? hex.split("").map((char) => char + char).join("")
-          : hex;
-
-        const red = parseInt(expanded.slice(0, 2), 16);
-        const green = parseInt(expanded.slice(2, 4), 16);
-        const blue = parseInt(expanded.slice(4, 6), 16);
-
-        const rgb = `rgb(${red}, ${green}, ${blue})`;
-
-        $("#rgbColorOutput").value = rgb;
-        $("#colorPreview").style.backgroundColor = rgb;
-
-        toolMessage("Color converted.");
-      });
-
-      $("#convertColorButton").click();
-      break;
-
-    case "timestamp":
-      content.innerHTML = toolLayout("Unix timestamp converter", `
-        <label class="form-field">
-          Unix timestamp
-          <input
-            id="timestampInput"
-            type="number"
-            placeholder="For example: 1792137600"
-          >
-        </label>
-
-        <label class="form-field">
-          Date result
-          <input id="timestampOutput" readonly>
-        </label>
-
-        <div class="modal-actions">
-          ${button("convertTimestampButton", "Convert Timestamp")}
-          ${button("currentTimestampButton", "Use Current Time", true)}
-        </div>
-      `);
-
-      $("#convertTimestampButton").addEventListener("click", () => {
-        const raw = $("#timestampInput").value.trim();
-
-        if (!raw) {
-          toolMessage("Enter a Unix timestamp.", true);
-          return;
-        }
-
-        const number = Number(raw);
-
-        const milliseconds = Math.abs(number) < 1e12
-          ? number * 1000
-          : number;
-
-        const date = new Date(milliseconds);
-
-        if (!Number.isFinite(number) || Number.isNaN(date.getTime())) {
-          toolMessage("Enter a valid timestamp.", true);
-          return;
-        }
-
-        $("#timestampOutput").value = date.toLocaleString();
-        toolMessage("Timestamp converted.");
-      });
-
-      $("#currentTimestampButton").addEventListener("click", () => {
-        $("#timestampInput").value = Math.floor(Date.now() / 1000);
-        $("#convertTimestampButton").click();
-      });
-      break;
-
-    default:
-      content.innerHTML = toolLayout(
-        toolTitles[tool] || "Developer Tool",
-        "<p>This tool will be implemented in the next section.</p>"
-      );
+      if (savedTheme === "light") {
+        document.body.classList.add("light");
+        themeToggle.textContent = "☾";
+      } else {
+        themeToggle.textContent = "☀";
+      }
+    } catch (_) {
+      themeToggle.textContent = "☀";
+    }
   }
-}
 
-$$(".tool-card").forEach((card) => {
-  card.addEventListener("click", () => {
-    renderTool(card.dataset.tool);
-    showModal($("#toolModal"));
+  /* ---------- Profile navigation ---------- */
+
+  $("#profileButton")?.addEventListener("click", () => {
+    window.location.href = "profile.html";
   });
-});
 
-$("#closeToolModal").addEventListener("click", () => {
-  hideModal($("#toolModal"));
-});
+  $("#updateProfile")?.addEventListener("click", () => {
+    window.location.href = "profile.html";
+  });
 
-/* ==========================================
-   11. HTML PREVIEW HELPERS
-========================================== */
+  /* ---------- Settings modal ---------- */
 
-function buildHtmlDocument(html, css) {
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>${css}</style>
-</head>
-<body>
-${html}
-</body>
-</html>`;
-}
+  const settingsButton = $("#settingsButton");
+  const settingsModal = $("#settingsModal");
+  const closeSettingsButton = $("#closeSettingsButton");
 
-function renderHtmlPreview() {
-  const frame = $("#htmlPreview");
-
-  if (!frame) return;
-
-  frame.srcdoc = buildHtmlDocument(
-    $("#htmlInput").value,
-    $("#cssInput").value
-  );
-}
-
-/* ==========================================
-   12. COPY HELPER
-========================================== */
-
-async function copyText(text) {
-  try {
-    await navigator.clipboard.writeText(text);
-    toolMessage("Copied to clipboard.");
-  } catch {
-    const area = document.createElement("textarea");
-
-    area.value = text;
-    area.style.position = "fixed";
-    area.style.opacity = "0";
-
-    document.body.appendChild(area);
-    area.select();
-
-    const successful = document.execCommand("copy");
-    area.remove();
-
-    toolMessage(
-      successful
-        ? "Copied to clipboard."
-        : "Copy failed. Select and copy the text manually.",
-      !successful
-    );
-  }
-}
-
-function toolMessage(message, isError = false) {
-  const element = $("#toolMessage");
-
-  if (!element) return;
-
-  element.textContent = message;
-  element.classList.toggle("error", isError);
-}
-
-/* ==========================================
-   13. MODAL CONTROLS
-========================================== */
-
-$$(".modal-overlay").forEach((overlay) => {
-  overlay.addEventListener("click", (event) => {
-    if (event.target === overlay) {
-      hideModal(overlay);
+  settingsButton?.addEventListener("click", () => {
+    if (settingsModal) {
+      settingsModal.classList.remove("hidden");
+      settingsModal.setAttribute("aria-hidden", "false");
     }
   });
-});
 
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") {
-    $$(".modal-overlay").forEach(hideModal);
-  }
-});
-
-/* ==========================================
-   14. MOBILE NAVIGATION
-========================================== */
-
-$("#menuToggle")?.addEventListener("click", () => {
-  $("#mainNavigation")  ?.classList.toggle("navigation-open");
-});
-
-$$("#mainNavigation a").forEach((link) => {
-  link.addEventListener("click", () => {
-    $("#mainNavigation")?.classList.remove("navigation-open");
+  closeSettingsButton?.addEventListener("click", () => {
+    if (settingsModal) {
+      settingsModal.classList.add("hidden");
+      settingsModal.setAttribute("aria-hidden", "true");
+    }
   });
-});
 
-/* ==========================================
-   15. START HOMEPAGE
-========================================== */
+  settingsModal?.addEventListener("click", (event) => {
+    if (event.target === settingsModal) {
+      settingsModal.classList.add("hidden");
+      settingsModal.setAttribute("aria-hidden", "true");
+    }
+  });
 
-async function initializeHomepage() {
-  applyTheme();
+  /* ---------- Escape key closes modals ---------- */
 
-  if ($("#currentYear")) {
-    $("#currentYear").textContent = new Date().getFullYear();
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+
+    ["settingsModal", "toolModal", "projectModal"].forEach((id) => {
+      const modal = document.getElementById(id);
+
+      if (modal) {
+        modal.classList.add("hidden");
+        modal.setAttribute("aria-hidden", "true");
+      }
+    });
+  });
+
+  /* ---------- Account status ---------- */
+
+  /*
+   * Authentication is checked independently of profile information.
+   * A missing or incomplete profile must not be treated as a signed-out
+   * account. This check only reads the existing Supabase session.
+   */
+  async function checkAccountSession() {
+    const status = $("#accountStatus");
+
+    if (!window.supabaseClient) {
+      showMessage(status, "Unable to connect to the account service.");
+      return;
+    }
+
+    showMessage(status, "Checking account…");
+
+    try {
+      const result = await window.supabaseClient.auth.getSession();
+
+      if (result.error) {
+        showMessage(status, "Unable to verify your session.");
+        return;
+      }
+
+      const session = result.data?.session;
+
+      if (session?.user) {
+        showMessage(status, "Signed in");
+      } else {
+        showMessage(status, "You are not signed in.");
+        window.location.replace("login.html");
+      }
+    } catch (error) {
+      showMessage(status, "Unable to verify your session.");
+    }
   }
 
-  $("#loadingScreen")?.classList.remove("hidden");
-  $("#homePage")?.classList.add("hidden");
-
-  const authenticated = await checkAuthentication();
-
-  if (!authenticated) {
-    return;
+  /*
+   * If the existing homepage script already performs authentication,
+   * remove this call and keep only one session check to avoid duplication.
+   * The Supabase client must be initialized before this script runs.
+   */
+  if (window.supabaseClient) {
+    checkAccountSession();
   }
 
-  loadProjects();
-
-  activity = readJSON(ACTIVITY_KEY, []);
-
-  if (!Array.isArray(activity)) {
-    activity = [];
-  }
-
-  renderProjects();
-  renderActivity();
-
-  $("#loadingScreen")?.classList.add("hidden");
-  $("#homePage")?.classList.remove("hidden");
-}
-
-/* Start the homepage */
-initializeHomepage().catch((error) => {
-  console.error("Homepage initialization failed:", error);
-
-  $("#loadingScreen")?.classList.add("hidden");
-
-  showNotice(
-    "The homepage could not finish loading. Refresh the page and try again.",
-    true
-  );
-});
+})();
 </script>
-
 </body>
 </html>
-         
