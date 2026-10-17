@@ -226,9 +226,24 @@ async function loadDiscover(){const status=$("#discoverStatus"),list=$("#discove
 function renderDiscover(){const q=$("#discoverSearch").value.toLowerCase(),list=$("#discoverList");list.innerHTML="";const arr=discoverUsers.filter(p=>[p.username,p.full_name,p.name,p.skills,p.job,p.work,p.country].map(v=>Array.isArray(v)?v.join(" "):String(v||"")).join(" ").toLowerCase().includes(q));if(!arr.length){list.innerHTML='<div class="empty">No public profiles match your search.</div>';return}arr.forEach(p=>{const name=p.full_name||p.name||p.username||"Developer";const skills=Array.isArray(p.skills)?p.skills.join(", "):String(p.skills||"");const avatar=p.avatar_url||p.avatar||"";const el=document.createElement("div");el.className="item";el.innerHTML=`${avatar?`<img class="avatar" src="${escapeHTML(avatar)}" alt="">`:`<div class="avatar">${escapeHTML(name[0]||"D")}</div>`}<div class="item-main"><strong>${escapeHTML(name)}</strong><small>${p.username?"@"+escapeHTML(p.username)+" · ":""}${escapeHTML(p.country||"")}</small><div class="small muted" style="margin-top:5px">${escapeHTML(skills||p.job||p.work||"No public skills listed")}</div></div><button class="btn" data-profile>View</button><button class="btn" data-follow>Follow</button>`;el.querySelector("[data-profile]").onclick=()=>showPublicProfile(p);el.querySelector("[data-follow]").onclick=()=>followUser(p,el.querySelector("[data-follow]"));list.append(el)})}
 $("#discoverSearch").addEventListener("input",renderDiscover);$("#refreshDiscover").addEventListener("click",loadDiscover);
 function showPublicProfile(p){const name=p.full_name||p.name||p.username||"Developer";const body=$("#profileModalBody");body.innerHTML=`<div class="profile-line"><div class="avatar">${escapeHTML(name[0]||"D")}</div><div class="details"><h3>${escapeHTML(name)}</h3><div class="muted">${p.username?"@"+escapeHTML(p.username):""}</div></div></div><div class="divider"></div><p><strong>Skills</strong><br>${escapeHTML(Array.isArray(p.skills)?p.skills.join(", "):p.skills||"Not provided")}</p><p><strong>Current work</strong><br>${escapeHTML(p.job||p.work||"Not provided")}</p><p><strong>Country</strong><br>${escapeHTML(p.country||"Not provided")}</p><p class="notice">Only fields returned by your public profile query are shown. Confirm your privacy policies before exposing additional profile fields.</p>`;showModal("profileModal")}
-async function followUser(p,button){if(!supabase||!currentUser)return;button.disabled=true;button.textContent="…";try{const follower=currentUser.id;const followed=p.id;const {error}=await supabase.from("follows").insert({follower_id:follower,following_id:followed});if(error&&error.code!=="23505")throw error;button.textContent="Following"}catch(e){button.textContent="Follow";$("#discoverStatus").textContent="Follow failed. Confirm your follows table and policies use follower_id/following_id. "+e.message;button.disabled=false}}
-function loadEverything(){renderTools();renderProjects();renderSpaces();updateStats();loadSettingsForm();applyTheme();updateAccount()}
-$("#toolSearch").value="";loadEverything();initSupabase();
+
+async function followUser(p, button) {
+  if (!supabase || !currentUser || !p.id) {
+    $("#discoverStatus").textContent =
+      "Please sign in before connecting with a developer.";
+    return;}if (p.id === currentUser.id) {$("#discoverStatus").textContent ="You cannot connect with your own account.";
+    return;} button.disabled = true; button.textContent = "Connecting…"; try {
+    const { error } = await supabase
+      .from("alphascript_follows")
+      .insert({
+        follower_id: currentUser.id,
+        following_id: p.id
+      });
+if (error && error.code !== "23505") {throw error; } button.textContent = "Following";button.dataset.following = "true";$("#discoverStatus").textContent = error
+      ? "You are already following this developer."
+      : "Successfully connected!"; } catch (e) {console.error("AlphaScript follow error:", e);button.textContent = "Connect";$("#discoverStatus").textContent ="Could not connect: " + e.message; } finally { button.disabled = false; }}function loadEverything() {renderTools();renderProjects();renderSpaces();updateStats();loadSettingsForm();applyTheme(); updateAccount();}$("#toolSearch").value = "";
+loadEverything();
+initSupabase();
 })();
 </script>
 </body>
