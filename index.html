@@ -214,7 +214,10 @@ function updateAccount(){const name=currentUser?.user_metadata?.full_name||curre
 async function initSupabase(){if(!window.supabase?.createClient){$("#accountStatus").textContent="Authentication library unavailable";return}try{supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);const {data,error}=await supabase.auth.getUser();currentUser=error?null:data.user;updateAccount();supabase.auth.onAuthStateChange((_event,session)=>{currentUser=session?.user||null;updateAccount()});if(!currentUser)$("#accountStatus").textContent="Sign in to connect your account."}catch(e){$("#accountStatus").textContent="Account connection error";console.error(e)}}
 let discoverUsers=[];
 async function loadDiscover(){const status=$("#discoverStatus"),list=$("#discoverList");if(!supabase){status.textContent="Supabase is not ready yet. Refresh in a moment.";return}if(!currentUser){status.textContent="Sign in to discover developers. Public profile discovery requires a signed-in account.";list.innerHTML='<div class="empty">Sign in to load developer profiles.</div>';return}status.textContent="Loading public developer profiles…";try{
- const {data,error}=await supabase.from("profiles").select("*").limit(100);
+ const {data,error}=await supabase
+  .from("public_profiles")
+  .select("*")
+  .limit(100);
  if(error)throw error;
  discoverUsers=(data||[]).filter(p=>p.id!==currentUser.id);
  renderDiscover();
