@@ -3974,4 +3974,286 @@ AlphaScript.projects.map(item =>
 })();
 </script>
 
+<!-- AlphaScript Part 6B: final integration -->
+<script>
+(async function AlphaScriptFinalIntegration() {
+  "use strict";
+
+  const SUPABASE_URL =
+    "https://qaivqscssdtsnthdiqtu.supabase.co";
+  const SUPABASE_KEY =
+    "sb_publishable_TjT6PMScm58zNVJiugk-zQ_6oIaJNU9";
+
+  const $ = (selector, root = document) =>
+    root.querySelector(selector);
+
+  const $$ = (selector, root = document) =>
+    [...root.querySelectorAll(selector)];
+
+  function report(message) {
+    let node = $("#alphaIntegrationStatus");
+
+    if (!node) {
+      node = document.createElement("p");
+      node.id = "alphaIntegrationStatus";
+      node.setAttribute("role", "status");
+      node.style.cssText =
+        "padding:10px;border-radius:8px;overflow-wrap:anywhere;";
+
+      const host = $("#accountModal") || $("#settings") ||
+        $("#discovery") || $("main") || document.body;
+
+      host.prepend(node);
+    }
+
+    node.textContent = message;
+  }
+
+  function announce(message) {
+    let node = $("#alphaActionStatus");
+
+    if (!node) {
+      node = document.createElement("p");
+      node.id = "alphaActionStatus";
+      node.setAttribute("role", "status");
+      node.style.cssText =
+        "padding:8px;overflow-wrap:anywhere;";
+      ( $("main") || document.body ).prepend(node);
+    }
+
+    node.textContent = message;
+  }
+
+  // Load the Supabase library if it isn't already present.
+  if (!window.supabase?.createClient) {
+    try {
+      await new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src =
+          "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    } catch {
+      report("Supabase library failed to load. Check your connection.");
+      return;
+    }
+  }
+
+  if (!window.supabase?.createClient) {
+    report("Supabase is unavailable. Account features cannot initialize.");
+    return;
+  }
+
+  // Reuse the shared client if another part created it.
+  const db = window.alphaSupabase ||
+    window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  window.alphaSupabase = db;
+  window.AlphaScript = window.AlphaScript || {};
+  window.AlphaScript.supabase = db;
+
+  // Keep internal navigation working on mobile and desktop.
+  document.addEventListener("click", event => {
+    const link = event.target.closest('a[href^="#"]');
+    if (!link) return;
+
+    const href = link.getAttribute("href");
+    if (!href || href === "#") return;
+
+    let target;
+    try {
+      target = $(href);
+    } catch {
+      return;
+    }
+
+    if (!target) return;
+
+    event.preventDefault();
+    target.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
+    history.replaceState(null, "", href);
+  });
+
+  // Ensure the Discovery navigation link exists.
+  const headerNav = $("header nav");
+
+  if (headerNav && !$("#discoveryNavButton")) {
+    const link = document.createElement("a");
+    link.id = "discoveryNavButton";
+    link.href = "#discovery";
+    link.textContent = "Discovery";
+    link.className = $("header nav a")?.className || "";
+    headerNav.appendChild(link);
+  }
+
+  // Add a visible account status area without replacing the login page.
+  let account = $("#alphaAccountPanel");
+
+  if (!account) {
+    account = document.createElement("section");
+    account.id = "alphaAccountPanel";
+    account.className = "developer-card";
+    account.style.cssText =
+      "margin:16px 0;padding:16px;";
+
+    account.innerHTML = `
+      <h2>Account</h2>
+      <p id="alphaAccountMessage" role="status">
+        Checking your sign-in...
+      </p>
+      <div id="alphaSignedOut">
+        <a href="login.html">Sign in or create an account</a>
+      </div>
+      <div id="alphaSignedIn" hidden>
+        <p id="alphaAccountIdentifier"></p>
+        <p><a href="profile.html">Open my profile</a></p>
+        <button type="button" id="alphaSignOutButton">
+          Sign out
+        </button>
+      </div>
+    `;
+
+    const accountModal = $("#accountModal");
+    if (accountModal) {
+      accountModal.appendChild(account);
+    } else if ($("header")) {
+      $("header").after(account);
+    } else {
+      document.body.prepend(account);
+    }
+  }
+
+  const accountMessage = $("#alphaAccountMessage");
+  const signedOut = $("#alphaSignedOut");
+  const signedIn = $("#alphaSignedIn");
+  const accountIdentifier = $("#alphaAccountIdentifier");
+
+  async function refreshAccount() {
+    const { data, error } = await db.auth.getSession();
+
+    if (error) {
+      accountMessage.textContent =
+        "Could not verify the session. Refresh and try again.";
+      return;
+    }
+
+    const user = data.session?.user || null;
+
+    signedOut.hidden = Boolean(user);
+    signedIn.hidden = !user;
+
+    accountMessage.textContent = user
+      ? "You are signed in."
+      : "You are signed out.";
+
+    if (user) {
+      accountIdentifier.textContent =
+        "Account: " + (user.email || "Signed-in user");
+    }
+
+    $$('[data-account-action="status"]').forEach(button => {
+      button.textContent = user ? "My account" : "Sign in";
+    });
+  }
+
+  $("#alphaSignOutButton")?.addEventListener("click", async event => {
+    const button = event.currentTarget;
+    button.disabled = true;
+
+    try {
+      const { error } = await db.auth.signOut();
+      if (error) throw error;
+
+      await refreshAccount();
+      announce("You have signed out.");
+    } catch (error) {
+      console.error("Sign-out error:", error);
+      announce("Sign-out failed. Please try again.");
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  // Update account status after login, signup or logout.
+  db.auth.onAuthStateChange(() => {
+    setTimeout(() => {
+      refreshAccount().catch(console.error);
+    }, 0);
+  });
+
+  // Verify that the important sections and controls exist.
+  const requiredElements = {
+    "Tool input": "#toolInput",
+    "Run tool": "#runToolButton",
+    "Tool output": "#toolOutput",
+    "Projects": "#projects",
+    "Workspaces": "#workspaces",
+    "Settings": "#settings",
+    "Discovery": "#discovery",
+    "New project": "#newProjectButton",
+    "New workspace": "#newWorkspaceButton"
+  };
+
+  const missing = Object.entries(requiredElements)
+    .filter(([, selector]) => !$(selector))
+    .map(([label]) => label);
+
+  if (missing.length) {
+    console.warn("AlphaScript elements not found:", missing);
+  }
+
+  // Don't falsely claim that missing controls are operational.
+  const oldAudit = $("#alphaIntegrationAudit");
+  if (oldAudit) oldAudit.remove();
+
+  const audit = document.createElement("details");
+  audit.id = "alphaIntegrationAudit";
+  audit.style.cssText =
+    "margin:16px 0;padding:12px;border:1px solid var(--border,#30363d);border-radius:10px;";
+
+  audit.innerHTML = `
+    <summary>AlphaScript integration check</summary>
+    <p id="alphaIntegrationAuditResult">Checking controls...</p>
+  `;
+
+  const auditHost = $("#settings") || $("footer") || document.body;
+  auditHost.appendChild(audit);
+
+  const auditResult = $("#alphaIntegrationAuditResult");
+
+  auditResult.textContent = missing.length
+    ? "Some expected elements are missing: " + missing.join(", ") +
+      ". Check earlier parts of index.html."
+    : "Expected page sections and main tool controls are present. " +
+      "This checks element presence, not full functionality.";
+
+  // Make account links configurable if your page names differ.
+  // Change these filenames if your repository uses different names.
+  $$('a[href="login.html"]').forEach(link => {
+    link.addEventListener("click", () => {
+      // Normal navigation is intentional.
+    });
+  });
+
+  // Let the existing Part 4 and Part 5 handlers manage their own
+  // buttons. Avoid adding duplicate click handlers to those buttons.
+  window.AlphaScript.refreshAccount = refreshAccount;
+
+  await refreshAccount();
+
+  console.info("AlphaScript final integration initialized.");
+})();
+</script>
+
+</body>
+</html>
+
+
+
 
