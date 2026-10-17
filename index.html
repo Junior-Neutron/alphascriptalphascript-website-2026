@@ -228,23 +228,93 @@ $("#discoverSearch").addEventListener("input",renderDiscover);$("#refreshDiscove
 function showPublicProfile(p){const name=p.full_name||p.name||p.username||"Developer";const body=$("#profileModalBody");body.innerHTML=`<div class="profile-line"><div class="avatar">${escapeHTML(name[0]||"D")}</div><div class="details"><h3>${escapeHTML(name)}</h3><div class="muted">${p.username?"@"+escapeHTML(p.username):""}</div></div></div><div class="divider"></div><p><strong>Skills</strong><br>${escapeHTML(Array.isArray(p.skills)?p.skills.join(", "):p.skills||"Not provided")}</p><p><strong>Current work</strong><br>${escapeHTML(p.job||p.work||"Not provided")}</p><p><strong>Country</strong><br>${escapeHTML(p.country||"Not provided")}</p><p class="notice">Only fields returned by your public profile query are shown. Confirm your privacy policies before exposing additional profile fields.</p>`;showModal("profileModal")}
 
 async function followUser(p, button) {
-  if (!supabase || !currentUser || !p.id) {
+  if (!supabase) {
     $("#discoverStatus").textContent =
-      "Please sign in before connecting with a developer.";
-    return;}if (p.id === currentUser.id) {$("#discoverStatus").textContent ="You cannot connect with your own account.";
-    return;} button.disabled = true; button.textContent = "Connecting…"; try {
-    const { error } = await supabase
+      "Error: Supabase is not initialized.";
+    return;
+  }
+
+  if (!currentUser) {
+    $("#discoverStatus").textContent =
+      "Error: You are not signed in. Please sign in again.";
+    return;
+  }
+
+  if (!p || !p.id) {
+    $("#discoverStatus").textContent =
+      "Error: This developer has no profile ID.";
+    return;
+  }
+
+  if (String(p.id) === String(currentUser.id)) {
+    $("#discoverStatus").textContent =
+      "You cannot connect with your own account.";
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Connecting…";
+
+  try {
+    const { data, error } = await supabase
       .from("alphascript_follows")
       .insert({
         follower_id: currentUser.id,
         following_id: p.id
-      });
-if (error && error.code !== "23505") {throw error; } button.textContent = "Following";button.dataset.following = "true";$("#discoverStatus").textContent = error
-      ? "You are already following this developer."
-      : "Successfully connected!"; } catch (e) {console.error("AlphaScript follow error:", e);button.textContent = "Connect";$("#discoverStatus").textContent ="Could not connect: " + e.message; } finally { button.disabled = false; }}function loadEverything() {renderTools();renderProjects();renderSpaces();updateStats();loadSettingsForm();applyTheme(); updateAccount();}$("#toolSearch").value = "";
+      })
+      .select("follower_id, following_id")
+      .single();
+
+    if (error) {
+      throw error;
+    }
+
+    button.textContent = "Connected";
+    button.dataset.following = "true";
+
+    $("#discoverStatus").textContent =
+      "Successfully connected!";
+
+    console.log("Connection saved:", data);
+
+  } catch (e) {
+    console.error("AlphaScript connection error:", e);
+
+    if (e.code === "23505") {
+      button.textContent = "Following";
+      button.dataset.following = "true";
+
+      $("#discoverStatus").textContent =
+        "You are already connected with this developer.";
+    } else {
+      button.textContent = "Connect";
+
+      $("#discoverStatus").textContent =
+        "Connection failed. " +
+        (e.message || "Unknown error") +
+        (e.code ? " (Code: " + e.code + ")" : "");
+
+    }
+  } finally {
+    button.disabled = false;
+  }
+}
+
+function loadEverything() {
+  renderTools();
+  renderProjects();
+  renderSpaces();
+  updateStats();
+  loadSettingsForm();
+  applyTheme();
+  updateAccount();
+}
+
+$("#toolSearch").value = "";
 loadEverything();
 initSupabase();
 })();
 </script>
 </body>
 </html>
+
