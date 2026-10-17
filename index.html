@@ -1863,31 +1863,7 @@ aria-label="Switch theme" title="Switch theme">☀</button>
       </form>
     </div>
   </div>
-
-  <!-- General Confirmation Modal -->
-  <div class="modal-backdrop" id="confirmModal" role="dialog"
-    aria-modal="true" aria-labelledby="confirmModalTitle">
-    <div class="modal">
-      <div class="modal-header">
-        <div>
-          <h2 id="confirmModalTitle">Please confirm</h2>
-          <p id="confirmModalMessage">Are you sure you want to continue?</p>
-        </div>
-        <button class="icon-button" type="button"
-          data-close-modal="confirmModal" aria-label="Close confirmation">
-          ✕
-        </button>
-      </div>
-
-      <div class="modal-actions">
-        <button class="button button-secondary" type="button"
-          data-close-modal="confirmModal">Cancel</button>
-        <button class="button button-primary" id="confirmActionButton"
-          type="button">Confirm</button>
-      </div>
-    </div>
-  </div>
-
+   
 <script>
 "use strict";
 
@@ -4250,70 +4226,6 @@ AlphaScript.projects.map(item =>
   console.info("AlphaScript final integration initialized.");
 })();
 </script>
-
-<script>
-(function () {
-  "use strict";
-
-  let pendingConfirmation = null;
-
-  window.alphaConfirm = function (message, action) {
-    const modal = document.getElementById("confirmModal");
-    const messageElement =
-      document.getElementById("confirmModalMessage");
-    const confirmButton =
-      document.getElementById("confirmActionButton");
-
-    if (!modal || !messageElement || !confirmButton) {
-      if (window.confirm(message)) action();
-      return;
-    }
-
-    messageElement.textContent = message;
-    pendingConfirmation = action;
-    modal.classList.add("open");
-    document.body.classList.add("modal-open");
-    confirmButton.focus();
-  };
-
-  document.addEventListener("click", function (event) {
-    const closeButton = event.target.closest("[data-close-modal]");
-
-    if (closeButton) {
-      const id = closeButton.dataset.closeModal;
-      const modal = document.getElementById(id);
-
-      if (modal) {
-        modal.classList.remove("open");
-
-        if (!document.querySelector(".modal-backdrop.open")) {
-          document.body.classList.remove("modal-open");
-        }
-      }
-
-      if (id === "confirmModal") {
-        pendingConfirmation = null;
-      }
-      return;
-    }
-
-    if (event.target.id === "confirmActionButton") {
-      const action = pendingConfirmation;
-      pendingConfirmation = null;
-
-      const modal = document.getElementById("confirmModal");
-      if (modal) modal.classList.remove("open");
-
-      if (!document.querySelector(".modal-backdrop.open")) {
-        document.body.classList.remove("modal-open");
-      }
-
-      if (typeof action === "function") {
-        action();
-      }
-    }
-  });
-})();
 </script>
 </body>
 </html>
