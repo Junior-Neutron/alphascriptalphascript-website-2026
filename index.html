@@ -4251,8 +4251,74 @@ AlphaScript.projects.map(item =>
 })();
 </script>
 
+<script>
+(function () {
+  "use strict";
+
+  let pendingConfirmation = null;
+
+  window.alphaConfirm = function (message, action) {
+    const modal = document.getElementById("confirmModal");
+    const messageElement =
+      document.getElementById("confirmModalMessage");
+    const confirmButton =
+      document.getElementById("confirmActionButton");
+
+    if (!modal || !messageElement || !confirmButton) {
+      if (window.confirm(message)) action();
+      return;
+    }
+
+    messageElement.textContent = message;
+    pendingConfirmation = action;
+    modal.classList.add("open");
+    document.body.classList.add("modal-open");
+    confirmButton.focus();
+  };
+
+  document.addEventListener("click", function (event) {
+    const closeButton = event.target.closest("[data-close-modal]");
+
+    if (closeButton) {
+      const id = closeButton.dataset.closeModal;
+      const modal = document.getElementById(id);
+
+      if (modal) {
+        modal.classList.remove("open");
+
+        if (!document.querySelector(".modal-backdrop.open")) {
+          document.body.classList.remove("modal-open");
+        }
+      }
+
+      if (id === "confirmModal") {
+        pendingConfirmation = null;
+      }
+      return;
+    }
+
+    if (event.target.id === "confirmActionButton") {
+      const action = pendingConfirmation;
+      pendingConfirmation = null;
+
+      const modal = document.getElementById("confirmModal");
+      if (modal) modal.classList.remove("open");
+
+      if (!document.querySelector(".modal-backdrop.open")) {
+        document.body.classList.remove("modal-open");
+      }
+
+      if (typeof action === "function") {
+        action();
+      }
+    }
+  });
+})();
+</script>
 </body>
 </html>
+
+
 
 
 
