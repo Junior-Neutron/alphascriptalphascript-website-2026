@@ -211,7 +211,136 @@ function showProfile(){const body=$("#profileModalBody");body.innerHTML=`<p clas
 $("#accountAction").addEventListener("click",()=>location.href="login.html");
 $("#signOut").addEventListener("click",async()=>{if(!supabase){$("#authStatus").textContent="Supabase isn't connected.";return}const {error}=await supabase.auth.signOut();$("#authStatus").textContent=error?error.message:"Signed out.";if(!error){currentUser=null;updateAccount()}});
 function updateAccount(){const name=currentUser?.user_metadata?.full_name||currentUser?.user_metadata?.username||currentUser?.email?.split("@")[0]||"Developer";$("#accountTitle").textContent=name;$("#accountStatus").textContent=currentUser?"Signed in · "+currentUser.email:"Not connected to an account";$("#accountAction").textContent=currentUser?"Account":"Sign in";$("#accountAction").onclick=()=>location.href=currentUser?"profile.html":"login.html";const initial=(name[0]||"A").toUpperCase();$("#homeAvatar").textContent=initial;$("#headerInitial").textContent=initial}
-async function initSupabase(){if(!window.supabase?.createClient){$("#accountStatus").textContent="Authentication library unavailable";return}try{supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);const {data,error}=await supabase.auth.getUser();currentUser=error?null:data.user;updateAccount();supabase.auth.onAuthStateChange((_event,session)=>{currentUser=session?.user||null;updateAccount()});if(!currentUser)$("#accountStatus").textContent="Sign in to connect your account."}catch(e){$("#accountStatus").textContent="Account connection error";console.error(e)}}
+
+async function initSupabase() {
+  if (!window.supabase?.createClient) {
+    $("#accountStatus").textContent =
+      "Authentication library unavailable";
+    return;
+  }
+
+  try {
+    supabase = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+    const { data, error } = await supabase.auth.getUser();
+    currentUser = error ? null : data.user;
+
+    updateAccount();
+
+    if (currentUser) {
+      startDiscoverPresence();
+    } else {
+      $("#accountStatus").textContent =
+        "Sign in to connect your account.";
+    }
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      currentUser = session?.user || null;
+      updateAccount();
+
+      if (currentUser) {
+        startDiscoverPresence();
+      } else {
+        onlineUserIds = new Set();
+        presenceUserId = null;
+
+        if (discoverPresenceChannel) {
+          const oldChannel = discoverPresenceChannel;
+          discoverPresenceChannel = null;
+          supabase.removeChannel(oldChannel);
+        }
+
+        updateDiscoverPresenceIndicators();
+      }
+    });
+  } catch (e) {
+    $("#accountStatus").textContent =
+      "Account connection error";
+    console.error(e);
+  }
+}
+
+
+let discoverPresenceChannel = null;
+let onlineUserIds = new Set();
+let presenceUserId = null;
+
+async function startDiscoverPresence() {
+  if (!supabase || !currentUser) return;
+
+  // Avoid creating duplicate channels for the same signed-in user.
+  if (
+    discoverPresenceChannel &&
+    presenceUserId === String(currentUser.id)
+  ) {
+    return;
+  }
+
+  // Remove the previous user's channel if the account changed.
+  if (discoverPresenceChannel) {
+    const oldChannel = discoverPresenceChannel;
+    discoverPresenceChannel = null;
+    await supabase.removeChannel(oldChannel);
+  }
+
+  presenceUserId = String(currentUser.id);
+  onlineUserIds = new Set();
+
+  const userId = String(currentUser.id);
+
+  const channel = supabase.channel("alphascript:online", {
+    config: {
+      presence: {
+        key: userId
+      }
+    }
+  });
+
+  discoverPresenceChannel = channel;
+
+  channel
+    .on("presence", { event: "sync" }, () => {
+      if (discoverPresenceChannel !== channel) return;
+
+      const state = channel.presenceState();
+      onlineUserIds = new Set(Object.keys(state).map(String));
+
+      updateDiscoverPresenceIndicators();
+    })
+    .subscribe(async status => {
+      if (status === "SUBSCRIBED") {
+        try {
+          await channel.track({
+            user_id: userId,
+            online_at: new Date().toISOString()
+          });
+        } catch (e) {
+          console.error("Could not publish online presence:", e);
+        }
+      } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
+        console.error("AlphaScript Presence connection:", status);
+      }
+    });
+}
+
+function updateDiscoverPresenceIndicators() {
+  document.querySelectorAll(
+    "#discoverList .item[data-profile-id]"
+  ).forEach(card => {
+    const profileId = card.dataset.profileId;
+    const statusElement = card.querySelector("[data-online-status]");
+
+    if (!statusElement) return;
+
+    const isOnline = onlineUserIds.has(String(profileId));
+
+    statusElement.textContent = isOnline ? "Online" : "Offline";
+    statusElement.dataset.online = isOnline ? "true" : "false";
+  });
+}
 let discoverUsers=[];
 async function loadDiscover(){const status=$("#discoverStatus"),list=$("#discoverList");if(!supabase){status.textContent="Supabase is not ready yet. Refresh in a moment.";return}if(!currentUser){status.textContent="Sign in to discover developers. Public profile discovery requires a signed-in account.";list.innerHTML='<div class="empty">Sign in to load developer profiles.</div>';return}status.textContent="Loading public developer profiles…";try{
  const {data,error}=await supabase
@@ -219,9 +348,16 @@ async function loadDiscover(){const status=$("#discoverStatus"),list=$("#discove
   .select("*")
   .limit(100);
  if(error)throw error;
- discoverUsers=(data||[]).filter(p=>p.id!==currentUser.id);
- renderDiscover();
- status.textContent=discoverUsers.length+" profile(s) loaded.";
+ discoverUsers = (data || []).filter(
+  p => String(p.id) !== String(currentUser.id)
+);
+
+startDiscoverPresence();
+renderDiscover();
+updateDiscoverPresenceIndicators();
+
+status.textContent =
+  discoverUsers.length + " profile(s) loaded.";
  }catch(e){status.textContent="Could not load profiles. Check that the public profiles table is named profiles, that its columns/RLS allow this query, and that the signed-in user can read public profiles. Details: "+e.message;list.innerHTML='<div class="empty">Profile discovery needs to be connected to your existing profile schema and row-level security policies.</div>';}}
 
 function renderDiscover() {
@@ -370,7 +506,6 @@ async function loadFollowStates() {
 }
 $("#discoverSearch").addEventListener("input",renderDiscover);$("#refreshDiscover").addEventListener("click",loadDiscover);
 function showPublicProfile(p){const name=p.full_name||p.name||p.username||"Developer";const body=$("#profileModalBody");body.innerHTML=`<div class="profile-line"><div class="avatar">${escapeHTML(name[0]||"D")}</div><div class="details"><h3>${escapeHTML(name)}</h3><div class="muted">${p.username?"@"+escapeHTML(p.username):""}</div></div></div><div class="divider"></div><p><strong>Skills</strong><br>${escapeHTML(Array.isArray(p.skills)?p.skills.join(", "):p.skills||"Not provided")}</p><p><strong>Current work</strong><br>${escapeHTML(p.job||p.work||"Not provided")}</p><p><strong>Country</strong><br>${escapeHTML(p.country||"Not provided")}</p><p class="notice">Only fields returned by your public profile query are shown. Confirm your privacy policies before exposing additional profile fields.</p>`;showModal("profileModal")}
-
 
 async function followUser(p, button) {
   if (!supabase) {
