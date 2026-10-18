@@ -223,9 +223,154 @@ async function loadDiscover(){const status=$("#discoverStatus"),list=$("#discove
  renderDiscover();
  status.textContent=discoverUsers.length+" profile(s) loaded.";
  }catch(e){status.textContent="Could not load profiles. Check that the public profiles table is named profiles, that its columns/RLS allow this query, and that the signed-in user can read public profiles. Details: "+e.message;list.innerHTML='<div class="empty">Profile discovery needs to be connected to your existing profile schema and row-level security policies.</div>';}}
-function renderDiscover(){const q=$("#discoverSearch").value.toLowerCase(),list=$("#discoverList");list.innerHTML="";const arr=discoverUsers.filter(p=>[p.username,p.full_name,p.name,p.skills,p.job,p.work,p.country].map(v=>Array.isArray(v)?v.join(" "):String(v||"")).join(" ").toLowerCase().includes(q));if(!arr.length){list.innerHTML='<div class="empty">No public profiles match your search.</div>';return}arr.forEach(p=>{const name=p.full_name||p.name||p.username||"Developer";const skills=Array.isArray(p.skills)?p.skills.join(", "):String(p.skills||"");const avatar=p.avatar_url||p.avatar||"";const el=document.createElement("div");el.className="item";el.innerHTML=`${avatar?`<img class="avatar" src="${escapeHTML(avatar)}" alt="">`:`<div class="avatar">${escapeHTML(name[0]||"D")}</div>`}<div class="item-main"><strong>${escapeHTML(name)}</strong><small>${p.username?"@"+escapeHTML(p.username)+" · ":""}${escapeHTML(p.country||"")}</small><div class="small muted" style="margin-top:5px">${escapeHTML(skills||p.job||p.work||"No public skills listed")}</div></div><button class="btn" data-profile>View</button><button class="btn" data-follow>Follow</button>`;el.querySelector("[data-profile]").onclick=()=>showPublicProfile(p);el.querySelector("[data-follow]").onclick=()=>followUser(p,el.querySelector("[data-follow]"));list.append(el)})}
+
+function renderDiscover() {
+  const q = $("#discoverSearch").value.toLowerCase().trim();
+  const list = $("#discoverList");
+
+  list.innerHTML = "";
+
+  const arr = discoverUsers.filter(p =>
+    [
+      p.username,
+      p.display_name,
+      p.full_name,
+      p.name,
+      p.skills,
+      p.skill,
+      p.programming_languages,
+      p.developer_roles,
+      p.occupation,
+      p.country
+    ]
+      .map(v =>
+        Array.isArray(v) ? v.join(" ") : String(v || "")
+      )
+      .join(" ")
+      .toLowerCase()
+      .includes(q)
+  );
+
+  if (!arr.length) {
+    list.innerHTML =
+      '<div class="empty">No public profiles match your search.</div>';
+    return;
+  }
+
+  arr.forEach(p => {
+    const name =
+      p.display_name ||
+      p.full_name ||
+      p.name ||
+      p.username ||
+      "Developer";
+
+    const skillItems = [
+      ...(Array.isArray(p.skills) ? p.skills : []),
+      ...(Array.isArray(p.skill) ? p.skill : []),
+      ...(Array.isArray(p.programming_languages)
+        ? p.programming_languages
+        : []),
+      ...(Array.isArray(p.developer_roles)
+        ? p.developer_roles
+        : [])
+    ];
+
+    const skills = [...new Set(skillItems)].join(", ");
+    const description = skills || p.occupation || "No public skills listed";
+    const avatar = p.avatar_url || p.avatar || "";
+
+    const el = document.createElement("div");
+    el.className = "item";
+
+    // Associate this card with the correct developer.
+    el.dataset.profileId = String(p.id);
+
+    el.innerHTML = `
+      ${
+        avatar
+          ? `<img class="avatar" src="${escapeHTML(avatar)}" alt="">`
+          : `<div class="avatar">${escapeHTML(name[0] || "D")}</div>`
+      }
+      <div class="item-main">
+        <strong>${escapeHTML(name)}</strong>
+        <small>
+          ${p.username ? "@" + escapeHTML(p.username) + " · " : ""}
+          ${escapeHTML(p.country || "")}
+        </small>
+        <div class="small muted" style="margin-top:5px">
+          ${escapeHTML(description)}
+        </div>
+        <small data-online-status>Offline</small>
+      </div>
+      <button class="btn" data-profile>View</button>
+      <button class="btn" data-follow data-following="false">Connect</button>
+    `;
+
+    const profileButton = el.querySelector("[data-profile]");
+    const followButton = el.querySelector("[data-follow]");
+
+    profileButton.onclick = () => showPublicProfile(p);
+    followButton.onclick = () => followUser(p, followButton);
+
+    list.appendChild(el);
+  });
+
+  // Restore saved connections from Supabase.
+  loadFollowStates();
+}
+
+async function loadFollowStates() {
+  if (!supabase || !currentUser) return;
+
+  const buttons = [
+    ...document.querySelectorAll("#discoverList [data-follow]")
+  ];
+
+  buttons.forEach(button => {
+    button.disabled = true;
+    button.textContent = "Loading…";
+  });
+
+  try {
+    const { data, error } = await supabase
+      .from("alphascript_follows")
+      .select("following_id")
+      .eq("follower_id", currentUser.id);
+
+    if (error) throw error;
+
+    const followedIds = new Set(
+      (data || []).map(row => String(row.following_id))
+    );
+
+    buttons.forEach(button => {
+      const card = button.closest(".item");
+      const profileId = card?.dataset.profileId;
+
+      const isFollowing =
+        Boolean(profileId) && followedIds.has(profileId);
+
+      button.dataset.following = isFollowing ? "true" : "false";
+      button.textContent = isFollowing ? "Unfollow" : "Connect";
+      button.disabled = false;
+    });
+  } catch (e) {
+    console.error("Could not load follow states:", e);
+
+    buttons.forEach(button => {
+      button.textContent =
+        button.dataset.following === "true" ? "Unfollow" : "Connect";
+      button.disabled = false;
+    });
+
+    $("#discoverStatus").textContent =
+      "Could not load follow states: " + e.message;
+  }
+}
 $("#discoverSearch").addEventListener("input",renderDiscover);$("#refreshDiscover").addEventListener("click",loadDiscover);
 function showPublicProfile(p){const name=p.full_name||p.name||p.username||"Developer";const body=$("#profileModalBody");body.innerHTML=`<div class="profile-line"><div class="avatar">${escapeHTML(name[0]||"D")}</div><div class="details"><h3>${escapeHTML(name)}</h3><div class="muted">${p.username?"@"+escapeHTML(p.username):""}</div></div></div><div class="divider"></div><p><strong>Skills</strong><br>${escapeHTML(Array.isArray(p.skills)?p.skills.join(", "):p.skills||"Not provided")}</p><p><strong>Current work</strong><br>${escapeHTML(p.job||p.work||"Not provided")}</p><p><strong>Country</strong><br>${escapeHTML(p.country||"Not provided")}</p><p class="notice">Only fields returned by your public profile query are shown. Confirm your privacy policies before exposing additional profile fields.</p>`;showModal("profileModal")}
+
 
 async function followUser(p, button) {
   if (!supabase) {
@@ -252,49 +397,56 @@ async function followUser(p, button) {
     return;
   }
 
+  const wasFollowing = button.dataset.following === "true";
+
   button.disabled = true;
-  button.textContent = "Connecting…";
+  button.textContent = wasFollowing ? "Unfollowing…" : "Connecting…";
 
   try {
-    const { data, error } = await supabase
-      .from("alphascript_follows")
-      .insert({
-        follower_id: currentUser.id,
-        following_id: p.id
-      })
-      .select("follower_id, following_id")
-      .single();
+    if (wasFollowing) {
+      // Remove the saved connection.
+      const { error } = await supabase
+        .from("alphascript_follows")
+        .delete()
+        .eq("follower_id", currentUser.id)
+        .eq("following_id", p.id);
 
-    if (error) {
-      throw error;
-    }
+      if (error) throw error;
 
-    button.textContent = "Connected";
-    button.dataset.following = "true";
-
-    $("#discoverStatus").textContent =
-      "Successfully connected!";
-
-    console.log("Connection saved:", data);
-
-  } catch (e) {
-    console.error("AlphaScript connection error:", e);
-
-    if (e.code === "23505") {
-      button.textContent = "Following";
-      button.dataset.following = "true";
-
-      $("#discoverStatus").textContent =
-        "You are already connected with this developer.";
-    } else {
+      button.dataset.following = "false";
       button.textContent = "Connect";
 
       $("#discoverStatus").textContent =
-        "Connection failed. " +
-        (e.message || "Unknown error") +
-        (e.code ? " (Code: " + e.code + ")" : "");
+        "Connection removed successfully.";
+    } else {
+      // Save the connection.
+      const { error } = await supabase
+        .from("alphascript_follows")
+        .insert({
+          follower_id: currentUser.id,
+          following_id: p.id
+        });
 
+      if (error && error.code !== "23505") {
+        throw error;
+      }
+
+      // A duplicate means the connection already exists.
+      button.dataset.following = "true";
+      button.textContent = "Unfollow";
+
+      $("#discoverStatus").textContent =
+        error && error.code === "23505"
+          ? "You are already connected with this developer."
+          : "Connection saved successfully.";
     }
+  } catch (e) {
+    console.error("AlphaScript connection error:", e);
+
+    $("#discoverStatus").textContent =
+      "Connection update failed. " +
+      (e.message || "Unknown error") +
+      (e.code ? " (Code: " + e.code + ")" : "");
   } finally {
     button.disabled = false;
   }
