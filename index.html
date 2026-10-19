@@ -310,20 +310,31 @@ async function startDiscoverPresence() {
 
       updateDiscoverPresenceIndicators();
     })
-    .subscribe(async status => {
-      if (status === "SUBSCRIBED") {
-        try {
-          await channel.track({
-            user_id: userId,
-            online_at: new Date().toISOString()
-          });
-        } catch (e) {
-          console.error("Could not publish online presence:", e);
-        }
-      } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
-        console.error("AlphaScript Presence connection:", status);
-      }
-    });
+   
+.subscribe(async status => {
+  console.log("AlphaScript Presence status:", status);
+
+  if (status === "SUBSCRIBED") {
+    console.log("Presence channel connected successfully.");
+
+    try {
+      const result = await channel.track({
+        user_id: userId,
+        online_at: new Date().toISOString()
+      });
+
+      console.log("Presence tracking result:", result);
+    } catch (e) {
+      console.error("Could not publish online presence:", e);
+    }
+  } else if (
+    status === "CHANNEL_ERROR" ||
+    status === "TIMED_OUT" ||
+    status === "CLOSED"
+  ) {
+    console.error("AlphaScript Presence connection problem:", status);
+  }
+});
 }
 
 function updateDiscoverPresenceIndicators() {
