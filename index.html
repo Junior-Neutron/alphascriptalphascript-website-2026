@@ -55,6 +55,10 @@ async function loadFollowSummary(mode='followers'){
   $('#followListTitle').textContent=mode==='followers'?'Your followers':'People you follow';
   $('#followListCount').textContent=(mode==='followers'?followers.length:following.length)+' people';
   const ids=mode==='followers'?followers:following;
+  if(!ids.length){$('#followList').innerHTML='<div class="empty">'+(mode==='followers'?'You do not have followers yet.':'You are not following anyone yet.')+'</div>';return}
+  const {data,error}=await supabase.from('public_profiles').select('*').in('id',ids);if(error)throw error;
+  const people=data||[];
+  $('#followList').innerHTML=people.map(p=>`<div class="item follow-person"><div class="avatar">${p.avatar_url?`<img src="${esc(p.avatar_url)}" alt="${esc((p.full_name||p.username||'Developer')+' profile picture')}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">`:esc((p.full_name||p.username||'D')[0])}</div><div class="itemmain"><strong>${esc(p.full_name||p.display_name||p.username||'Developer')}</strong><small>@${esc(p.username||'developer')}${p.country?' · '+esc(p.country):''}</small></div><button class="btn" data-follow-view="${esc(p.id)}">View</button>${mode==='following'?`<button class="btn danger" data-follow-unfollow="${esc(p.id)}">Unfollow</button>`:''}<button class="btn" data-follow-message="${esc(p.id)}">Message</button>${mode==='following'?`<button class="btn" data-follow-connect="${esc(p.id)}">Connect</button>`:''}<button class="btn" data-follow-report="${esc(p.id)}">Report</button></div>`).join('')||'<div class="empty">Profiles are not available in the public profile view.</div>';
 
 
 
