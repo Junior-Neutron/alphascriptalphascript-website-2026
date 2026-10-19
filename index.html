@@ -71,6 +71,21 @@ async function loadFollowSummary(mode='followers'){
 }
 async function loadPublicFollowStats(p){if(!supabase){$('#publicFollowersCount').textContent='—';$('#publicFollowingCount').textContent='—';return}try{const [a,b]=await Promise.all([supabase.from('alphascript_follows').select('follower_id',{count:'exact',head:true}).eq('following_id',p.id),supabase.from('alphascript_follows').select('following_id',{count:'exact',head:true}).eq('follower_id',p.id)]);$('#publicFollowersCount').textContent=a.error?'—':a.count??0;$('#publicFollowingCount').textContent=b.error?'—':b.count??0;const btn=$('#publicFollowBtn');if(currentUser&&String(currentUser.id)!==String(p.id)){const ids=await getFollowedIds();btn.textContent=ids.has(String(p.id))?'Following':'Follow';btn.classList.toggle('primary',ids.has(String(p.id)))}else{btn.classList.add('hidden')}}catch(e){console.warn('Public follow counts require follow-table policies',e)}}function showPublicProfileFromProfile(p){modal(p.full_name||p.username||'Public profile',`${p.avatar_url?`<img src="${esc(p.avatar_url)}" alt="Profile picture" style="width:84px;height:84px;object-fit:cover;border-radius:20px">`:''}<p><strong>@${esc(p.username||'developer')}</strong></p><p><strong>Bio</strong><br>${esc(p.bio||'Not provided')}</p><p><strong>Country</strong><br>${esc(p.country||'Not provided')}</p><p><strong>Roles</strong><br>${esc((p.developer_roles||[]).join(', ')||'Not provided')}</p><p><strong>Languages</strong><br>${esc((p.programming_languages||[]).join(', ')||'Not provided')}</p><p><strong>Hobbies</strong><br>${esc((p.hobbies||[]).join(', ')||'Not provided')}</p><div class="grid"><div class="card"><strong>Followers</strong><div class="stat" id="listPublicFollowers">—</div></div><div class="card"><strong>Following</strong><div class="stat" id="listPublicFollowing">—</div></div></div><button class="btn primary" id="listProfileMessage">Message</button><button class="btn" id="listProfileReport">Report</button><button class="btn" id="closeFollowProfile">Back to my profile</button>`);$('#listProfileMessage').onclick=()=>messageUser(p);$('#listProfileReport').onclick=()=>reportUser(p);loadPublicFollowStatsForList(p);$('#closeFollowProfile').onclick=()=>{closeModal();go('profile');loadFollowSummary(followMode)}}
 async function loadPublicFollowStatsForList(p){if(!supabase)return;try{const [a,b]=await Promise.all([supabase.from('alphascript_follows').select('follower_id',{count:'exact',head:true}).eq('following_id',p.id),supabase.from('alphascript_follows').select('following_id',{count:'exact',head:true}).eq('follower_id',p.id)]);$('#listPublicFollowers').textContent=a.error?'—':a.count??0;$('#listPublicFollowing').textContent=b.error?'—':b.count??0}catch(e){console.warn(e)}}async function loadActivity(){
+ if(!supabase||!currentUser){$('#activityPanel').innerHTML='<div class="empty">Sign in to receive activity notifications.</div>';return}
+ try{
+  const {data,error}=await supabase.from('alphascript_notifications').select('*').eq('recipient_id',currentUser.id).order('created_at',{ascending:false}).limit(50);
+  if(error)throw error;
+  const notifications=data||[];
+  const actorIds=[...new Set(notifications.map(n=>n.actor_id||n.follower_id||n.sender_id).filter(Boolean).map(String))];
+  let actors={};
+  if(actorIds.length){const result=await supabase.from('public_profiles').select('id,username,full_name,display_name,avatar_url').in('id',actorIds);if(!result.error)for(const p of(result.data||[]))actors[String(p.id)]=p;}
+  $('#activityPanel').innerHTML=notifications.map(n=>{
+   const actorId=n.actor_id||n.follower_id||n.sender_id;
+   const actor=actorId?actors[String(actorId)]:null;
+   const isFollow=String(n.type||n.event_type||'').toLowerCase().includes('follow');
+   const actorName=actor?(actor.full_name||actor.display_name||actor.username||'Someone'):'Someone';
+   const message=isFollow?(actorName+' started following you.'):(n.message||'New activity');
+   const avatar=actor?.avatar_url?`<img src="${esc(actor.avatar_url)}" alt="" style="width:38px;height:38px;object-fit:cover;border-radius:50%">`:`<span class="avatar">${esc(actorName[0]||'A')}</span>`;
 
 
 
