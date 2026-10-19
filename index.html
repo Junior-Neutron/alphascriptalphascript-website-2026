@@ -1,618 +1,100 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#080d19">
-<meta name="description" content="AlphaScript developer workspace">
-<title>AlphaScript — Developer Workspace</title>
-<style>
-:root{color-scheme:dark;--bg:#080d19;--panel:#101a2b;--panel2:#0b1322;--line:#24334a;--text:#edf4ff;--muted:#93a4bd;--cyan:#58e1f2;--blue:#79baff;--danger:#ff777f;--good:#7de2b0;--radius:22px;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text)}body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}button,input,textarea,select{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}.hidden{display:none!important}.muted{color:var(--muted)}.small{font-size:.85rem}.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:12px 16px;padding-top:calc(12px + env(safe-area-inset-top));background:#080d19ed;border-bottom:1px solid var(--line);backdrop-filter:blur(16px)}.brand{display:flex;align-items:center;gap:10px;font-size:1.18rem;font-weight:850;letter-spacing:-.04em;margin-right:auto}.logo{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--cyan),var(--blue));color:#06101d;font-weight:950;font-size:1.15rem}.iconbtn,.btn{border:1px solid var(--line);border-radius:15px;background:var(--panel);color:var(--text);padding:11px 14px;font-weight:700}.iconbtn{width:46px;height:46px;padding:0;font-size:1.15rem}.btn.primary{color:#07111e;background:linear-gradient(120deg,var(--cyan),var(--blue));border:0}.btn.subtle{background:transparent}.btn.danger{border-color:#713e4a;color:#ff9da2}.screen{display:none;max-width:1100px;margin:0 auto;padding:22px 16px 32px}.screen.active{display:block}.hero{padding:28px 22px;border:1px solid var(--line);border-radius:28px;background:radial-gradient(circle at 90% 10%,#303d80 0,transparent 38%),linear-gradient(135deg,#101c31,#0e1b2d);margin-bottom:18px}.eyebrow{font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);font-weight:850}.hero h1{font-size:clamp(2rem,8vw,4rem);line-height:1.06;letter-spacing:-.06em;margin:16px 0}.hero h1 span{color:var(--cyan)}.hero p{color:var(--muted);line-height:1.7;max-width:620px}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:24px}.stat,.card,.profile-card,.setting-group,.empty{border:1px solid var(--line);border-radius:20px;background:var(--panel);padding:16px}.stat strong{font-size:1.4rem;display:block}.stat span{font-size:.78rem;color:var(--muted)}.sectionhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 0 16px}.sectionhead h2{margin:0;font-size:1.4rem;letter-spacing:-.03em}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}.tool-card{min-height:130px;text-align:left;border:1px solid var(--line);border-radius:20px;padding:16px;background:linear-gradient(145deg,#111d30,#0d1525);color:var(--text)}.tool-card .glyph{font-size:1.4rem;color:var(--cyan);display:block;margin-bottom:15px}.tool-card strong{display:block}.tool-card small{display:block;color:var(--muted);margin-top:6px;line-height:1.4}.field{width:100%;background:#080f1c;color:var(--text);border:1px solid var(--line);border-radius:14px;padding:13px 14px}.fieldlabel{display:block;color:var(--muted);font-weight:750;font-size:.86rem;margin:14px 0 7px}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.row>*{min-width:0}.grow{flex:1}.list{display:grid;gap:10px;margin-top:14px}.item{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:16px;padding:13px;background:var(--panel)}.item-main{flex:1;min-width:0}.item-main strong{display:block;overflow-wrap:anywhere}.item-main small{color:var(--muted)}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 8px;color:var(--muted);font-size:.75rem}.empty{color:var(--muted);text-align:center;padding:28px 18px}.avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;display:grid;place-items:center;background:linear-gradient(135deg,#7c83ff,#b37bff);font-weight:850;flex:none}.accountbar{display:flex;gap:12px;align-items:center;padding:16px;border:1px solid var(--line);border-radius:20px;background:var(--panel);margin-bottom:18px}.accountbar .accounttext{flex:1;min-width:0}.accountbar strong,.accountbar small{display:block;overflow-wrap:anywhere}.accountbar small{color:var(--muted);margin-top:4px}.bottomnav{position:fixed;z-index:30;bottom:0;left:0;right:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));padding:7px 5px calc(7px + env(safe-area-inset-bottom));background:#0a1220f5;border-top:1px solid var(--line);backdrop-filter:blur(16px)}.navbtn{border:0;background:transparent;color:var(--muted);border-radius:14px;padding:8px 2px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.68rem;font-weight:750;min-width:0}.navbtn .navicon{font-size:1.1rem}.navbtn.active{background:#1b2a45;color:var(--cyan)}.playground{padding:0;max-width:none;height:calc(100dvh - 70px - 76px - env(safe-area-inset-top) - env(safe-area-inset-bottom));display:none;flex-direction:column}.playground.active{display:flex}.playtop{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--panel2)}.playtop strong{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.playbody{display:flex;flex:1;min-height:0;flex-direction:column}.editorpane,.outputpane{display:none;flex:1;min-height:0;flex-direction:column}.editorpane.active,.outputpane.active{display:flex}.editorbar{display:flex;align-items:center;gap:8px;padding:10px 12px;color:var(--muted);font-size:.85rem}.codearea{display:block;flex:1;min-height:0;width:100%;resize:none;border:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-radius:0;background:#070b13;color:#e8f4ff;padding:18px;font:14px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;tab-size:4;outline:none}.outputarea{flex:1;min-height:0;overflow:auto;padding:18px;background:#070b13;font:14px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere}.playactions{display:flex;gap:8px;padding:12px;background:var(--panel2);border-top:1px solid var(--line)}.playactions .btn{flex:1}.preview{width:100%;height:100%;min-height:200px;background:white;border:0}.status{font-size:.83rem;color:var(--muted);padding:8px 12px}.status.error{color:var(--danger)}.status.good{color:var(--good)}.modalback{position:fixed;inset:0;z-index:60;background:#000b;display:none;align-items:center;justify-content:center;padding:16px}.modalback.open{display:flex}.modal{width:min(560px,100%);max-height:85dvh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:20px}.modalhead{display:flex;align-items:center;justify-content:space-between;gap:12px}.modalhead h2{margin:0}.notice{color:var(--muted);font-size:.86rem;line-height:1.6}.checkrow{display:flex;gap:10px;align-items:center;margin:12px 0}.profile-line{display:flex;gap:12px;align-items:center}.profile-line .details{flex:1}.divider{height:1px;background:var(--line);margin:16px 0}.hidden-input{display:none}@media(min-width:800px){body{padding-bottom:0}.topbar{padding-left:28px;padding-right:28px}.screen{padding:30px 28px}.bottomnav{top:70px;bottom:auto;left:18px;right:auto;width:76px;height:calc(100dvh - 90px);display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);border-radius:22px;padding:10px}.navbtn{flex:1}.screen:not(.playground){margin-left:100px;max-width:1100px}.playground{height:calc(100dvh - 70px);margin-left:100px}.grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}.codearea{font-size:15px}}@media(max-width:380px){.bottomnav{grid-template-columns:repeat(6,minmax(0,1fr))}.navbtn{font-size:.59rem}.navbtn .navicon{font-size:1rem}.stats{gap:6px}.stat{padding:11px}.hero{padding:22px 16px}}
-</style>
-</head>
-<body>
-<header class="topbar">
-  <div class="brand"><div class="logo">&lt;/&gt;</div><span>AlphaScript</span></div>
-  <button class="iconbtn" id="themeToggle" aria-label="Toggle theme" title="Toggle theme">☼</button>
-  <button class="iconbtn" id="headerSettings" aria-label="Settings" title="Settings">⚙</button>
-  <button class="iconbtn" id="headerProfile" aria-label="Profile" title="Profile"><span id="headerInitial">A</span></button>
-</header>
-
-<main>
-<section class="screen active" id="screen-home" data-screen="home">
-  <div id="accountBar" class="accountbar">
-    <div class="avatar" id="homeAvatar">A</div>
-    <div class="accounttext"><strong id="accountTitle">Developer workspace</strong><small id="accountStatus">Not connected to an account</small></div>
-    <button class="btn" id="accountAction">Sign in</button>
-  </div>
-  <div class="hero">
-    <div class="eyebrow">Your developer workspace</div>
-    <h1>Build ideas.<br>Write code. <span>Go further.</span></h1>
-    <p>Your workspace for coding tools, projects, experiments, and learning.</p>
-    <div class="actions"><button class="btn primary" data-go="tools">Explore tools →</button><button class="btn" id="homeNewProject">＋ New project</button><button class="btn subtle" id="homeProfile">My profile</button></div>
-    <div class="stats"><div class="stat"><strong>14</strong><span>Developer tools</span></div><div class="stat"><strong id="homeProjectCount">0</strong><span>My projects</span></div><div class="stat"><strong id="homeSpaceCount">0</strong><span>Workspaces</span></div></div>
-  </div>
-<div class="sectionhead"><h2>Quick access</h2><span class="muted small">Choose a screen</span></div>
-  <div class="grid">
-    <button class="tool-card" data-go="tools"><span class="glyph">⌘</span><strong>Tools</strong><small>Open the tool library</small></button>
-    <button class="tool-card" data-go="projects"><span class="glyph">▤</span><strong>Projects</strong><small>Manage your code</small></button>
-    <button class="tool-card" data-go="spaces"><span class="glyph">◇</span><strong>Spaces</strong><small>Organize workspaces</small></button>
-    <button class="tool-card" data-go="discover"><span class="glyph">◎</span><strong>Discover</strong><small>Find other developers</small></button>
-  </div>
-</section>
-
-<section class="screen" id="screen-tools" data-screen="tools">
-  <div class="sectionhead"><h2>Developer tools</h2><span class="pill">14 tools</span></div>
-  <p class="notice">Choose a tool to open its own full-screen playground. Type in the editor, press Run, and switch to Output. Return to Editor to keep editing.</p>
-  <input class="field" id="toolSearch" placeholder="Search tools…" aria-label="Search tools">
-  <div class="grid" id="toolGrid" style="margin-top:14px"></div>
-</section>
-
-<section class="screen" id="screen-projects" data-screen="projects">
-  <div class="sectionhead"><h2>Projects</h2><button class="btn primary" id="newProject">＋ New project</button></div>
-  <div class="row"><input class="field grow" id="projectSearch" placeholder="Search projects…"><select class="field" id="projectSort" style="width:auto"><option value="updated">Recently updated</option><option value="name">Name A–Z</option></select></div>
-  <div class="list" id="projectList"></div>
-</section>
-
-<section class="screen" id="screen-spaces" data-screen="spaces">
-  <div class="sectionhead"><h2>Spaces</h2><button class="btn primary" id="newSpace">＋ New space</button></div>
-  <p class="notice">Create separate workspaces for different projects or learning goals. These spaces are saved on this device in this starter version.</p>
-  <div class="list" id="spaceList"></div>
-</section>
-
-<section class="screen" id="screen-discover" data-screen="discover">
-  <div class="sectionhead"><h2>Discover developers</h2><button class="btn" id="refreshDiscover">↻ Refresh</button></div>
-  <p class="notice">Find developers, view the profile information they make public, and follow them. Email addresses are never displayed here.</p>
-  <input class="field" id="discoverSearch" placeholder="Search by name, username, skills…">
-  <div id="discoverStatus" class="status">Connect your Supabase project and sign in to load profiles.</div>
-  <div class="list" id="discoverList"></div>
-</section>
-
-<section class="screen" id="screen-settings" data-screen="settings">
-  <div class="sectionhead"><h2>Settings</h2></div>
-  <div class="setting-group">
-    <label class="fieldlabel" for="settingTheme">Appearance</label><select class="field" id="settingTheme"><option value="dark">Dark</option><option value="light">Light</option><option value="system">System default</option></select>
-    <label class="fieldlabel" for="settingFont">Editor font size</label><select class="field" id="settingFont"><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>18</option><option>20</option></select>
-    <label class="fieldlabel" for="settingIndent">Indentation</label><select class="field" id="settingIndent"><option value="2">2 spaces</option><option value="4">4 spaces</option><option value="8">8 spaces</option></select>
-    <label class="checkrow"><input type="checkbox" id="settingWrap" checked> Wrap long lines in the editor</label>
-    <label class="checkrow"><input type="checkbox" id="settingSpell"> Enable spellcheck in text fields</label>
-    <div class="actions"><button class="btn primary" id="saveSettings">Save settings</button><button class="btn" id="resetSettings">Reset</button></div>
-    <p id="settingsStatus" class="status" aria-live="polite"></p>
-  </div>
-  <div class="setting-group" style="margin-top:14px"><h3>Account and profile</h3><p class="notice">Authentication and profile pages are separate from this workspace. Update the links below if your filenames differ.</p><div class="actions"><a class="btn" href="login.html">Open login</a><a class="btn" href="profile.html">Open profile</a><button class="btn danger" id="signOut">Sign out</button></div><p id="authStatus" class="status"></p></div>
-</section>
-
-<section class="screen playground" id="screen-playground" data-screen="playground">
-  <div class="playtop"><button class="iconbtn" id="backToTools" aria-label="Back to tools">←</button><strong id="playTitle">Playground</strong><button class="iconbtn" id="saveFromPlay" aria-label="Save as project" title="Save as project">▣</button></div>
-  <div class="playbody">
-    <div class="editorpane active" id="editorPane">
-      <div class="editorbar"><span id="editorFileLabel">untitled.txt</span><span class="pill" id="languagePill">Text</span><span class="grow"></span><button class="btn subtle" id="clearEditor">Clear</button></div>
-      <textarea class="codearea" id="codeInput" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Code editor" placeholder="Write or paste your code here…"></textarea>
-      <div class="status" id="runStatus" aria-live="polite">Ready.</div>
-      <div class="playactions"><button class="btn" id="formatCode">Format</button><button class="btn primary" id="runCode">Run →</button></div>
-    </div>
-    <div class="outputpane" id="outputPane">
-      <div class="editorbar"><button class="btn" id="backToEditor">← Back to editor</button><strong class="grow">Output</strong><button class="btn" id="copyOutput">Copy</button></div>
-      <div id="outputContent" class="outputarea" aria-live="polite"></div>
-      <iframe id="htmlOutputFrame" class="preview hidden" title="HTML output" sandbox="allow-scripts"></iframe>
-      <div class="playactions"><button class="btn" id="outputEdit">← Edit code</button><button class="btn primary" id="runAgain">Run again</button></div>
-    </div>
-  </div>
-</section>
-</main>
-
-<nav class="bottomnav" aria-label="Main navigation">
-  <button class="navbtn active" data-go="home"><span class="navicon">⌂</span>Home</button>
-  <button class="navbtn" data-go="tools"><span class="navicon">⌘</span>Tools</button>
-  <button class="navbtn" data-go="projects"><span class="navicon">▤</span>Projects</button>
-  <button class="navbtn" data-go="spaces"><span class="navicon">◇</span>Spaces</button>
-  <button class="navbtn" data-go="discover"><span class="navicon">◎</span>Discover</button>
-  <button class="navbtn" data-go="settings"><span class="navicon">⚙</span>Settings</button>
-</nav>
-
-<div class="modalback" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle">
- <div class="modal"><div class="modalhead"><h2 id="projectModalTitle">New project</h2><button class="iconbtn" data-close="projectModal" aria-label="Close">×</button></div>
- <form id="projectForm"><input type="hidden" id="projectId"><label class="fieldlabel" for="projectName">Project name</label><input class="field" id="projectName" required maxlength="80" placeholder="My project"><label class="fieldlabel" for="projectLanguage">Language / type</label><select class="field" id="projectLanguage"><option>HTML</option><option>JavaScript</option><option>JSON</option><option>Python</option><option>Java</option><option>C++</option><option>SQL</option><option>Text</option></select><label class="fieldlabel" for="projectDescription">Description (optional)</label><input class="field" id="projectDescription" maxlength="240" placeholder="What does it do?"><div class="actions"><button class="btn primary" type="submit">Save project</button><button class="btn" type="button" data-close="projectModal">Cancel</button></div><p class="status" id="projectFormStatus"></p></form></div>
-</div>
-<div class="modalback" id="spaceModal" role="dialog" aria-modal="true" aria-labelledby="spaceModalTitle">
- <div class="modal"><div class="modalhead"><h2 id="spaceModalTitle">New space</h2><button class="iconbtn" data-close="spaceModal" aria-label="Close">×</button></div><form id="spaceForm"><label class="fieldlabel" for="spaceName">Space name</label><input class="field" id="spaceName" required maxlength="80" placeholder="Learning workspace"><label class="fieldlabel" for="spaceDescription">Description (optional)</label><input class="field" id="spaceDescription" maxlength="240" placeholder="What is this space for?"><div class="actions"><button class="btn primary" type="submit">Create space</button><button class="btn" type="button" data-close="spaceModal">Cancel</button></div></form></div>
-</div>
-<div class="modalback" id="profileModal" role="dialog" aria-modal="true" aria-labelledby="profileModalTitle">
- <div class="modal"><div class="modalhead"><h2 id="profileModalTitle">Developer profile</h2><button class="iconbtn" data-close="profileModal" aria-label="Close">×</button></div><div id="profileModalBody"></div><div class="actions"><a class="btn" href="profile.html">Open full profile</a><a class="btn primary" href="login.html">Sign in / create account</a></div></div>
-</div>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080d18"><meta name="description" content="AlphaScript — build with purpose, learn without limits."><title>AlphaScript | Developer Workspace</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{color-scheme:dark;--bg:#080d18;--panel:#101827;--panel2:#172337;--line:#26364e;--text:#edf5ff;--muted:#9aacc5;--accent:#53e7ff;--blue:#568cff;--violet:#a77bff;--good:#43dba1;--danger:#ff6b81;--shadow:0 18px 55px #0004}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}a{color:var(--accent)}.app{min-height:100dvh}.top{height:68px;position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:0 18px;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:10px;font-weight:850;letter-spacing:-.5px;font-size:19px;white-space:nowrap}.logo{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--blue),var(--violet));color:#06101d;font-weight:950}.topright{margin-left:auto;display:flex;gap:8px}.btn,.iconbtn{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:12px;padding:9px 13px}.btn.primary{background:linear-gradient(120deg,#568cff,#7c5cff);border:0;color:white;font-weight:750}.btn.ghost{background:transparent}.btn.danger{color:var(--danger)}.iconbtn{width:42px;height:42px;padding:0;font-size:18px}.layout{display:grid;grid-template-columns:220px minmax(0,1fr);max-width:1500px;margin:auto}.sidebar{position:sticky;top:68px;height:calc(100dvh - 68px);padding:18px 12px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:5px}.navbtn{display:flex;align-items:center;gap:12px;text-align:left;width:100%;border:1px solid transparent;background:transparent;color:var(--muted);padding:12px;border-radius:12px}.navbtn.active,.navbtn:hover{color:var(--text);background:var(--panel2);border-color:var(--line)}.sidefoot{margin-top:auto;color:var(--muted);font-size:12px;padding:10px}.main{min-width:0;padding:24px;max-width:1200px;width:100%;margin:auto}.screen{display:none}.screen.active{display:block}.eyebrow{color:var(--accent);font-weight:750;text-transform:uppercase;font-size:11px;letter-spacing:1.6px}.hero{padding:clamp(22px,5vw,52px);border:1px solid var(--line);border-radius:26px;background:radial-gradient(ellipse at 90% 0%,#5b68ff25,transparent 45%),linear-gradient(135deg,var(--panel),var(--bg));box-shadow:var(--shadow)}h1{font-size:clamp(30px,5vw,54px);line-height:1.06;letter-spacing:-1.8px;margin:12px 0}h2{letter-spacing:-.5px;margin:0 0 12px}h3{margin:0 0 8px}.muted,small{color:var(--muted)}.hero p{max-width:650px;color:var(--muted);font-size:16px}.actions,.row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.actions{margin-top:22px}.sectionhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:26px 0 14px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}.card{border:1px solid var(--line);background:var(--panel);border-radius:17px;padding:17px;min-width:0}.card .glyph{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:var(--panel2);color:var(--accent);font-weight:850;margin-bottom:12px}.stat{font-size:25px;font-weight:850}.field{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--text);padding:12px;border-radius:12px;outline:none}.field:focus{border-color:var(--accent)}textarea.field{resize:vertical;min-height:140px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.search{max-width:420px}.list{display:grid;gap:10px;margin-top:14px}.item{display:flex;align-items:center;gap:12px;border:1px solid var(--line);background:var(--panel);padding:13px;border-radius:14px;min-width:0}.itemmain{flex:1;min-width:0}.itemmain strong,.itemmain small{display:block;overflow-wrap:anywhere}.avatar{width:42px;height:42px;border-radius:14px;background:var(--panel2);display:grid;place-items:center;flex-shrink:0;font-weight:800}.empty,.notice{padding:18px;border:1px dashed var(--line);border-radius:14px;color:var(--muted)}.screenbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px}.screenbar h2{margin:0;flex:1}.pill{border:1px solid var(--line);padding:4px 9px;border-radius:99px;color:var(--muted);font-size:12px}.editor-screen{position:fixed;inset:0;z-index:60;background:var(--bg);display:none;flex-direction:column}.editor-screen.active{display:flex}.editor-screen .editor-head{flex-wrap:wrap}.editor-screen .status{flex-shrink:0}.editor-screen .editor-area,.editor-screen .output,.editor-screen .preview{height:calc(100dvh - 100px)}.editor-head{height:60px;display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--line);background:var(--panel)}.editor-head strong{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.editor-area{width:100%;flex:1;min-height:0;border:0;border-radius:0;resize:none;padding:18px;background:#080e19;color:#dcecff;font:14px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;tab-size:4;outline:none}.output{display:none;flex:1;min-height:0;overflow:auto;padding:18px;white-space:pre-wrap;overflow-wrap:anywhere;font:14px/1.65 ui-monospace,monospace}.output.active{display:block}.preview{display:none;flex:1;min-height:0;width:100%;border:0;background:white}.preview.active{display:block}.status{padding:7px 13px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}.modal{position:fixed;inset:0;z-index:80;background:#0009;display:none;align-items:center;justify-content:center;padding:16px}.modal.open{display:flex}.dialog{width:min(560px,100%);max-height:90dvh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow)}.dialoghead{display:flex;align-items:center;gap:10px;margin-bottom:15px}.dialoghead h2{flex:1}.bottomnav{display:none}.tag{display:inline-block;padding:4px 8px;border-radius:8px;background:var(--panel2);color:var(--muted);font-size:12px}.splitdiff{display:grid;gap:10px}.diffarea{min-height:120px}.diffresult{border:1px solid var(--line);border-radius:12px;padding:12px;white-space:pre-wrap;font-family:monospace}.plus{position:fixed;right:20px;bottom:24px;width:58px;height:58px;border:0;border-radius:50%;background:linear-gradient(140deg,#49e69f,#25b77d);color:#062719;font-size:30px;box-shadow:var(--shadow);z-index:30;display:none}.feedpost{border:1px solid var(--line);border-radius:16px;background:var(--panel);padding:16px}.feedpost pre{white-space:pre-wrap;overflow:auto;background:var(--bg);padding:12px;border-radius:10px}.footer{color:var(--muted);font-size:12px;text-align:center;padding:28px 8px}.price{font-size:27px;font-weight:850}.featurelist{padding-left:18px;color:var(--muted)}.hidden{display:none!important}.followstats{margin-top:14px}.followstat{text-align:left;color:var(--text);cursor:pointer}.followstat .stat{color:var(--accent)}.followstat small{display:block}.follow-action{white-space:nowrap}.notif-item{align-items:flex-start}.notif-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);margin-top:7px;flex-shrink:0}
+body.solar{--bg:#100d04;--panel:#1b1708;--panel2:#29210a;--line:#51421b;--text:#fff4c2;--muted:#c7b77d;--accent:#ffe45c;--blue:#ffb72f;--violet:#ff7b3d}body.light{color-scheme:light;--bg:#f2f6fc;--panel:#fff;--panel2:#eaf0f8;--line:#d2dceb;--text:#152137;--muted:#53657e;--accent:#147eac;--blue:#416ee8;--violet:#8656d8}body.light .editor-area{background:#f7faff;color:#17243a}
+@media(max-width:800px){.layout{display:block}.sidebar{display:none}.main{padding:16px 14px 90px}.top{padding:0 12px;height:60px}.brand{font-size:17px}.topright .wide{display:none}.bottomnav{position:fixed;bottom:0;left:0;right:0;z-index:25;display:flex;justify-content:space-around;padding:7px 4px calc(7px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--panel) 94%,transparent);backdrop-filter:blur(16px);border-top:1px solid var(--line)}.bottomnav .navbtn{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;padding:5px 4px;min-width:0}.bottomnav .navbtn span:first-child{font-size:18px}.hero{border-radius:20px}.item{flex-wrap:wrap}.itemmain{min-width:130px}.plus{bottom:80px}}
+</style></head>
+<body><div class="app" id="app"><header class="top"><div class="brand"><div class="logo">α</div>AlphaScript</div><div class="topright"><button class="iconbtn" id="themeQuick" title="Toggle theme">◐</button><button class="iconbtn" id="notificationsBtn" title="Activity and messages">♧<sup id="unreadCount"></sup></button><button class="btn wide" id="accountBtn">Log in</button><button class="iconbtn" id="profileBtn" title="Profile">♙</button></div></header>
+<div class="layout"><aside class="sidebar" id="sidebar"></aside><main class="main">
+<section class="screen active" data-screen="home"><div class="hero"><div class="eyebrow">Developer workspace</div><h1>Build with purpose.<br><span style="color:var(--accent)">Learn without limits.</span></h1><p>Explore coding tools, build projects, share what you create, and grow with a developer community.</p><div class="actions"><button class="btn primary" data-go="tools">Explore tools ↗</button><button class="btn" id="homeNewProject">＋ New project</button><button class="btn" id="guestBtn">Continue as guest</button><button class="btn ghost" id="homeLogin">Log in / Create account</button></div></div><div class="sectionhead"><h2>Your workspace</h2><span class="tag" id="accountState">Guest mode</span></div><div class="grid"><div class="card"><div class="glyph">⌘</div><div class="stat" id="projectCount">0</div><div class="muted">Saved projects on this device</div></div><div class="card"><div class="glyph">◇</div><div class="stat" id="spaceCount">0</div><div class="muted">Workspaces</div></div><div class="card"><div class="glyph">⌁</div><div class="stat" id="toolCount">14</div><div class="muted">Developer tools</div></div></div><div class="sectionhead"><h2>Quick access</h2></div><div class="grid"><button class="card" data-go="tools" style="text-align:left;color:inherit"><div class="glyph">⌘</div><h3>Developer tools</h3><div class="muted">Format, test, compare and run code.</div></button><button class="card" data-go="projects" style="text-align:left;color:inherit"><div class="glyph">▣</div><h3>Saved projects</h3><div class="muted">Organize your local drafts.</div></button><button class="card" data-go="create" style="text-align:left;color:inherit"><div class="glyph">＋</div><h3>Create community</h3><div class="muted">Publish and explore code posts.</div></button><button class="card" data-go="discover" style="text-align:left;color:inherit"><div class="glyph">◎</div><h3>Discover</h3><div class="muted">Find public developer profiles.</div></button></div></section>
+<section class="screen" data-screen="tools"><div class="screenbar"><div><div class="eyebrow">Toolbox</div><h2>Developer tools</h2></div><input class="field search" id="toolSearch" placeholder="Search tools…"></div><div class="grid" id="toolGrid"></div></section>
+<section class="screen" data-screen="projects"><div class="screenbar"><div><div class="eyebrow">Workspace</div><h2>Saved projects</h2></div><button class="btn primary" id="newProject">＋ New project</button></div><p class="muted">Guest projects are saved only in this browser/device. Sign in and connect project storage in the backend to sync online.</p><input class="field" id="projectSearch" placeholder="Search saved projects…"><div class="list" id="projectList"></div></section>
+<section class="screen" data-screen="spaces"><div class="screenbar"><div><div class="eyebrow">Organize</div><h2>Spaces</h2></div><button class="btn primary" id="newSpace">＋ New space</button></div><div class="list" id="spaceList"></div></section>
+<section class="screen" data-screen="create"><div class="screenbar"><div><div class="eyebrow">Community</div><h2>Create</h2></div><button class="btn primary" id="createPostBtn">＋ New project</button></div><p class="notice" id="communityNotice">Public community posts need the community tables and row-level security policies configured in Supabase. Local draft posts below are stored on this device only.</p><div class="list" id="communityFeed"></div></section>
+<section class="screen" data-screen="discover"><div class="screenbar"><div><div class="eyebrow">Community</div><h2>Discover developers</h2></div><button class="btn" id="refreshDiscover">Refresh</button></div><p class="muted" id="discoverStatus">Sign in to load public profiles.</p><input class="field" id="discoverSearch" placeholder="Search developers, skills, country…"><div class="list" id="discoverList"></div></section>
+<section class="screen" data-screen="notifications"><div class="screenbar"><div><div class="eyebrow">Your updates</div><h2>Activity & Messages</h2></div></div><div class="row"><button class="btn primary" data-notif-tab="activity">Activity</button><button class="btn" data-notif-tab="messages">Messages</button></div><div id="activityPanel" class="list"><div class="empty">Badges and achievement activity will appear here when the verified activity backend is connected.</div></div><div id="messagesPanel" class="list hidden"><div class="notice">Secure messaging requires Supabase conversation tables and RLS. This single file does not pretend to send messages before that backend is configured.</div><button class="btn" id="openMessagesInfo">Messaging setup details</button></div></section>
+<section class="screen" data-screen="settings"><div class="screenbar"><div><div class="eyebrow">Workspace</div><h2>Settings</h2></div></div><div class="grid"><div class="card"><h3>Appearance</h3><label for="themeSelect" class="muted">Theme</label><select class="field" id="themeSelect"><option value="dark">Dark — blue / black</option><option value="light">Light — white / blue</option><option value="solar">Solar Mode — yellow / black</option></select><label for="fontSize" class="muted">Editor font size</label><select class="field" id="fontSize"><option>12</option><option>14</option><option>16</option><option>18</option><option>20</option></select><label for="indentSize" class="muted">Indentation</label><select class="field" id="indentSize"><option>2</option><option selected>4</option><option>8</option></select><button class="btn primary" id="saveSettings">Save settings</button><p id="settingsStatus" class="muted"></p></div><div class="card"><h3>Account & privacy</h3><p class="muted" id="settingsAccount">You are using guest mode.</p><button class="btn" id="settingsProfile">View profile</button> <button class="btn" id="settingsLogin">Log in / Create account</button><button class="btn danger" id="signOut">Sign out</button><hr style="border-color:var(--line)"><h3>Subscription</h3><p class="muted">Plan information only. Payments and plan activation are not connected.</p><button class="btn" data-go="subscription">View plans</button></div><div class="card"><h3>Badges & Achievements</h3><p class="muted">Review the badge catalog and milestones.</p><button class="btn" data-go="badges">View badges</button></div><div class="card"><h3>Install AlphaScript</h3><p class="muted">Use your browser menu and choose “Add to Home screen” if supported. Offline installation requires a manifest, icons, and service worker files alongside this HTML.</p></div></div></section>
+<section class="screen" data-screen="subscription"><div class="screenbar"><div><div class="eyebrow">Plans</div><h2>Subscription</h2></div><span class="tag">Payments not connected</span></div><div class="grid"><article class="card"><h3>Free</h3><div class="price">GH₵0 <small>/ month</small></div><p class="muted">GH₵0 yearly</p><ul class="featurelist"><li>Basic code formatting</li><li>3 online projects</li><li>Download/export projects</li><li>AI assistant: 3 requests/day</li><li>AI explanations: 3/day</li><li>AI debugging: 3/day</li><li>Basic organization</li></ul><button class="btn primary pay-plan" data-plan="Free">Pay</button></article><article class="card"><h3>Pro</h3><div class="price">GH₵25 <small>/ month</small></div><p class="muted">GH₵250 yearly · about GH₵20.83/month</p><ul class="featurelist"><li>Advanced code formatting</li><li>50 online projects</li><li>Download/export projects</li><li>AI assistant: 100/day</li><li>AI explanations: 50/day</li><li>AI debugging: 50/day</li><li>Folders and tags</li></ul><button class="btn primary pay-plan" data-plan="Pro">Pay</button></article><article class="card"><h3>Premium</h3><div class="price">GH₵60 <small>/ month</small></div><p class="muted">GH₵600 yearly · GH₵50/month</p><ul class="featurelist"><li>Advanced formatting</li><li>100 online projects</li><li>Download/export projects</li><li>AI assistant: 150/day</li><li>AI explanations: 100/day</li><li>AI debugging: 100/day</li><li>Advanced organization and more storage</li></ul><button class="btn primary pay-plan" data-plan="Premium">Pay</button></article></div><p class="notice">These are informational plan cards only. No payment is taken and no subscription is activated here.</p></section>
+<section class="screen" data-screen="badges"><div class="screenbar"><div><div class="eyebrow">Progress</div><h2>Badges & Achievements</h2></div></div><div class="row"><button class="btn primary" data-badge-tab="badges">Badges</button><button class="btn" data-badge-tab="achievements">Achievements</button></div><div id="badgesPanel" class="grid"></div><div id="achievementsPanel" class="list hidden"></div><p class="notice">Automatic awards require verified server-side activity and anti-abuse rules. These cards show the planned catalog; they do not award themselves from local browser data.</p></section>
+<section class="screen" data-screen="profile"><div class="screenbar"><button class="btn" data-go="home">← Back</button><h2>My profile</h2><button class="btn" id="editProfile">Edit profile</button></div><div class="card"><div class="profileHead"><div class="avatar" id="myAvatar">α</div><div><h2 id="myName">Developer</h2><p class="muted" id="myUsername">Sign in to load your profile.</p></div></div><div class="notice">This view does not display email as a public profile field. Edit your account profile on the existing profile.html page.</div><div class="grid followstats"><button class="card followstat" id="followersOpen"><div class="stat" id="followersCount">—</div><strong>Followers</strong><small>People following you</small></button><button class="card followstat" id="followingOpen"><div class="stat" id="followingCount">—</div><strong>Following</strong><small>People you follow</small></button></div><div class="sectionhead"><h2 id="followListTitle">Your community</h2><span class="tag" id="followListCount">Sign in to load</span></div><div class="list" id="followList"><div class="empty">Sign in to view your followers and following.</div></div></div></section>
+<div class="footer">BUILD WITH PURPOSE · LEARN WITHOUT LIMITS<br>Made by Alphaforge Technologies</div>
+</main></div><nav class="bottomnav" id="bottomnav"></nav><button class="plus" id="floatingCreate" title="Create a code post">＋</button></div>
+<div class="editor-screen" id="editorScreen"><div class="editor-head"><button class="iconbtn" id="editorBack" aria-label="Back">←</button><strong id="editorTitle">Editor</strong><span class="pill" id="editorLanguage">Text</span><button class="btn" id="editorFormat">Format</button><button class="btn primary" id="editorRun">Run</button><button class="btn hidden" id="base64Decode">Decode</button><button class="btn" id="editorSave">Save</button><button class="btn hidden" id="editorPublish">Save / Post</button></div><textarea id="editorInput" class="editor-area" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea><div id="diffArea" class="hidden" style="padding:12px;overflow:auto"><div class="splitdiff"><label>Original text<textarea class="field diffarea" id="diffOriginal"></textarea></label><div style="height:2px;background:linear-gradient(90deg,var(--accent),var(--violet));border-radius:2px"></div><label>Revised text<textarea class="field diffarea" id="diffRevised"></textarea></label><div id="diffResult" class="diffresult">Differences appear here automatically.</div></div></div><div class="output" id="editorOutput"></div><iframe class="preview" id="editorPreview" sandbox="allow-scripts" title="Code output preview"></iframe><div class="status" id="editorStatus">Ready.</div></div>
+<div class="modal" id="modal"><div class="dialog"><div class="dialoghead"><h2 id="modalTitle">Details</h2><button class="iconbtn" id="modalClose">×</button></div><div id="modalBody"></div></div></div>
 <script>
-"use strict";
-(() => {
-const $ = (s, root=document) => root.querySelector(s);
-const $$ = (s, root=document) => [...root.querySelectorAll(s)];
-const STORAGE = {projects:"alphascript-projects-v2", spaces:"alphascript-spaces-v1", settings:"alphascript-settings-v1", draft:"alphascript-draft-v1"};
-const SUPABASE_URL = "https://qaivqscssdtsnthdiqtu.supabase.co";
-const SUPABASE_KEY = "sb_publishable_TjT6PMScm58zNVJiugk-zQ_6oIaJNU9";
-let supabase = null, currentUser = null, activeScreen = "home", activeTool = null, activeProjectId = null, outputText = "", outputIsHtml = false;
-let projects = read(STORAGE.projects, []), spaces = read(STORAGE.spaces, []), settings = read(STORAGE.settings, {theme:"dark",font:14,indent:"4",wrap:true,spell:false});
-const tools = [
- {id:"html",name:"HTML Playground",desc:"Write and preview HTML",lang:"HTML",glyph:"◇",starter:"<!doctype html>\n<html>\n<head><meta charset=\"utf-8\"><title>Hello</title></head>\n<body>\n  <h1>Hello, AlphaScript!</h1>\n  <p>Edit this page and press Run.</p>\n</body>\n</html>"},
- {id:"javascript",name:"JavaScript",desc:"Run JavaScript in a safe sandbox",lang:"JavaScript",glyph:"JS",starter:"const message = 'Hello, AlphaScript!';\nconsole.log(message);"},
- {id:"json",name:"JSON Formatter",desc:"Validate and format JSON",lang:"JSON",glyph:"{}",starter:'{\n  "name": "AlphaScript",\n  "active": true\n}'},
- {id:"regex",name:"Regex Tester",desc:"Test a pattern against text",lang:"Regex",glyph:".*",starter:"Pattern: \\d+\n\nText:\nOrder 123\nOrder 456"},
- {id:"diff",name:"Text Diff",desc:"Compare two text blocks",lang:"Text",glyph:"±",starter:"Paste two versions separated by a line containing ---"},
- {id:"indent",name:"Indentation Tool",desc:"Adjust indentation",lang:"Text",glyph:"⇥",starter:"Paste code here"},
- {id:"python",name:"Python Playground",desc:"Editor for Python code",lang:"Python",glyph:"Py",starter:"print('Hello, AlphaScript!')"},
- {id:"java",name:"Java Playground",desc:"Editor for Java code",lang:"Java",glyph:"J",starter:"public class Main {\n  public static void main(String[] args) {\n    System.out.println(\"Hello, AlphaScript!\");\n  }\n}"},
- {id:"cpp",name:"C++ Playground",desc:"Editor for C++ code",lang:"C++",glyph:"C+",starter:'#include <iostream>\nint main() {\n  std::cout << "Hello, AlphaScript!\\n";\n  return 0;\n}'},
- {id:"sql",name:"SQL Formatter",desc:"Basic SQL formatting",lang:"SQL",glyph:"DB",starter:"select id, name from users where active = true order by name;"},
- {id:"base64",name:"Base64",desc:"Encode or decode text",lang:"Text",glyph:"64",starter:"Enter text here"},
- {id:"url",name:"URL Encoder",desc:"Encode or decode URLs",lang:"Text",glyph:"↗",starter:"https://example.com/search?q=hello world"},
- {id:"color",name:"Color Converter",desc:"Convert HEX and RGB colors",lang:"Text",glyph:"◉",starter:"#58e1f2"},
- {id:"timestamp",name:"Timestamp",desc:"Convert Unix timestamps and dates",lang:"Text",glyph:"◷",starter:String(Math.floor(Date.now()/1000))}
-];
-function read(key, fallback){try{const v=JSON.parse(localStorage.getItem(key));return v ?? fallback}catch{return fallback}}
-function write(key,value){try{localStorage.setItem(key,JSON.stringify(value))}catch(e){console.warn("Local save failed",e)}}
-function id(){return (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36)+Math.random().toString(36).slice(2))}
-function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function go(screen){if(!$("#screen-"+screen))return;activeScreen=screen;$$(".screen").forEach(el=>el.classList.toggle("active",el.dataset.screen===screen));$$(".navbtn").forEach(el=>el.classList.toggle("active",el.dataset.go===screen));window.scrollTo(0,0);if(screen==="projects")renderProjects();if(screen==="spaces")renderSpaces();if(screen==="discover")loadDiscover();if(screen==="settings")loadSettingsForm();if(screen==="playground")setTimeout(()=>$("#codeInput").focus({preventScroll:true}),80)}
-$$("[data-go]").forEach(btn=>btn.addEventListener("click",()=>go(btn.dataset.go)));
-function showModal(id){const el=$("#"+id);if(el)el.classList.add("open")}
-function hideModal(id){const el=$("#"+id);if(el)el.classList.remove("open")}
-$$("[data-close]").forEach(b=>b.addEventListener("click",()=>hideModal(b.dataset.close)));
-$$(".modalback").forEach(m=>m.addEventListener("click",e=>{if(e.target===m)hideModal(m.id)}));
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){const m=$(".modalback.open");if(m)hideModal(m.id)}});
-function renderTools(query=""){const grid=$("#toolGrid");grid.innerHTML="";const matches=tools.filter(t=>(t.name+" "+t.desc+" "+t.lang).toLowerCase().includes(query.toLowerCase()));if(!matches.length){grid.innerHTML='<div class="empty">No tools match your search.</div>';return}matches.forEach(t=>{const b=document.createElement("button");b.className="tool-card";b.innerHTML=`<span class="glyph">${escapeHTML(t.glyph)}</span><strong>${escapeHTML(t.name)}</strong><small>${escapeHTML(t.desc)}</small>`;b.addEventListener("click",()=>openTool(t.id));grid.append(b)})}
-$("#toolSearch").addEventListener("input",e=>renderTools(e.target.value));
-function openTool(toolId, project=null){activeTool=tools.find(t=>t.id===toolId)||tools[0];activeProjectId=project?.id||null;$("#playTitle").textContent=activeTool.name;$("#editorFileLabel").textContent=(project?.name||activeTool.id)+(fileExt(activeTool.id));$("#languagePill").textContent=activeTool.lang;$("#codeInput").value=project?.code ?? read(STORAGE.draft,{})[activeTool.id] ?? activeTool.starter;$("#codeInput").style.fontSize=(settings.font||14)+"px";$("#codeInput").style.tabSize=settings.indent||4;$("#codeInput").wrap=settings.wrap?"soft":"off";$("#codeInput").spellcheck=!!settings.spell;$("#editorPane").classList.add("active");$("#outputPane").classList.remove("active");$("#htmlOutputFrame").classList.add("hidden");$("#outputContent").classList.remove("hidden");$("#runStatus").textContent="Ready.";$("#runStatus").className="status";go("playground")}
-function fileExt(tool){return ({html:".html",javascript:".js",json:".json",python:".py",java:".java",cpp:".cpp",sql:".sql"})[tool]||".txt"}
-$("#codeInput").addEventListener("input",()=>{const drafts=read(STORAGE.draft,{});if(activeTool)drafts[activeTool.id]=$("#codeInput").value;write(STORAGE.draft,drafts);if(activeProjectId){const p=projects.find(p=>p.id===activeProjectId);if(p){p.code=$("#codeInput").value;p.updated=Date.now();write(STORAGE.projects,projects)}}});
-$("#backToTools").addEventListener("click",()=>go("tools"));
-function showOutput(text, html=false){outputText=String(text??"");outputIsHtml=html;$("#editorPane").classList.remove("active");$("#outputPane").classList.add("active");$("#outputContent").textContent=outputText;$("#outputContent").classList.toggle("hidden",html);$("#htmlOutputFrame").classList.toggle("hidden",!html);if(html){$("#htmlOutputFrame").srcdoc=$("#codeInput").value}$("#runStatus").textContent="Output ready.";$("#runStatus").className="status good"}
-$("#backToEditor").addEventListener("click",()=>{$("#outputPane").classList.remove("active");$("#editorPane").classList.add("active");$("#codeInput").focus({preventScroll:true})});
-$("#outputEdit").addEventListener("click",()=>$("#backToEditor").click());
-$("#runAgain").addEventListener("click",runCode);
-$("#copyOutput").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(outputText);$("#copyOutput").textContent="Copied";setTimeout(()=>$("#copyOutput").textContent="Copy",1200)}catch{$("#outputContent").textContent="Clipboard access isn't available. Select and copy the output manually.\n\n"+outputText}});
-function runCode(){if(!activeTool)return;const code=$("#codeInput").value;$("#runStatus").textContent="Running…";$("#runStatus").className="status";try{
- switch(activeTool.id){
- case "html": showOutput("",true);break;
- case "javascript": runJavaScript(code);break;
- case "json": showOutput(JSON.stringify(JSON.parse(code),null,2));break;
- case "regex": {const lines=code.split("\n");const pattern=(lines[0]||"").replace(/^Pattern:\s*/i,"");const text=lines.slice(1).join("\n").replace(/^Text:\s*/i,"");const re=new RegExp(pattern,"g");const matches=text.match(re)||[];showOutput("Pattern: /"+pattern+"/g\nMatches ("+matches.length+"):\n"+(matches.length?matches.join("\n"):"No matches"));break}
- case "diff": {const parts=code.split(/^\s*---\s*$/m);if(parts.length<2)showOutput("Add a line containing --- between the original and revised text.");else{const a=parts[0].split("\n"),b=parts.slice(1).join("\n").split("\n"),out=[];const n=Math.max(a.length,b.length);for(let i=0;i<n;i++){if(a[i]===b[i])out.push("  "+(a[i]??""));else{if(a[i]!==undefined)out.push("- "+a[i]);if(b[i]!==undefined)out.push("+ "+b[i])}}showOutput(out.join("\n"))}break}
- case "indent": showOutput(code.split("\n").map(line=>line.replace(/^(?: {1,8}|\t)+/,"")).join("\n").split("\n").map(line=>line?" ".repeat(Number(settings.indent)||4)+line:line).join("\n"));break;
- case "sql": showOutput(code.trim().replace(/\s+/g," ").replace(/\b(select|from|where|group by|order by|having|limit|insert into|values|update|set|delete from|join|left join|inner join|on|and|or)\b/gi,m=>"\n"+m.toUpperCase()).trim());break;
- case "base64": {const isDecode=code.startsWith("decode:");if(isDecode)showOutput(decodeURIComponent(escape(atob(code.slice(7).trim()))));else showOutput(btoa(unescape(encodeURIComponent(code))));break}
- case "url": {const isDecode=code.startsWith("decode:");showOutput(isDecode?decodeURIComponent(code.slice(7).trim()):encodeURIComponent(code));break}
- case "color": {let c=code.trim();if(/^#[0-9a-f]{3}$/i.test(c))c="#"+[...c.slice(1)].map(x=>x+x).join("");if(/^#[0-9a-f]{6}$/i.test(c)){const n=parseInt(c.slice(1),16);showOutput(c.toUpperCase()+"\nRGB: rgb("+(n>>16)+", "+((n>>8)&255)+", "+(n&255)+")")}else{const m=c.match(/rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/i);if(m)showOutput("#"+m.slice(1).map(x=>Number(x).toString(16).padStart(2,"0")).join("").toUpperCase());else showOutput("Enter a HEX color (e.g. #58e1f2) or rgb(88, 225, 242).")}break}
- case "timestamp": {const n=Number(code.trim());const d=Number.isFinite(n)&&code.trim()!==""?new Date(Math.abs(n)<1e12?n*1000:n):new Date(code.trim());if(Number.isNaN(d.getTime()))throw Error("Enter a valid date or Unix timestamp.");showOutput("ISO: "+d.toISOString()+"\nLocal: "+d.toString()+"\nUnix seconds: "+Math.floor(d.getTime()/1000)+"\nUnix milliseconds: "+d.getTime());break}
- case "python": case "java": case "cpp": showOutput(activeTool.lang+" execution is not connected yet. This editor can save your code, but running this language requires a trusted code-execution service. No code was executed.");break;
- default: showOutput(code)
- }}catch(err){$("#runStatus").textContent=err.message||"Could not run this tool.";$("#runStatus").className="status error";showOutput("Error: "+(err.message||String(err)))}}
-function runJavaScript(code){const frame=document.createElement("iframe");frame.sandbox="allow-scripts";frame.className="hidden";frame.title="JavaScript execution sandbox";document.body.append(frame);const safe=code.replace(/<\/script/gi,"<\\/script");frame.srcdoc=`<!doctype html><meta charset="utf-8"><script>const send=(...a)=>parent.postMessage({type:"alphascript-console",args:a.map(x=>{try{return typeof x==="string"?x:JSON.stringify(x,null,2)??String(x)}catch{return String(x)}})},location.origin);console.log=(...a)=>send(...a);console.error=(...a)=>send("ERROR:",...a);console.warn=(...a)=>send("WARN:",...a);window.onerror=(m)=>send("ERROR:",m);try{${safe}\n}catch(e){send("ERROR:",e.message)}<\/script>`;let logs=[];const listener=e=>{if(e.source===frame.contentWindow&&e.data?.type==="alphascript-console")logs.push(e.data.args.join(" "))};window.addEventListener("message",listener);setTimeout(()=>{window.removeEventListener("message",listener);frame.remove();showOutput(logs.join("\n")||"Code finished. No console output.")},350);showOutput("Running JavaScript…")}
-$("#runCode").addEventListener("click",runCode);
-$("#formatCode").addEventListener("click",()=>{if(!activeTool)return;try{if(activeTool.id==="json")$("#codeInput").value=JSON.stringify(JSON.parse($("#codeInput").value),null,Number(settings.indent)||4);else if(activeTool.id==="html")$("#codeInput").value=$("#codeInput").value.replace(/>\s*</g,">\n<").trim();else if(activeTool.id==="sql")$("#codeInput").value=$("#codeInput").value.trim().replace(/\s+/g," ");else $("#runStatus").textContent="No automatic formatter is available for this tool.";$("#codeInput").dispatchEvent(new Event("input"));$("#runStatus").textContent="Formatting complete."}catch(e){$("#runStatus").textContent=e.message;$("#runStatus").className="status error"}});
-$("#clearEditor").addEventListener("click",()=>{if(confirm("Clear the editor contents?")){$("#codeInput").value="";$("#codeInput").dispatchEvent(new Event("input"))}});
-function renderProjects(){const list=$("#projectList"),q=$("#projectSearch").value.toLowerCase();let arr=projects.filter(p=>(p.name+" "+p.description+" "+p.language).toLowerCase().includes(q));arr.sort($("#projectSort").value==="name"?(a,b)=>a.name.localeCompare(b.name):(a,b)=>(b.updated||0)-(a.updated||0));list.innerHTML="";if(!arr.length){list.innerHTML='<div class="empty">No projects yet. Create one, or save code from the playground.</div>';return}arr.forEach(p=>{const el=document.createElement("div");el.className="item";el.innerHTML=`<div class="avatar">⌘</div><div class="item-main"><strong>${escapeHTML(p.name)}</strong><small>${escapeHTML(p.language||"Text")} · ${new Date(p.updated||p.created).toLocaleDateString()}${p.description?" · "+escapeHTML(p.description):""}</small></div><button class="btn" data-open>Open</button><button class="btn" data-edit>Edit</button><button class="btn danger" data-delete>Delete</button>`;el.querySelector("[data-open]").onclick=()=>openTool(toolIdFor(p.language),p);el.querySelector("[data-edit]").onclick=()=>{openProjectModal(p)};el.querySelector("[data-delete]").onclick=()=>{if(confirm("Delete project '"+p.name+"' from this device?")){projects=projects.filter(x=>x.id!==p.id);write(STORAGE.projects,projects);renderProjects();updateStats()}};list.append(el)})}
-function toolIdFor(language){const s=String(language||"").toLowerCase();return s.includes("javascript")||s==="js"?"javascript":s==="html"?"html":s==="json"?"json":s==="python"?"python":s==="java"?"java":s.includes("c++")||s==="cpp"?"cpp":s==="sql"?"sql":"javascript"}
-function openProjectModal(p=null){$("#projectModalTitle").textContent=p?"Edit project":"New project";$("#projectId").value=p?.id||"";$("#projectName").value=p?.name||"";$("#projectLanguage").value=p?.language||"HTML";$("#projectDescription").value=p?.description||"";showModal("projectModal")}
-$("#newProject").addEventListener("click",()=>openProjectModal());$("#homeNewProject").addEventListener("click",()=>openProjectModal());
-$("#projectForm").addEventListener("submit",e=>{e.preventDefault();const old=projects.find(p=>p.id===$("#projectId").value);const p={id:old?.id||id(),name:$("#projectName").value.trim(),language:$("#projectLanguage").value,description:$("#projectDescription").value.trim(),code:old?.code||"",created:old?.created||Date.now(),updated:Date.now()};if(!p.name){$("#projectFormStatus").textContent="Enter a project name.";return}if(old)projects=projects.map(x=>x.id===old.id?p:x);else projects.unshift(p);write(STORAGE.projects,projects);hideModal("projectModal");renderProjects();updateStats()});
-$("#projectSearch").addEventListener("input",renderProjects);$("#projectSort").addEventListener("change",renderProjects);
-$("#saveFromPlay").addEventListener("click",()=>{const p=projects.find(p=>p.id===activeProjectId);if(p){p.code=$("#codeInput").value;p.updated=Date.now();write(STORAGE.projects,projects);$("#runStatus").textContent="Project saved on this device.";return}openProjectModal()});
-$("#projectForm").addEventListener("submit",()=>{setTimeout(()=>{const p=projects[0];if(p&&activeScreen==="playground"&&!p.code){p.code=$("#codeInput").value;write(STORAGE.projects,projects)}},0)});
-function renderSpaces(){const list=$("#spaceList");list.innerHTML="";if(!spaces.length){list.innerHTML='<div class="empty">No spaces yet. Create a workspace to organize your projects.</div>';return}spaces.forEach(s=>{const el=document.createElement("div");el.className="item";el.innerHTML=`<div class="avatar">◇</div><div class="item-main"><strong>${escapeHTML(s.name)}</strong><small>${escapeHTML(s.description||"Workspace")} · Created ${new Date(s.created).toLocaleDateString()}</small></div><button class="btn" data-rename>Rename</button><button class="btn danger" data-delete>Delete</button>`;el.querySelector("[data-rename]").onclick=()=>{const name=prompt("New space name",s.name);if(name?.trim()){s.name=name.trim();write(STORAGE.spaces,spaces);renderSpaces()}};el.querySelector("[data-delete]").onclick=()=>{if(confirm("Delete this space?")){spaces=spaces.filter(x=>x.id!==s.id);write(STORAGE.spaces,spaces);renderSpaces();updateStats()}};list.append(el)})}
-$("#newSpace").addEventListener("click",()=>showModal("spaceModal"));$("#spaceForm").addEventListener("submit",e=>{e.preventDefault();spaces.unshift({id:id(),name:$("#spaceName").value.trim(),description:$("#spaceDescription").value.trim(),created:Date.now()});write(STORAGE.spaces,spaces);$("#spaceName").value="";$("#spaceDescription").value="";hideModal("spaceModal");renderSpaces();updateStats()});
-function updateStats(){$("#homeProjectCount").textContent=projects.length;$("#homeSpaceCount").textContent=spaces.length}
-function loadSettingsForm(){$("#settingTheme").value=settings.theme||"dark";$("#settingFont").value=String(settings.font||14);$("#settingIndent").value=settings.indent||"4";$("#settingWrap").checked=settings.wrap!==false;$("#settingSpell").checked=!!settings.spell}
-function applyTheme(){const light=settings.theme==="light"||(settings.theme==="system"&&matchMedia("(prefers-color-scheme: light)").matches);if(light){document.documentElement.style.setProperty("--bg","#f2f6fc");document.documentElement.style.setProperty("--panel","#ffffff");document.documentElement.style.setProperty("--panel2","#eaf0f8");document.documentElement.style.setProperty("--line","#d2dceb");document.documentElement.style.setProperty("--text","#152137");document.documentElement.style.setProperty("--muted","#53657e");document.documentElement.style.colorScheme="light"}else{document.documentElement.style.cssText="";document.documentElement.style.colorScheme="dark"}}
-$("#saveSettings").addEventListener("click",()=>{settings={theme:$("#settingTheme").value,font:Number($("#settingFont").value),indent:$("#settingIndent").value,wrap:$("#settingWrap").checked,spell:$("#settingSpell").checked};write(STORAGE.settings,settings);applyTheme();$("#settingsStatus").textContent="Settings saved on this device.";if(activeTool)$("#codeInput").style.fontSize=settings.font+"px"});
-$("#resetSettings").addEventListener("click",()=>{settings={theme:"dark",font:14,indent:"4",wrap:true,spell:false};write(STORAGE.settings,settings);loadSettingsForm();applyTheme();$("#settingsStatus").textContent="Settings reset."});
-$("#headerSettings").addEventListener("click",()=>go("settings"));$("#headerProfile").addEventListener("click",showProfile);$("#homeProfile").addEventListener("click",showProfile);
-$("#themeToggle").addEventListener("click",()=>{settings.theme=settings.theme==="light"?"dark":"light";write(STORAGE.settings,settings);applyTheme()});
-function showProfile(){const body=$("#profileModalBody");body.innerHTML=`<p class="notice">Your full profile opens on the separate profile page. Sign in to view or update account details.</p><p><strong>${escapeHTML(currentUser?.email||"Not signed in")}</strong></p>`;showModal("profileModal")}
-$("#accountAction").addEventListener("click",()=>location.href="login.html");
-$("#signOut").addEventListener("click",async()=>{if(!supabase){$("#authStatus").textContent="Supabase isn't connected.";return}const {error}=await supabase.auth.signOut();$("#authStatus").textContent=error?error.message:"Signed out.";if(!error){currentUser=null;updateAccount()}});
-function updateAccount(){const name=currentUser?.user_metadata?.full_name||currentUser?.user_metadata?.username||currentUser?.email?.split("@")[0]||"Developer";$("#accountTitle").textContent=name;$("#accountStatus").textContent=currentUser?"Signed in · "+currentUser.email:"Not connected to an account";$("#accountAction").textContent=currentUser?"Account":"Sign in";$("#accountAction").onclick=()=>location.href=currentUser?"profile.html":"login.html";const initial=(name[0]||"A").toUpperCase();$("#homeAvatar").textContent=initial;$("#headerInitial").textContent=initial}
-
-async function initSupabase() {
-  if (!window.supabase?.createClient) {
-    $("#accountStatus").textContent =
-      "Authentication library unavailable";
-    return;
-  }
-
-  try {
-    supabase = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
-
-    const { data, error } = await supabase.auth.getUser();
-    currentUser = error ? null : data.user;
-
-    updateAccount();
-
-    if (currentUser) {
-      startDiscoverPresence();
-    } else {
-      $("#accountStatus").textContent =
-        "Sign in to connect your account.";
-    }
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-      currentUser = session?.user || null;
-      updateAccount();
-
-      if (currentUser) {
-        startDiscoverPresence();
-      } else {
-        onlineUserIds = new Set();
-        presenceUserId = null;
-
-        if (discoverPresenceChannel) {
-          const oldChannel = discoverPresenceChannel;
-          discoverPresenceChannel = null;
-          supabase.removeChannel(oldChannel);
-        }
-
-        updateDiscoverPresenceIndicators();
-      }
-    });
-  } catch (e) {
-    $("#accountStatus").textContent =
-      "Account connection error";
-    console.error(e);
-  }
+(()=>{'use strict';const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];const SUPABASE_URL='https://qaivqscssdtsnthdiqtu.supabase.co';const SUPABASE_KEY='PASTE_YOUR_EXISTING_SUPABASE_PUBLISHABLE_OR_ANON_KEY_HERE';let supabase=null,currentUser=null,activeScreen='home',activeTool=null,activeProject=null,outputMode=false,discoverUsers=[],followMode='followers';const read=(k,d)=>{try{return JSON.parse(localStorage.getItem('as_'+k))??d}catch{return d}},write=(k,v)=>{try{localStorage.setItem('as_'+k,JSON.stringify(v))}catch{}};let settings=read('settings',{theme:'dark',font:14,indent:'4'}),projects=read('projects',[]),spaces=read('spaces',[]),posts=read('posts',[]);const id=()=>crypto.randomUUID?.()||String(Date.now())+Math.random().toString(36).slice(2);const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nav=[['home','⌂','Home'],['tools','⌘','Tools'],['projects','▣','Projects'],['spaces','◇','Spaces'],['create','＋','Create'],['discover','◎','Discover'],['settings','⚙','Settings']];function buildNav(){for(const target of ['sidebar','bottomnav']){$('#'+target).innerHTML=nav.map(([key,icon,label])=>`<button class="navbtn" data-go="${key}"><span>${icon}</span><span>${label}</span></button>`).join('')+ (target==='sidebar'?'<div class="sidefoot">BUILD WITH PURPOSE<br>LEARN WITHOUT LIMITS<br><br>Made by Alphaforge Technologies</div>':'');}}function go(s){if(!$('.screen[data-screen="'+s+'"]'))return;activeScreen=s;$$('.screen').forEach(x=>x.classList.toggle('active',x.dataset.screen===s));$$('[data-go]').forEach(x=>x.classList.toggle('active',x.dataset.go===s));$('#floatingCreate').style.display=s==='create'?'block':'none';if(s==='projects')renderProjects();if(s==='spaces')renderSpaces();if(s==='create')renderPosts();if(s==='discover')loadDiscover();if(s==='settings')loadSettings();window.scrollTo(0,0)}document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)go(b.dataset.go)});function modal(title,html){$('#modalTitle').textContent=title;$('#modalBody').innerHTML=html;$('#modal').classList.add('open')}function closeModal(){$('#modal').classList.remove('open')}$('#modalClose').onclick=closeModal;$('#modal').onclick=e=>{if(e.target.id==='modal')closeModal()};
+const tools=[['html','HTML Playground','Build and preview HTML','HTML','<>','<!doctype html>\n<h1>Hello, AlphaScript!</h1>\n<p>Build with purpose.</p>'],['javascript','JavaScript','Run JavaScript in a sandbox','JavaScript','JS','console.log("Hello, AlphaScript!");'],['json','JSON Formatter','Format and validate JSON','JSON','{}','{\n  "hello": "AlphaScript"\n}'],['regex','Regex Tester','Find matching text','Text','.*','Pattern: \\d+\nText: Order 123 and 456'],['diff','Text Difference','Compare original and revised text','Text','±',''],['indent','Indentation Tool','Normalize indentation','Text','⇥','function hello() {\nconsole.log("hello");\n}'],['python','Python','Python editor (runtime not configured)','Python','Py','print("Hello, AlphaScript!")'],['java','Java','Java editor (runtime not configured)','Java','Jv','public class Main { public static void main(String[] args) { System.out.println("Hello"); } }'],['cpp','C++','C++ editor (runtime not configured)','C++','C+','#include <iostream>\nint main(){ std::cout << "Hello"; }'],['sql','SQL Formatter','Basic SQL formatting','SQL','DB','select id, name from users where active = true order by name;'],['base64','Base64','Encode or decode text','Text','64','Enter text here'],['url','URL Encoder','Encode or decode URLs','Text','↗','https://example.com/search?q=hello world'],['color','Color Converter','Convert HEX and RGB colors','Text','◉','#58e1f2'],['timestamp','Timestamp','Convert Unix timestamps and dates','Text','◷',String(Math.floor(Date.now()/1000))]];$('#toolCount').textContent=tools.length;function renderTools(q=''){$('#toolGrid').innerHTML=tools.filter(t=>t.slice(1,4).join(' ').toLowerCase().includes(q.toLowerCase())).map(t=>`<button class="card toolcard" data-tool="${t[0]}" style="text-align:left;color:inherit"><div class="glyph">${esc(t[4])}</div><strong>${esc(t[1])}</strong><p class="muted">${esc(t[2])}</p></button>`).join('')||'<div class="empty">No tools match your search.</div>'}$('#toolSearch').oninput=e=>renderTools(e.target.value);$('#toolGrid').onclick=e=>{const b=e.target.closest('[data-tool]');if(b)openTool(b.dataset.tool)};
+function openTool(key,project=null){activeTool=tools.find(t=>t[0]===key)||tools[0];activeProject=project;outputMode=false;$('#editorPublish').classList.toggle('hidden',project?.origin!=='create');$('#editorSave').classList.toggle('hidden',project?.origin==='create');$('#editorTitle').textContent=project?.name||activeTool[1];$('#editorLanguage').textContent=activeTool[3];$('#editorInput').value=project?.code??read('drafts',{})[key]??activeTool[5];$('#editorInput').style.fontSize=(settings.font||14)+'px';$('#editorInput').style.tabSize=settings.indent||4;$('#editorInput').classList.remove('hidden');$('#diffArea').classList.toggle('hidden',key!=='diff');$('#editorInput').classList.toggle('hidden',key==='diff');$('#editorOutput').classList.remove('active');$('#editorPreview').classList.remove('active');$('#editorScreen').classList.add('active');$('#editorStatus').textContent='Ready.';$('#editorRun').textContent=key==='base64'?'Encode':'Run';$('#base64Decode').classList.toggle('hidden',key!=='base64');if(key==='diff')updateDiff();else $('#editorInput').focus({preventScroll:true})}function editorBack(){if(outputMode){outputMode=false;$('#editorOutput').classList.remove('active');$('#editorPreview').classList.remove('active');$('#editorInput').classList.toggle('hidden',activeTool?.[0]==='diff');$('#diffArea').classList.toggle('hidden',activeTool?.[0]!=='diff');$('#editorRun').classList.remove('hidden');$('#editorFormat').classList.remove('hidden');$('#editorSave').classList.remove('hidden');return}$('#editorScreen').classList.remove('active');go(activeScreen==='playground'?'tools':activeScreen)}$('#editorBack').onclick=editorBack;$('#editorInput').oninput=()=>{if(activeTool){const d=read('drafts',{});d[activeTool[0]]=$('#editorInput').value;write('drafts',d);if(activeProject){activeProject.code=$('#editorInput').value;activeProject.updated=Date.now();write('projects',projects)}}};
+function showText(text){outputMode=true;$('#editorInput').classList.add('hidden');$('#diffArea').classList.add('hidden');$('#editorOutput').textContent=String(text);$('#editorOutput').classList.add('active');$('#editorPreview').classList.remove('active');$('#editorRun').classList.add('hidden');$('#editorFormat').classList.add('hidden');$('#editorSave').classList.add('hidden');$('#editorStatus').textContent='Output ready. Use the back arrow to return to the editor.'}function showPreview(code){outputMode=true;$('#editorInput').classList.add('hidden');$('#diffArea').classList.add('hidden');$('#editorOutput').classList.remove('active');$('#editorPreview').classList.add('active');$('#editorPreview').srcdoc=code;$('#editorRun').classList.add('hidden');$('#editorFormat').classList.add('hidden');$('#editorSave').classList.add('hidden');$('#editorStatus').textContent='Preview ready. Code runs inside a sandboxed frame.'}
+function run(){const k=activeTool[0],c=$('#editorInput').value;try{switch(k){case'html':showPreview(c);break;case'javascript':{const frame=document.createElement('iframe');frame.sandbox='allow-scripts';frame.style.display='none';document.body.append(frame);let logs=[];const token=id();const listener=e=>{if(e.source===frame.contentWindow&&e.data?.token===token)logs.push(e.data.text)};window.addEventListener('message',listener);frame.srcdoc=`<script>const send=(...a)=>parent.postMessage({token:${JSON.stringify(token)},text:a.map(x=>{try{return typeof x==='string'?x:JSON.stringify(x)}catch{return String(x)}}).join(' ')},'*');console.log=(...a)=>send(...a);console.error=(...a)=>send('ERROR:',...a);try{${c.replace(/<\/script/gi,'<\\/script')}}catch(e){send('ERROR:',e.message)}<\/script>`;setTimeout(()=>{window.removeEventListener('message',listener);frame.remove();showText(logs.join('\n')||'Code finished. No console output.')},500);showText('Running JavaScript…');break}case'json':showText(JSON.stringify(JSON.parse(c),null,Number(settings.indent)||4));break;case'regex':{const [pattern,...rest]=c.split('\n'),txt=rest.join('\n').replace(/^Text:\s*/i,''),p=pattern.replace(/^Pattern:\s*/i,'');const m=txt.match(new RegExp(p,'g'))||[];showText(`Matches (${m.length}):\n${m.join('\n')||'No matches'}`);break}case'indent':showText(c.split('\n').map(x=>x.trim()? ' '.repeat(Number(settings.indent)||4)+x.trimStart():'').join('\n'));break;case'sql':showText(c.trim().replace(/\s+/g,' ').replace(/\b(select|from|where|group by|order by|having|limit|insert into|values|update|set|delete from|join|left join|inner join|on|and|or)\b/gi,m=>'\n'+m.toUpperCase()).trim());break;case'base64':{const dec=c.startsWith('decode:');showText(dec?decodeURIComponent(escape(atob(c.slice(7).trim()))):btoa(unescape(encodeURIComponent(c))));break}case'url':showText(c.startsWith('decode:')?decodeURIComponent(c.slice(7).trim()):encodeURIComponent(c));break;case'color':{let x=c.trim();if(/^#[0-9a-f]{3}$/i.test(x))x='#'+[...x.slice(1)].map(a=>a+a).join('');if(/^#[0-9a-f]{6}$/i.test(x)){let n=parseInt(x.slice(1),16);showText(x.toUpperCase()+`\nRGB: rgb(${n>>16}, ${(n>>8)&255}, ${n&255})`)}else{let m=x.match(/rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/i);if(m)showText('#'+m.slice(1).map(a=>Number(a).toString(16).padStart(2,'0')).join('').toUpperCase());else showText('Enter a HEX color or rgb(r, g, b).')}break}case'timestamp':{let n=Number(c.trim()),d=c.trim()!==''&&Number.isFinite(n)?new Date(Math.abs(n)<1e12?n*1000:n):new Date(c.trim());if(isNaN(d))throw Error('Enter a valid date or Unix timestamp.');showText(`ISO: ${d.toISOString()}\nLocal: ${d.toString()}\nUnix seconds: ${Math.floor(d.getTime()/1000)}\nUnix milliseconds: ${d.getTime()}`);break}case'python':case'java':case'cpp':showText(`${activeTool[3]} execution is not connected. No code was executed. A trusted runtime/compiler service or supported WASM runtime must be installed to run this language.`);break;default:showText(c)}}catch(e){showText('Error: '+e.message);$('#editorStatus').textContent='Error: '+e.message}}$('#editorRun').onclick=run;$('#base64Decode').onclick=()=>{try{if(activeTool?.[0]!=='base64')return;const raw=$('#editorInput').value.trim();if(!raw)throw Error('Paste Base64 text to decode.');const binary=atob(raw);const bytes=Uint8Array.from(binary,ch=>ch.charCodeAt(0));showText(new TextDecoder('utf-8',{fatal:true}).decode(bytes));}catch(e){showText('Decode error: Invalid Base64 text or unsupported text encoding.');$('#editorStatus').textContent='Could not decode the input.'}};document.querySelectorAll('.pay-plan').forEach(b=>b.addEventListener('click',()=>alert(`${b.dataset.plan} plan payment is not connected yet. No payment was taken and your subscription has not changed.`)));$('#editorFormat').onclick=()=>{try{if(activeTool[0]==='json')$('#editorInput').value=JSON.stringify(JSON.parse($('#editorInput').value),null,Number(settings.indent)||4);else if(activeTool[0]==='html')$('#editorInput').value=$('#editorInput').value.replace(/>\s*</g,'>\n<').trim();else if(activeTool[0]==='sql')$('#editorInput').value=$('#editorInput').value.trim().replace(/\s+/g,' ');else if(activeTool[0]==='base64')$('#editorStatus').textContent='Use Run / Encode, or type decode: followed by Base64 text to decode.';else $('#editorStatus').textContent='No automatic formatter is available for this tool.'}catch(e){$('#editorStatus').textContent=e.message}};$('#editorSave').onclick=()=>saveProject(activeProject);$('#editorInput').addEventListener('keydown',e=>{if(e.key==='Tab'){e.preventDefault();const a=e.target,s=a.selectionStart;a.setRangeText(' '.repeat(Number(settings.indent)||4),s,a.selectionEnd,'end');a.dispatchEvent(new Event('input'))}});
+function updateDiff(){const a=$('#diffOriginal').value.split('\n'),b=$('#diffRevised').value.split('\n'),out=[];for(let i=0;i<Math.max(a.length,b.length);i++){if(a[i]===b[i])out.push('  '+(a[i]??''));else{if(a[i]!==undefined)out.push('- '+a[i]);if(b[i]!==undefined)out.push('+ '+b[i])}}$('#diffResult').textContent=out.join('\n')||'No differences.'}$('#diffOriginal').oninput=updateDiff;$('#diffRevised').oninput=updateDiff;
+function saveProject(existing=null){if(activeProject?.origin==='create'){openCreateSaveOptions();return}const name=prompt('Project name',existing?.name||activeTool?.[1]||'Untitled project');if(!name?.trim())return;const lang=activeTool?.[3]||'Text',code=activeTool?.[0]==='diff'?`Original:\n${$('#diffOriginal').value}\n\nRevised:\n${$('#diffRevised').value}`:$('#editorInput').value;const p=existing||{id:id(),created:Date.now()};Object.assign(p,{name:name.trim(),language:lang,code,updated:Date.now()});if(!existing)projects.unshift(p);write('projects',projects);renderProjects();updateStats();$('#editorStatus').textContent='Saved on this device. Online sync is not connected.'}
+function editorCode(){return activeTool?.[0]==='diff'?`Original:\n${$('#diffOriginal').value}\n\nRevised:\n${$('#diffRevised').value}`:$('#editorInput').value}
+function openCreateSaveOptions(){const p=activeProject||{};modal('Save or post project',`<p><strong>${esc(p.name||activeTool?.[1]||'Untitled project')}</strong></p><p class="muted">Choose whether this project stays private or appears in the community. Until the database is configured, this saves only on this device.</p><label>Project title<input class="field" id="createFinalTitle" maxlength="100" value="${esc(p.name||activeTool?.[1]||'Untitled project')}"></label><label>Description<textarea class="field" id="createFinalDescription" maxlength="1000" placeholder="Describe what your project does">${esc(p.description||'')}</textarea></label><label>Visibility<select class="field" id="createFinalVisibility"><option value="private">Keep private — save to My Projects</option><option value="public">Post publicly to Create</option></select></label><button class="btn" id="createCancelSave">Cancel</button> <button class="btn primary" id="createConfirmSave">Save choice</button>`)}
+function persistCreateChoice(){const title=$('#createFinalTitle').value.trim(),description=$('#createFinalDescription').value.trim(),visibility=$('#createFinalVisibility').value;if(!title){alert('Enter a project title.');return}const code=editorCode(),lang=activeTool?.[3]||'Text',now=Date.now();if(visibility==='private'){const p={id:activeProject?.id||id(),name:title,description,language:lang,code,visibility:'private',created:activeProject?.created||now,updated:now};const i=projects.findIndex(x=>x.id===p.id);if(i>=0)projects[i]=p;else projects.unshift(p);write('projects',projects);renderProjects();updateStats();$('#editorStatus').textContent='Private project saved on this device. Online private storage will be connected during the SQL stage.'}else{const post={id:id(),title,description,code,language:lang,visibility:'public',created:now,author:currentUser?.user_metadata?.username||currentUser?.email?.split('@')[0]||'Guest',likes:0,comments:[]};posts.unshift(post);write('posts',posts);renderPosts();$('#editorStatus').textContent='Public post draft saved on this device. Online publishing and real likes/comments require the SQL stage.'}closeModal();$('#editorPublish').classList.add('hidden');$('#editorSave').classList.remove('hidden');activeProject={...activeProject,name:title,description,code,origin:'create'};updateStats()}
+$('#editorPublish').onclick=openCreateSaveOptions;function renderProjects(){const q=($('#projectSearch').value||'').toLowerCase(),arr=projects.filter(p=>(p.name+' '+p.language).toLowerCase().includes(q));$('#projectList').innerHTML=arr.map(p=>`<div class="item"><div class="avatar">⌘</div><div class="itemmain"><strong>${esc(p.name)}</strong><small>${esc(p.language)} · ${new Date(p.updated||p.created).toLocaleDateString()}</small></div><button class="btn" data-openproject="${p.id}">Open</button><button class="btn" data-editproject="${p.id}">Rename</button><button class="btn danger" data-delproject="${p.id}">Delete</button></div>`).join('')||'<div class="empty">No saved projects yet. Open a tool and choose Save.</div>';updateStats()}$('#projectSearch').oninput=renderProjects;$('#projectList').onclick=e=>{const b=e.target.closest('button');if(!b)return;const p=projects.find(x=>x.id===b.dataset.openproject||x.id===b.dataset.editproject||x.id===b.dataset.delproject);if(!p)return;if(b.dataset.openproject)openTool((tools.find(t=>t[3].toLowerCase()===p.language.toLowerCase())||tools[1])[0],p);if(b.dataset.editproject){const n=prompt('Project name',p.name);if(n?.trim()){p.name=n.trim();write('projects',projects);renderProjects()}}if(b.dataset.delproject&&confirm('Delete this project from this device?')){projects=projects.filter(x=>x.id!==p.id);write('projects',projects);renderProjects()}};function updateStats(){$('#projectCount').textContent=projects.length;$('#spaceCount').textContent=spaces.length}function renderSpaces(){$('#spaceList').innerHTML=spaces.map(s=>`<div class="item"><div class="avatar">◇</div><div class="itemmain"><strong>${esc(s.name)}</strong><small>${esc(s.description||'Workspace')}</small></div><button class="btn" data-rename="${s.id}">Rename</button><button class="btn danger" data-delspace="${s.id}">Delete</button></div>`).join('')||'<div class="empty">No spaces yet. Create one to organize projects.</div>'}$('#newSpace').onclick=()=>modal('New space','<label>Space name<input id="spaceName" class="field" placeholder="e.g. Client work"></label><label>Description<input id="spaceDesc" class="field" placeholder="Optional"></label><button class="btn primary" id="saveSpace">Create space</button>');$('#spaceList').onclick=e=>{const b=e.target.closest('button');if(!b)return;const s=spaces.find(x=>x.id===b.dataset.rename||x.id===b.dataset.delspace);if(!s)return;if(b.dataset.rename){const n=prompt('Space name',s.name);if(n?.trim())s.name=n.trim()}else if(confirm('Delete this space?'))spaces=spaces.filter(x=>x.id!==s.id);write('spaces',spaces);renderSpaces();updateStats()};$('#modalBody').addEventListener('click',e=>{if(e.target.id==='saveSpace'){const name=$('#spaceName').value.trim();if(!name)return;spaces.unshift({id:id(),name,description:$('#spaceDesc').value.trim(),created:Date.now()});write('spaces',spaces);closeModal();renderSpaces();updateStats()}if(e.target.id==='publishPost'){const title=$('#postTitle').value.trim(),code=$('#postCode').value;if(!title||!code)return;posts.unshift({id:id(),title,code,language:$('#postLang').value,visibility:$('#postVisibility').value,created:Date.now(),author:currentUser?.user_metadata?.username||currentUser?.email?.split('@')[0]||'Guest',likes:0,comments:[]});write('posts',posts);closeModal();renderPosts()}});function renderPosts(){$('#communityFeed').innerHTML=posts.filter(p=>p.visibility==='public'||!p.visibility).map(p=>`<article class="feedpost"><div class="row"><div style="flex:1"><h3>${esc(p.title)}</h3><small>${esc(p.author)} · ${esc(p.language)} · local draft post</small></div><button class="btn" data-postmenu="${p.id}">⋯</button></div><pre>${esc(p.code)}</pre><div class="row"><button class="btn" data-runpost="${p.id}">Run / View</button><button class="btn" data-copy-post="${p.id}">Edit a copy</button><button class="btn" data-like="${p.id}">♡ ${p.likes||0}</button><button class="btn" data-comment="${p.id}">Comment</button></div></article>`).join('')||'<div class="empty">No local public posts yet. Create a post draft to preview the community layout. Online publishing requires the backend SQL setup.</div>'}function createPost(){modal('Start a new project','<label>Project name<input class="field" id="postTitle" maxlength="100" placeholder="e.g. My first Python tool" required></label><label>Project description<textarea class="field" id="postDescription" maxlength="1000" placeholder="What will this project do?"></textarea></label><label>Language / environment<select class="field" id="postLang"><option value="HTML">HTML</option><option value="JavaScript">JavaScript</option><option value="CSS">CSS</option><option value="Python">Python</option><option value="Java">Java</option><option value="C++">C++</option><option value="JSON">JSON</option><option value="SQL">SQL</option><option value="Web Development">Web Development</option><option value="Text">Plain Text</option></select></label><button class="btn" id="cancelCreateProject">Cancel</button> <button class="btn primary" id="startCreateProject">Open full-screen playground →</button><p class="muted">The editor and output occupy the full screen. Python, Java and C++ require a runtime/compiler backend; the editor will not pretend those languages ran when no runtime is connected.</p>')}$('#createPostBtn').onclick=createPost;$('#floatingCreate').onclick=()=>{go('create');createPost()};
+$('#modalBody').addEventListener('click',e=>{if(e.target.id==='cancelCreateProject'||e.target.id==='createCancelSave'){closeModal();return}if(e.target.id==='createConfirmSave'){persistCreateChoice();return}if(e.target.id==='startCreateProject'){const name=$('#postTitle').value.trim(),description=$('#postDescription').value.trim(),lang=$('#postLang').value;if(!name){alert('Enter a project name.');return}const keyMap={'HTML':'html','JavaScript':'javascript','CSS':'html','Python':'python','Java':'java','C++':'cpp','JSON':'json','SQL':'sql','Web Development':'html','Plain Text':'indent'};const key=keyMap[lang]||'html',t=tools.find(x=>x[0]===key)||tools[0],project={id:id(),name,description,language:lang,code:t[5]||'',origin:'create',visibility:'private',created:Date.now()};closeModal();openTool(key,project);$('#editorLanguage').textContent=lang;if(lang==='CSS')$('#editorInput').value='/* Write your CSS here */\nbody {\n  font-family: sans-serif;\n}';if(lang==='Web Development')$('#editorInput').value='<!doctype html>\n<html>\n<head>\n<style>body{font-family:sans-serif;padding:2rem}</style>\n</head>\n<body>\n<h1>Hello, AlphaScript!</h1>\n<p>Start building your project.</p>\n</body>\n</html>';return}if(e.target.id==='createProjectNow'){const name=$('#newProjectName').value.trim();if(!name)return;const lang=$('#newProjectLang').value,t=tools.find(x=>x[3]===lang)||tools[0];closeModal();openTool(t[0],{name,code:t[5]})}if(e.target.id==='publishPost'){const title=$('#postTitle').value.trim(),code=$('#postCode').value;if(!title||!code)return;posts.unshift({id:id(),title,description:$('#postDescription')?.value.trim()||'',code,language:$('#postLang').value,visibility:$('#postVisibility')?.value||'public',created:Date.now(),author:currentUser?.user_metadata?.username||currentUser?.email?.split('@')[0]||'Guest',likes:0,comments:[]});write('posts',posts);closeModal();renderPosts()}});$('#communityFeed').onclick=e=>{const b=e.target.closest('button');if(!b)return;const p=posts.find(x=>x.id===Object.values(b.dataset)[0]);if(!p)return;if(b.dataset.runpost)openTool((tools.find(t=>t[3]===p.language)||tools[0])[0],{name:p.title,code:p.code});if(b.dataset.copyPost)openTool((tools.find(t=>t[3]===p.language)||tools[0])[0],{name:p.title+' (copy)',code:p.code});if(b.dataset.like){p.likes=(p.likes||0)+1;write('posts',posts);renderPosts()}if(b.dataset.comment){const c=prompt('Comment');if(c?.trim()){p.comments.push(c.trim());write('posts',posts);alert('Comment saved on this device only.')}}if(b.dataset.postmenu){if(confirm('Delete this local post draft?')){posts=posts.filter(x=>x.id!==p.id);write('posts',posts);renderPosts()}}};
+function loadSettings(){$('#themeSelect').value=settings.theme||'dark';$('#fontSize').value=String(settings.font||14);$('#indentSize').value=settings.indent||'4';$('#settingsAccount').textContent=currentUser?'Signed in as '+(currentUser.user_metadata?.username||currentUser.email||'developer'):'You are using guest mode.'}function applyTheme(){document.body.classList.toggle('light',settings.theme==='light');document.body.classList.toggle('solar',settings.theme==='solar');document.documentElement.style.colorScheme=settings.theme==='light'?'light':'dark'}$('#saveSettings').onclick=()=>{settings={...settings,theme:$('#themeSelect').value,font:Number($('#fontSize').value),indent:$('#indentSize').value};write('settings',settings);applyTheme();$('#settingsStatus').textContent='Settings saved on this device.'};$('#themeQuick').onclick=()=>{settings.theme=settings.theme==='dark'?'light':settings.theme==='light'?'solar':'dark';write('settings',settings);applyTheme();loadSettings()};$('#profileBtn').onclick=()=>showMyProfile();$('#settingsProfile').onclick=()=>showMyProfile();function showMyProfile(){go('profile');$('#myName').textContent=currentUser?.user_metadata?.full_name||currentUser?.user_metadata?.username||'Developer';$('#myUsername').textContent=currentUser?'@'+(currentUser.user_metadata?.username||currentUser.email?.split('@')[0]||'developer'):'Sign in to load your private profile.';loadFollowSummary('followers')}$('#editProfile').onclick=()=>location.href='profile.html';$('#homeLogin').onclick=()=>location.href='login.html';$('#settingsLogin').onclick=()=>location.href='login.html';$('#accountBtn').onclick=()=>location.href=currentUser?'profile.html':'login.html';$('#guestBtn').onclick=()=>{modal('Continue as guest','<p>You can use the coding tools and save drafts on this device. Online profiles, messages, public posting and synced projects require sign-in.</p><button class="btn primary" id="guestContinue">Continue to tools</button>');$('#guestContinue').onclick=()=>{closeModal();go('tools')}};$('#signOut').onclick=async()=>{if(!supabase||!currentUser){location.href='login.html';return}const {error}=await supabase.auth.signOut();if(error)alert('Sign out failed: '+error.message);else{currentUser=null;updateAuthUI();go('home')}};
+async function initAuth(){if(!window.supabase?.createClient||SUPABASE_KEY.startsWith('PASTE_')){updateAuthUI();return}try{supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);const {data}=await supabase.auth.getUser();currentUser=data?.user||null;updateAuthUI();supabase.auth.onAuthStateChange((_e,s)=>{currentUser=s?.user||null;updateAuthUI();if(activeScreen==='profile')loadFollowSummary(followMode);if(activeScreen==='notifications')loadActivity()})}catch(e){console.error(e)}}function updateAuthUI(){$('#accountBtn').textContent=currentUser?'Account':'Log in';$('#accountState').textContent=currentUser?'Signed in':'Guest mode';$('#settingsAccount').textContent=currentUser?'Signed in':'You are using guest mode.'}
+async function loadDiscover(){if(!supabase||!currentUser){$('#discoverStatus').textContent='Sign in to discover public profiles. Configure your Supabase publishable/anon key in this file first.';$('#discoverList').innerHTML='<div class="empty">Public developer discovery is available to signed-in users after Supabase is configured.</div>';return}$('#discoverStatus').textContent='Loading public profiles…';try{const {data,error}=await supabase.from('public_profiles').select('*').limit(100);if(error)throw error;discoverUsers=(data||[]).filter(p=>String(p.id)!==String(currentUser.id));renderDiscover();$('#discoverStatus').textContent=discoverUsers.length+' public profiles loaded.'}catch(e){$('#discoverStatus').textContent='Could not load public profiles: '+e.message+' — confirm public_profiles view and RLS policies.'}}async function getFollowedIds(){if(!supabase||!currentUser)return new Set();const {data,error}=await supabase.from('alphascript_follows').select('following_id').eq('follower_id',currentUser.id);if(error)throw error;return new Set((data||[]).map(r=>String(r.following_id)))}async function renderDiscover(){const q=$('#discoverSearch').value.toLowerCase();const arr=discoverUsers.filter(p=>[p.username,p.full_name,p.display_name,p.country,p.occupation,...(p.skills||[]),...(p.programming_languages||[])].join(' ').toLowerCase().includes(q));let followed=new Set();try{followed=await getFollowedIds()}catch(e){console.warn('Follow states unavailable until follow policies are configured',e)}$('#discoverList').innerHTML=arr.map(p=>`<div class="item"><div class="avatar">${esc((p.full_name||p.username||'D')[0])}</div><div class="itemmain"><strong>${esc(p.full_name||p.display_name||p.username||'Developer')}</strong><small>@${esc(p.username||'developer')} · ${esc(p.country||'')}</small><small>${esc([...(p.skills||[]),...(p.programming_languages||[]),...(p.developer_roles||[])].join(', '))}</small></div><button class="btn" data-viewprofile="${esc(p.id)}">View</button><button class="btn follow-action ${followed.has(String(p.id))?'primary':''}" data-followuser="${esc(p.id)}">${followed.has(String(p.id))?'Following':'Follow'}</button><button class="btn" data-messageprofile="${esc(p.id)}">Message</button><button class="btn" data-reportprofile="${esc(p.id)}">Report</button></div>`).join('')||'<div class="empty">No public profiles match your search.</div>'}async function toggleFollow(p,button){if(!currentUser||!supabase){modal('Sign in required','<p>Sign in to follow developers and receive follow notifications.</p><button class="btn primary" id="followLogin">Log in / Create account</button>');$('#followLogin').onclick=()=>location.href='login.html';return}if(String(p.id)===String(currentUser.id))return;const was=button.textContent==='Following';button.disabled=true;button.textContent=was?'Unfollowing…':'Following…';try{if(was){const {error}=await supabase.from('alphascript_follows').delete().eq('follower_id',currentUser.id).eq('following_id',p.id);if(error)throw error;button.textContent='Follow';button.classList.remove('primary');$('#discoverStatus').textContent='You unfollowed '+(p.full_name||p.username||'this developer')+'.'}else{const {error}=await supabase.from('alphascript_follows').insert({follower_id:currentUser.id,following_id:p.id});if(error&&error.code!=='23505')throw error;button.textContent='Following';button.classList.add('primary');$('#discoverStatus').textContent='You are now following '+(p.full_name||p.username||'this developer')+'. The recipient notification will work once the notification table and trigger are added in the SQL stage.'}await loadFollowSummary(followMode);if($('#activityPanel'))loadActivity()}catch(e){$('#discoverStatus').textContent='Follow update failed: '+e.message+' — follow policies/table may need the SQL stage.';button.textContent=was?'Following':'Follow'}finally{button.disabled=false}}$('#discoverSearch').oninput=renderDiscover;$('#refreshDiscover').onclick=loadDiscover;$('#discoverList').onclick=e=>{const b=e.target.closest('button');if(!b)return;const p=discoverUsers.find(x=>String(x.id)===b.dataset.viewprofile||String(x.id)===b.dataset.messageprofile||String(x.id)===b.dataset.reportprofile||String(x.id)===b.dataset.followuser);if(!p)return;if(b.dataset.followuser){toggleFollow(p,b);return}if(b.dataset.viewprofile){modal(p.full_name||p.username||'Public profile',`<p><strong>@${esc(p.username||'developer')}</strong></p>${p.avatar_url?`<img src="${esc(p.avatar_url)}" alt="Profile avatar" style="width:80px;height:80px;object-fit:cover;border-radius:18px">`:''}<p><strong>Bio</strong><br>${esc(p.bio||'Not provided')}</p><p><strong>Country</strong><br>${esc(p.country||'Not provided')}</p><p><strong>Roles</strong><br>${esc((p.developer_roles||[]).join(', '))}</p><p><strong>Languages</strong><br>${esc((p.programming_languages||[]).join(', '))}</p><p><strong>Hobbies</strong><br>${esc((p.hobbies||[]).join(', '))}</p><p class="muted">Only fields returned by the public profile view are displayed. Email is never shown here.</p><div class="grid"><div class="card"><strong>Followers</strong><div id="publicFollowersCount" class="stat">—</div></div><div class="card"><strong>Following</strong><div id="publicFollowingCount" class="stat">—</div></div></div><button class="btn follow-action" id="publicFollowBtn">Follow</button><button class="btn" id="reportFromProfile">Report</button><button class="btn" id="messageFromProfile">Message</button>`);$('#reportFromProfile').onclick=()=>reportUser(p);$('#messageFromProfile').onclick=()=>messageUser(p);loadPublicFollowStats(p);$('#publicFollowBtn').onclick=()=>toggleFollow(p,$('#publicFollowBtn'))}else if(b.dataset.messageprofile)messageUser(p);else reportUser(p)};function messageUser(p){modal('Messages',`<p>Messaging is not connected yet. The secure conversation schema, participants, block rules, unread state and RLS policies must be created before sending messages.</p><p>Recipient: <strong>${esc(p.full_name||p.username||'Developer')}</strong></p><button class="btn primary" id="messageLogin">Sign in</button>`);$('#messageLogin').onclick=()=>location.href='login.html'}function reportUser(p){modal('Report developer',`<p>Reporting: <strong>${esc(p.full_name||p.username||'Developer')}</strong></p><label>Reason<textarea class="field" id="reportReason" placeholder="Explain what happened"></textarea></label><p class="muted">Report destination: <strong>alphaforge.projects@gmail.com</strong>. Secure email delivery is not connected yet; we will configure it through the backend before reports can actually be sent.</p><button class="btn" id="cancelReport">Cancel</button><button class="btn primary" id="sendReport">Send report</button><p id="reportStatus" class="muted"></p>`);$('#cancelReport').onclick=closeModal;$('#sendReport').onclick=()=>{$('#reportStatus').textContent='Not sent: secure report submission/email endpoint is not configured. Please do not treat this as a submitted report.'}};
+async function loadFollowSummary(mode='followers'){
+ followMode=mode;
+ if(!currentUser||!supabase){$('#followersCount').textContent='—';$('#followingCount').textContent='—';$('#followListTitle').textContent=mode==='followers'?'Your followers':'People you follow';$('#followListCount').textContent='Sign in required';$('#followList').innerHTML='<div class="empty">Sign in to view your followers and following.</div>';return}
+ try{
+  const [followersRes,followingRes]=awaitl Promise.all([supabase.from('alphascript_follows').select('follower_id').eq('following_id',currentUser.id),supabase.from('alphascript_follows').select('following_id').eq('follower_id',currentUser.id)]);
+  if(followersRes.error)throw followersRes.error;if(followingRes.error)throw followingRes.error;
+  const followers=[...new Set((followersRes.data||[]).map(x=>String(x.follower_id)))],following=[...new Set((followingRes.data||[]).map(x=>String(x.following_id)))];
+  $('#followersCount').textContent=followers.length;$('#followingCount').textContent=following.length;
+  $('#followListTitle').textContent=mode==='followers'?'Your followers':'People you follow';
+  $('#followListCount').textContent=(mode==='followers'?followers.length:following.length)+' people';
+  const ids=mode==='followers'?followers:following;
+  if(!ids.length){$('#followList').innerHTML='<div class="empty">'+(mode==='followers'?'You do not have followers yet.':'You are not following anyone yet.')+'</div>';return}
+  const {data,error}=await supabase.from('public_profiles').select('*').in('id',ids);if(error)throw error;
+  const people=data||[];
+ $('#followList').innerHTML=people.map(p=>`<div class="item follow-person"><div class="avatar">${p.avatar_url?`<img src="${esc(p.avatar_url)}" alt="${esc((p.full_name||p.username||'Developer')+' profile picture')}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">`:esc((p.full_name||p.username||'D')[0])}</div><div class="itemmain"><strong>${esc(p.full_name||p.display_name||p.username||'Developer')}</strong><small>@${esc(p.username||'developer')}${p.country?' · '+esc(p.country):''}</small></div><button class="btn" data-follow-view="${esc(p.id)}">View</button>${mode==='following'?`<button class="btn danger" data-follow-unfollow="${esc(p.id)}">Unfollow</button>`:''}<button class="btn" data-follow-message="${esc(p.id)}">Message</button>${mode==='following'?`<button class="btn" data-follow-connect="${esc(p.id)}">Connect</button>`:''}<button class="btn" data-follow-report="${esc(p.id)}">Report</button></div>`).join('')||'<div class="empty">Profiles are not available in the public profile view.</div>';
+  $('#followList').onclick=async e=>{
+   const b=e.target.closest('button');if(!b)return;const p=people.find(x=>String(x.id)===(b.dataset.followView||b.dataset.followUnfollow||b.dataset.followMessage||b.dataset.followConnect||b.dataset.followLike||b.dataset.followReport));if(!p)return;
+   if(b.dataset.followView){showPublicProfileFromProfile(p);return}
+   if(b.dataset.followUnfollow){if(!confirm('Unfollow '+(p.full_name||p.username||'this developer')+'?'))return;await toggleFollow({id:p.id,full_name:p.full_name,username:p.username},Object.assign({textContent:'Following',classList:{add(){},remove(){}}}));await loadFollowSummary('following');return}
+   if(b.dataset.followMessage){messageUser(p);return}
+   if(b.dataset.followConnect){modal('Connect with developer',`<p>Connect with <strong>${esc(p.full_name||p.username||'this developer')}</strong> by following them or sending a message.</p><button class="btn primary" id="connectMessage">Message</button><button class="btn" id="connectClose">Cancel</button>`);$('#connectMessage').onclick=()=>messageUser(p);$('#connectClose').onclick=closeModal;return}
+   if(b.dataset.followReport){reportUser(p);return}
+  };
+}catch(e){$('#followListCount').textContent='Database setup needed';$('#followList').innerHTML='<div class="notice">Could not load follower lists: '+esc(e.message)+'. The follow table and SELECT policies will be completed in the SQL stage.</div>'}
 }
+async function loadPublicFollowStats(p){if(!supabase){$('#publicFollowersCount').textContent='—';$('#publicFollowingCount').textContent='—';return}try{const [a,b]=await Promise.all([supabase.from('alphascript_follows').select('follower_id',{count:'exact',head:true}).eq('following_id',p.id),supabase.from('alphascript_follows').select('following_id',{count:'exact',head:true}).eq('follower_id',p.id)]);$('#publicFollowersCount').textContent=a.error?'—':a.count??0;$('#publicFollowingCount').textContent=b.error?'—':b.count??0;const btn=$('#publicFollowBtn');if(currentUser&&String(currentUser.id)!==String(p.id)){const ids=await getFollowedIds();btn.textContent=ids.has(String(p.id))?'Following':'Follow';btn.classList.toggle('primary',ids.has(String(p.id)))}else{btn.classList.add('hidden')}}catch(e){console.warn('Public follow counts require follow-table policies',e)}}function showPublicProfileFromProfile(p){modal(p.full_name||p.username||'Public profile',`${p.avatar_url?`<img src="${esc(p.avatar_url)}" alt="Profile picture" style="width:84px;height:84px;object-fit:cover;border-radius:20px">`:''}<p><strong>@${esc(p.username||'developer')}</strong></p><p><strong>Bio</strong><br>${esc(p.bio||'Not provided')}</p><p><strong>Country</strong><br>${esc(p.country||'Not provided')}</p><p><strong>Roles</strong><br>${esc((p.developer_roles||[]).join(', ')||'Not provided')}</p><p><strong>Languages</strong><br>${esc((p.programming_languages||[]).join(', ')||'Not provided')}</p><p><strong>Hobbies</strong><br>${esc((p.hobbies||[]).join(', ')||'Not provided')}</p><div class="grid"><div class="card"><strong>Followers</strong><div class="stat" id="listPublicFollowers">—</div></div><div class="card"><strong>Following</strong><div class="stat" id="listPublicFollowing">—</div></div></div><button class="btn primary" id="listProfileMessage">Message</button><button class="btn" id="listProfileReport">Report</button><button class="btn" id="closeFollowProfile">Back to my profile</button>`);$('#listProfileMessage').onclick=()=>messageUser(p);$('#listProfileReport').onclick=()=>reportUser(p);loadPublicFollowStatsForList(p);$('#closeFollowProfile').onclick=()=>{closeModal();go('profile');loadFollowSummary(followMode)}}
+async function loadPublicFollowStatsForList(p){if(!supabase)return;try{const [a,b]=await Promise.all([supabase.from('alphascript_follows').select('follower_id',{count:'exact',head:true}).eq('following_id',p.id),supabase.from('alphascript_follows').select('following_id',{count:'exact',head:true}).eq('follower_id',p.id)]);$('#listPublicFollowers').textContent=a.error?'—':a.count??0;$('#listPublicFollowing').textContent=b.error?'—':b.count??0}catch(e){console.warn(e)}}async function loadActivity(){
+ if(!supabase||!currentUser){$('#activityPanel').innerHTML='<div class="empty">Sign in to receive activity notifications.</div>';return}
+ try{
+  const {data,error}=await supabase.from('alphascript_notifications').select('*').eq('recipient_id',currentUser.id).order('created_at',{ascending:false}).limit(50);
+  if(error)throw error;
+  const notifications=data||[];
+  const actorIds=[...new Set(notifications.map(n=>n.actor_id||n.follower_id||n.sender_id).filter(Boolean).map(String))];
+  let actors={};
 
-
-let discoverPresenceChannel = null;
-let onlineUserIds = new Set();
-let presenceUserId = null;
-
-async function startDiscoverPresence() {
-  if (!supabase || !currentUser) return;
-
-  // Avoid creating duplicate channels for the same signed-in user.
-  if (
-    discoverPresenceChannel &&
-    presenceUserId === String(currentUser.id)
-  ) {
-    return;
-  }
-
-  // Remove the previous user's channel if the account changed.
-  if (discoverPresenceChannel) {
-    const oldChannel = discoverPresenceChannel;
-    discoverPresenceChannel = null;
-    await supabase.removeChannel(oldChannel);
-  }
-
-  presenceUserId = String(currentUser.id);
-  onlineUserIds = new Set();
-
-  const userId = String(currentUser.id);
-
-  const channel = supabase.channel("alphascript:online", {
-    config: {
-      presence: {
-        key: userId
-      }
-    }
-  });
-
-  discoverPresenceChannel = channel;
-
-  channel
-    .on("presence", { event: "sync" }, () => {
-      if (discoverPresenceChannel !== channel) return;
-
-      const state = channel.presenceState();
-      onlineUserIds = new Set(Object.keys(state).map(String));
-
-      updateDiscoverPresenceIndicators();
-    })
-   
-.subscribe(async status => {
-  console.log("AlphaScript Presence status:", status);
-
-  if (status === "SUBSCRIBED") {
-    console.log("Presence channel connected successfully.");
-
-    try {
-      const result = await channel.track({
-        user_id: userId,
-        online_at: new Date().toISOString()
-      });
-
-      console.log("Presence tracking result:", result);
-    } catch (e) {
-      console.error("Could not publish online presence:", e);
-    }
-  } else if (
-    status === "CHANNEL_ERROR" ||
-    status === "TIMED_OUT" ||
-    status === "CLOSED"
-  ) {
-    console.error("AlphaScript Presence connection problem:", status);
-  }
-});
+  if(actorIds.length){const result=await supabase.from('public_profiles').select('id,username,full_name,display_name,avatar_url').in('id',actorIds);if(!result.error)for(const p of(result.data||[]))actors[String(p.id)]=p;}
+  $('#activityPanel').innerHTML=notifications.map(n=>{
+   const actorId=n.actor_id||n.follower_id||n.sender_id;
+   const actor=actorId?actors[String(actorId)]:null;
+   const isFollow=String(n.type||n.event_type||'').toLowerCase().includes('follow');
+   const actorName=actor?(actor.full_name||actor.display_name||actor.username||'Someone'):'Someone';
+   const message=isFollow?(actorName+' started following you.'):(n.message||'New activity');
+   const avatar=actor?.avatar_url?`<img src="${esc(actor.avatar_url)}" alt="" style="width:38px;height:38px;object-fit:cover;border-radius:50%">`:`<span class="avatar">${esc(actorName[0]||'A')}</span>`;
+   return `<div class="item notif-item">${avatar}<div class="itemmain"><strong>${esc(message)}</strong><small>${esc(n.created_at?new Date(n.created_at).toLocaleString():'')}</small></div>${actorId?`<button class="btn" data-notif-profile="${esc(actorId)}">View profile</button>`:''}${!n.read_at?'<span class="notif-dot" aria-label="Unread notification"></span>':''}</div>`;
+  }).join('')||'<div class="empty">No activity notifications yet. When someone follows you, you will see who followed you here.</div>';
+  $('#unreadCount').textContent=notifications.filter(n=>!n.read_at).length||'';
+  $('#activityPanel').onclick=e=>{const b=e.target.closest('[data-notif-profile]');if(!b)return;const actor=actors[String(b.dataset.notifProfile)];if(actor)showPublicProfileFromProfile(actor)};
+ }catch(e){$('#activityPanel').innerHTML='<div class="notice">Follow notifications will appear here after the alphascript_notifications table and secure database trigger are installed. Database message: '+esc(e.message)+'</div>'}
 }
-
-function updateDiscoverPresenceIndicators() {
-  document.querySelectorAll(
-    "#discoverList .item[data-profile-id]"
-  ).forEach(card => {
-    const profileId = card.dataset.profileId;
-    const statusElement = card.querySelector("[data-online-status]");
-
-    if (!statusElement) return;
-
-    const isOnline = onlineUserIds.has(String(profileId));
-
-    statusElement.textContent = isOnline ? "Online" : "Offline";
-    statusElement.dataset.online = isOnline ? "true" : "false";
-  });
-}
-let discoverUsers=[];
-async function loadDiscover(){const status=$("#discoverStatus"),list=$("#discoverList");if(!supabase){status.textContent="Supabase is not ready yet. Refresh in a moment.";return}if(!currentUser){status.textContent="Sign in to discover developers. Public profile discovery requires a signed-in account.";list.innerHTML='<div class="empty">Sign in to load developer profiles.</div>';return}status.textContent="Loading public developer profiles…";try{
- const {data,error}=await supabase
-  .from("public_profiles")
-  .select("*")
-  .limit(100);
- if(error)throw error;
- discoverUsers = (data || []).filter(
-  p => String(p.id) !== String(currentUser.id)
-);
-
-startDiscoverPresence();
-renderDiscover();
-updateDiscoverPresenceIndicators();
-
-status.textContent =
-  discoverUsers.length + " profile(s) loaded.";
- }catch(e){status.textContent="Could not load profiles. Check that the public profiles table is named profiles, that its columns/RLS allow this query, and that the signed-in user can read public profiles. Details: "+e.message;list.innerHTML='<div class="empty">Profile discovery needs to be connected to your existing profile schema and row-level security policies.</div>';}}
-
-function renderDiscover() {
-  const q = $("#discoverSearch").value.toLowerCase().trim();
-  const list = $("#discoverList");
-
-  list.innerHTML = "";
-
-  const arr = discoverUsers.filter(p =>
-    [
-      p.username,
-      p.display_name,
-      p.full_name,
-      p.name,
-      p.skills,
-      p.skill,
-      p.programming_languages,
-      p.developer_roles,
-      p.occupation,
-      p.country
-    ]
-      .map(v =>
-        Array.isArray(v) ? v.join(" ") : String(v || "")
-      )
-      .join(" ")
-      .toLowerCase()
-      .includes(q)
-  );
-
-  if (!arr.length) {
-    list.innerHTML =
-      '<div class="empty">No public profiles match your search.</div>';
-    return;
-  }
-
-  arr.forEach(p => {
-    const name =
-      p.display_name ||
-      p.full_name ||
-      p.name ||
-      p.username ||
-      "Developer";
-
-    const skillItems = [
-      ...(Array.isArray(p.skills) ? p.skills : []),
-      ...(Array.isArray(p.skill) ? p.skill : []),
-      ...(Array.isArray(p.programming_languages)
-        ? p.programming_languages
-        : []),
-      ...(Array.isArray(p.developer_roles)
-        ? p.developer_roles
-        : [])
-    ];
-
-    const skills = [...new Set(skillItems)].join(", ");
-    const description = skills || p.occupation || "No public skills listed";
-    const avatar = p.avatar_url || p.avatar || "";
-
-    const el = document.createElement("div");
-    el.className = "item";
-
-    // Associate this card with the correct developer.
-    el.dataset.profileId = String(p.id);
-
-    el.innerHTML = `
-      ${
-        avatar
-          ? `<img class="avatar" src="${escapeHTML(avatar)}" alt="">`
-          : `<div class="avatar">${escapeHTML(name[0] || "D")}</div>`
-      }
-      <div class="item-main">
-        <strong>${escapeHTML(name)}</strong>
-        <small>
-          ${p.username ? "@" + escapeHTML(p.username) + " · " : ""}
-          ${escapeHTML(p.country || "")}
-        </small>
-        <div class="small muted" style="margin-top:5px">
-          ${escapeHTML(description)}
-        </div>
-        <small data-online-status>Offline</small>
-      </div>
-      <button class="btn" data-profile>View</button>
-      <button class="btn" data-follow data-following="false">Connect</button>
-    `;
-
-    const profileButton = el.querySelector("[data-profile]");
-    const followButton = el.querySelector("[data-follow]");
-
-    profileButton.onclick = () => showPublicProfile(p);
-    followButton.onclick = () => followUser(p, followButton);
-
-    list.appendChild(el);
-  });
-
-  // Restore saved connections from Supabase.
-  loadFollowStates();
-}
-
-async function loadFollowStates() {
-  if (!supabase || !currentUser) return;
-
-  const buttons = [
-    ...document.querySelectorAll("#discoverList [data-follow]")
-  ];
-
-  buttons.forEach(button => {
-    button.disabled = true;
-    button.textContent = "Loading…";
-  });
-
-  try {
-    const { data, error } = await supabase
-      .from("alphascript_follows")
-      .select("following_id")
-      .eq("follower_id", currentUser.id);
-
-    if (error) throw error;
-
-    const followedIds = new Set(
-      (data || []).map(row => String(row.following_id))
-    );
-
-    buttons.forEach(button => {
-      const card = button.closest(".item");
-      const profileId = card?.dataset.profileId;
-
-      const isFollowing =
-        Boolean(profileId) && followedIds.has(profileId);
-
-      button.dataset.following = isFollowing ? "true" : "false";
-      button.textContent = isFollowing ? "Unfollow" : "Connect";
-      button.disabled = false;
-    });
-  } catch (e) {
-    console.error("Could not load follow states:", e);
-
-    buttons.forEach(button => {
-      button.textContent =
-        button.dataset.following === "true" ? "Unfollow" : "Connect";
-      button.disabled = false;
-    });
-
-    $("#discoverStatus").textContent =
-      "Could not load follow states: " + e.message;
-  }
-}
-$("#discoverSearch").addEventListener("input",renderDiscover);$("#refreshDiscover").addEventListener("click",loadDiscover);
-function showPublicProfile(p){const name=p.full_name||p.name||p.username||"Developer";const body=$("#profileModalBody");body.innerHTML=`<div class="profile-line"><div class="avatar">${escapeHTML(name[0]||"D")}</div><div class="details"><h3>${escapeHTML(name)}</h3><div class="muted">${p.username?"@"+escapeHTML(p.username):""}</div></div></div><div class="divider"></div><p><strong>Skills</strong><br>${escapeHTML(Array.isArray(p.skills)?p.skills.join(", "):p.skills||"Not provided")}</p><p><strong>Current work</strong><br>${escapeHTML(p.job||p.work||"Not provided")}</p><p><strong>Country</strong><br>${escapeHTML(p.country||"Not provided")}</p><p class="notice">Only fields returned by your public profile query are shown. Confirm your privacy policies before exposing additional profile fields.</p>`;showModal("profileModal")}
-
-async function followUser(p, button) {
-  if (!supabase) {
-    $("#discoverStatus").textContent =
-      "Error: Supabase is not initialized.";
-    return;
-  }
-
-  if (!currentUser) {
-    $("#discoverStatus").textContent =
-      "Error: You are not signed in. Please sign in again.";
-    return;
-  }
-
-  if (!p || !p.id) {
-    $("#discoverStatus").textContent =
-      "Error: This developer has no profile ID.";
-    return;
-  }
-
-  if (String(p.id) === String(currentUser.id)) {
-    $("#discoverStatus").textContent =
-      "You cannot connect with your own account.";
-    return;
-  }
-
-  const wasFollowing = button.dataset.following === "true";
-
-  button.disabled = true;
-  button.textContent = wasFollowing ? "Unfollowing…" : "Connecting…";
-
-  try {
-    if (wasFollowing) {
-      // Remove the saved connection.
-      const { error } = await supabase
-        .from("alphascript_follows")
-        .delete()
-        .eq("follower_id", currentUser.id)
-        .eq("following_id", p.id);
-
-      if (error) throw error;
-
-      button.dataset.following = "false";
-      button.textContent = "Connect";
-
-      $("#discoverStatus").textContent =
-        "Connection removed successfully.";
-    } else {
-      // Save the connection.
-      const { error } = await supabase
-        .from("alphascript_follows")
-        .insert({
-          follower_id: currentUser.id,
-          following_id: p.id
-        });
-
-      if (error && error.code !== "23505") {
-        throw error;
-      }
-
-      // A duplicate means the connection already exists.
-      button.dataset.following = "true";
-      button.textContent = "Unfollow";
-
-      $("#discoverStatus").textContent =
-        error && error.code === "23505"
-          ? "You are already connected with this developer."
-          : "Connection saved successfully.";
-    }
-  } catch (e) {
-    console.error("AlphaScript connection error:", e);
-
-    $("#discoverStatus").textContent =
-      "Connection update failed. " +
-      (e.message || "Unknown error") +
-      (e.code ? " (Code: " + e.code + ")" : "");
-  } finally {
-    button.disabled = false;
-  }
-}
-
-function loadEverything() {
-  renderTools();
-  renderProjects();
-  renderSpaces();
-  updateStats();
-  loadSettingsForm();
-  applyTheme();
-  updateAccount();
-}
-
-$("#toolSearch").value = "";
-loadEverything();
-initSupabase();
+$('#followersOpen').onclick=()=>loadFollowSummary('followers');$('#followingOpen').onclick=()=>loadFollowSummary('following');$('#notificationsBtn').onclick=()=>{go('notifications');loadActivity()};$$('[data-notif-tab]').forEach(b=>b.onclick=()=>{const msg=b.dataset.notifTab==='messages';$('#activityPanel').classList.toggle('hidden',msg);$('#messagesPanel').classList.toggle('hidden',!msg);$$('[data-notif-tab]').forEach(x=>x.classList.toggle('primary',x===b))});$('#openMessagesInfo').onclick=()=>modal('Messaging backend needed','<p>To make messages real across devices, we need Supabase tables for conversations, members, messages, blocks, read status, project-share grants, post-share links and notifications, plus RLS policies. The UI must not use local storage as a substitute for private messages.</p>');$$('[data-badge-tab]').forEach(b=>b.onclick=()=>{const ach=b.dataset.badgeTab==='achievements';$('#badgesPanel').classList.toggle('hidden',ach);$('#achievementsPanel').classList.toggle('hidden',!ach);$$('[data-badge-tab]').forEach(x=>x.classList.toggle('primary',x===b))});const badgeData=[['First Applause','5 likes on one project'],['Rising Creator','25 likes on one project'],['Community Favorite','100 likes on one project'],['Legendary Project','500 likes on one project'],['Double Impact','5 likes each on 2 projects'],['Rising Portfolio','5 likes each on 5 projects'],['Portfolio Star','5 likes each on 10 projects'],['First Creation','Publish your first public project'],['Builder','Publish 10 public projects'],['Master Builder','Publish 50 public projects'],['Conversation Starter','10 qualifying comments'],['Helpful Developer','10 likes across comments'],['Code Mentor','50 likes across comments'],['Collaborator','Work on 5 shared projects'],['Consistent Coder','Code on 7 different days']];$('#badgesPanel').innerHTML=badgeData.map((b,i)=>`<div class="card"><div class="glyph">${i<3?'★':'◇'}</div><strong>${esc(b[0])}</strong><p class="muted">${esc(b[1])}</p><span class="tag">Locked until verified</span></div>`).join('');$('#achievementsPanel').innerHTML=badgeData.map(b=>`<div class="item"><div class="avatar">◇</div><div class="itemmain"><strong>${esc(b[0])}</strong><small>${esc(b[1])}</small></div><span class="tag">0% · not connected</span></div>`).join('');
+$('#newProject').onclick=()=>modal('New project','<label>Project name<input class="field" id="newProjectName" placeholder="Untitled project"></label><label>Language<select class="field" id="newProjectLang"><option>HTML</option><option>JavaScript</option><option>Python</option><option>Java</option><option>C++</option><option>Web Development</option></select></label><button class="btn primary" id="createProjectNow">Create project</button>');$('#homeNewProject').onclick=()=>$('#newProject').click();$('#modalBody').addEventListener('click',e=>{if(e.target.id==='cancelCreateProject'){closeModal()}if(e.target.id==='startCreateProject'){const name=$('#postTitle').value.trim(),description=$('#postDescription').value.trim(),lang=$('#postLang').value;if(!name){alert('Enter a project name.');return}const keyMap={'HTML':'html','JavaScript':'javascript','CSS':'html','Python':'python','Java':'java','C++':'cpp','JSON':'json','SQL':'sql','Web Development':'html','Plain Text':'indent'};const key=keyMap[lang]||'html';const t=tools.find(x=>x[0]===key)||tools[0];const project={id:id(),name,description,language:lang,code:t[5]||'',origin:'create',visibility:'private',created:Date.now()};closeModal();openTool(key,project);$('#editorLanguage').textContent=lang;if(lang==='CSS')$('#editorInput').value='/* Write your CSS here */\nbody {\n  font-family: sans-serif;\n}';if(lang==='Web Development')$('#editorInput').value='<!doctype html>\n<html>\n<head>\n<style>body{font-family:sans-serif;padding:2rem}</style>\n</head>\n<body>\n<h1>Hello, AlphaScript!</h1>\n<p>Start building your project.</p>\n</body>\n</html>';}if(e.target.id==='createCancelSave'){closeModal()}if(e.target.id==='createConfirmSave'){persistCreateChoice()}if(e.target.id==='createProjectNow'){const name=$('#newProjectName').value.trim();if(!name)return;const lang=$('#newProjectLang').value;const t=tools.find(x=>x[3]===lang)||tools[0];closeModal();openTool(t[0],{name,code:t[5]})}});
+function init(){buildNav();renderTools();renderProjects();renderSpaces();renderPosts();updateStats();loadSettings();applyTheme();initAuth()}init();
 })();
 </script>
 </body>
 </html>
-
